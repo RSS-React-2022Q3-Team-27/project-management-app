@@ -1,6 +1,5 @@
 {
-  
-  "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
   "eslint.alwaysShowStatus": true,
   "scss.validate": false,
@@ -10,8 +9,10 @@
     "source.fixAll.eslint": true,
     "source.fixAll.stylelint": true
   },
+  "stylelint.useLocal": true,
+  "stylelint.autoFixOnSave": true,
   "[json]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true
-  },
+  }
 }
