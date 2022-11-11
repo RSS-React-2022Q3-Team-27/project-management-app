@@ -29,7 +29,9 @@ export const SignUp = () => {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<IFormInput>();
+  } = useForm<IFormInput>({
+    mode: 'onChange',
+  });
 
   const dispatch = useAppDispatch();
 

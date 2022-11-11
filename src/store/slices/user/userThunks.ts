@@ -1,11 +1,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-import { IUserInfo } from './userSlice';
-
 import { API_PATH } from '../../../constants/API_PATH';
 import { URL } from '../../../constants/URL';
-import { RootState } from '../../store';
 
 export interface ICreateUser {
   name: string;
@@ -38,7 +35,12 @@ export const registerUser = createAsyncThunk<ICreateUserResponse, ICreateUser, {
   }
 );
 
-export const authUser = createAsyncThunk<ITokenData, Omit<ICreateUser, 'name'>, { rejectValue: string }>(
+export interface IError {
+  statusCode: number;
+  message: string;
+}
+
+export const authUser = createAsyncThunk<ITokenData, Omit<ICreateUser, 'name'>, { rejectValue: IError }>(
   'user/authUser',
   async (values, { rejectWithValue }) => {
     try {
@@ -46,22 +48,9 @@ export const authUser = createAsyncThunk<ITokenData, Omit<ICreateUser, 'name'>, 
       return token.data as ITokenData;
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        return rejectWithValue(error.response?.data as string);
+        return rejectWithValue(error.response?.data);
       }
       throw error;
     }
   }
 );
-
-export const getUsers = createAsyncThunk<IUserInfo[], undefined>('user/getUsers', async (_, { getState }) => {
-  const state: RootState = <RootState>getState();
-  const token = state.user.token;
-  const res = await axios.get(`${URL}${API_PATH.users}`, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-  });
-  return res.data;
-});
