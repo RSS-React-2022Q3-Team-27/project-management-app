@@ -1,5 +1,5 @@
-import React from 'react';
-import { Navigate } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { toast } from 'react-toastify';
 
@@ -12,12 +12,15 @@ type PrivateRoutePropsType = {
 
 export const PrivateRoute = ({ children }: PrivateRoutePropsType) => {
   const auth = useAppSelector((state) => state.user.isUserLogIn);
+  const navigate = useNavigate();
 
-  if (!auth) {
-    toast.warn('Authorization required !');
+  useEffect(() => {
+    if (!auth) {
+      toast.warn('Authorization required !');
 
-    return <Navigate to={`${ROUTES.WELCOME.path}`} />;
-  }
+      navigate(ROUTES.WELCOME.path);
+    }
+  });
 
   return <>{children}</>;
 };
