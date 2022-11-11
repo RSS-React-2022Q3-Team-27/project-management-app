@@ -4,6 +4,7 @@ import { authUser, registerUser } from './userThunks';
 
 import { LocalStorageKeys } from '../../../types/LocalStorageKeys';
 import { getValueLocalStorage } from '../../../utils/getValueLocalStorage';
+import { removeValueLocalStorage } from '../../../utils/removeValueLocalStorage';
 import { setValueLocalStorage } from '../../../utils/setValueLocalStorage';
 
 export interface IUserInfo {
@@ -34,6 +35,15 @@ const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
+    userLogOut(state) {
+      removeValueLocalStorage(LocalStorageKeys.token);
+      removeValueLocalStorage(LocalStorageKeys.userId);
+      state.id = '';
+      state.userName = '';
+      state.login = '';
+      state.token = '';
+      state.isUserLogIn = false;
+    },
     setId(state, { payload }) {
       state.id = payload;
     },
