@@ -53,7 +53,7 @@ function App() {
             </Route>
           </Routes>
         </Router>
-        <ToastContainer />
+        <ToastContainer position="bottom-left" theme="colored" />
       </CssBaseline>
     </CssVarsProvider>
   );
