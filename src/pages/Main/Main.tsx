@@ -3,6 +3,8 @@ import SearchIcon from '@mui/icons-material/Search';
 import { Box, Button, Sheet, TextField, Typography } from '@mui/joy';
 import React, { useEffect } from 'react';
 
+import { MainResults } from './MainResults/MainResults';
+
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { getBoardsByUserId } from '../../store/slices/boards/boardsThunks';
 
@@ -12,13 +14,11 @@ export const Main = () => {
 
   useEffect(() => {
     dispatch(getBoardsByUserId(userId));
-    console.log('getBoardsById - ', userId);
   }, [dispatch, userId]);
 
   return (
     <Sheet
       sx={{
-        maxWidth: 1440,
         height: '100%',
         mx: 'auto',
         py: 3,
@@ -40,7 +40,7 @@ export const Main = () => {
         </Button>
       </Box>
 
-      <Box sx={{}}>cards</Box>
+      <MainResults />
     </Sheet>
   );
 };

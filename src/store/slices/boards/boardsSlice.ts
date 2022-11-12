@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import { getBoardsByUserId } from './boardsThunks';
 
-export type BoardsType = {
+export type BoardType = {
   _id: string;
   title: string;
   owner: string;
@@ -10,7 +10,7 @@ export type BoardsType = {
 };
 
 export type BoardsStateType = {
-  boards: BoardsType[];
+  boards: BoardType[];
 };
 
 const initialState: BoardsStateType = {
@@ -30,8 +30,9 @@ const boardsSlice = createSlice({
       .addCase(getBoardsByUserId.pending, () => {
         console.log('getBoardsByUserId pending');
       })
-      .addCase(getBoardsByUserId.fulfilled, () => {
-        console.log('getBoardsByUserId pending');
+      .addCase(getBoardsByUserId.fulfilled, (state, { payload }) => {
+        console.log('getBoardsByUserId fulfilled');
+        state.boards = payload;
       })
       .addCase(getBoardsByUserId.rejected, () => {
         console.log('getBoardsByUserId rejected');
