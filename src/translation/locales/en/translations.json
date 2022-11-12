@@ -25,5 +25,7 @@
   "welcome": "Welcome!",
   "alreadyHaveAnAccount": "Already have an account?",
   "signInToContinue.": "Sign in to continue.",
-  "dontHaveAnAccount?": "Don't have an account?"
+  "dontHaveAnAccount?": "Don't have an account?",
+  "search": "Search",
+  "delete": "Delete"
 }
