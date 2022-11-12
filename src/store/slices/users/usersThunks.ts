@@ -12,7 +12,7 @@ export interface IError {
   message: string;
 }
 
-export const getUsers = createAsyncThunk<IUserInfo[], undefined>(
+export const getUsers = createAsyncThunk<IUserInfo[], undefined, { rejectValue: IError }>(
   'users/getUsers',
   async (_, { rejectWithValue, getState }) => {
     const state: RootState = <RootState>getState();
@@ -28,7 +28,7 @@ export const getUsers = createAsyncThunk<IUserInfo[], undefined>(
       return res.data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        return rejectWithValue(error.response?.data as IError);
+        return rejectWithValue(error.response?.data);
       }
       throw error;
     }

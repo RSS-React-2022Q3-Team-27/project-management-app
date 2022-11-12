@@ -2,6 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import { getUsers } from './usersThunks';
 
+import { errorPlug } from '../user/userSlice';
+
 export interface IUserInfo {
   _id: string;
   name: string;
@@ -10,10 +12,12 @@ export interface IUserInfo {
 
 export interface IInitialState {
   users: IUserInfo[];
+  getUsersErrorCode: number;
 }
 
 const initialState: IInitialState = {
   users: [],
+  getUsersErrorCode: 0,
 };
 
 const usersSlice = createSlice({
@@ -22,14 +26,17 @@ const usersSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getUsers.pending, () => {
-        console.log('getUsers pending');
+      .addCase(getUsers.pending, (state) => {
+        state.getUsersErrorCode = 0;
       })
       .addCase(getUsers.fulfilled, (state, { payload }) => {
         state.users = payload;
       })
-      .addCase(getUsers.rejected, () => {
+      .addCase(getUsers.rejected, (state, { payload }) => {
         console.log('getUsers rejected');
+        if (payload) {
+          state.getUsersErrorCode = payload.statusCode ? payload.statusCode : errorPlug;
+        }
       });
   },
 });

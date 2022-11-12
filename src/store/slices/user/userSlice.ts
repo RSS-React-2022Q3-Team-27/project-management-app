@@ -7,6 +7,7 @@ import { getValueLocalStorage } from '../../../utils/getValueLocalStorage';
 import { removeValueLocalStorage } from '../../../utils/removeValueLocalStorage';
 import { setValueLocalStorage } from '../../../utils/setValueLocalStorage';
 
+export const errorPlug = 9999;
 export interface IUserInfo {
   _id: string;
   name: string;
@@ -20,6 +21,7 @@ export interface IInitialState {
   token: string;
   isUserLogIn: boolean;
   logInErrorCode: number;
+  registrationErrorCode: number;
 }
 
 const initialState: IInitialState = {
@@ -29,6 +31,7 @@ const initialState: IInitialState = {
   token: getValueLocalStorage(LocalStorageKeys.token),
   logInErrorCode: 0,
   isUserLogIn: false,
+  registrationErrorCode: 0,
 };
 
 const userSlice = createSlice({
@@ -45,6 +48,7 @@ const userSlice = createSlice({
       state.isUserLogIn = false;
     },
     setId(state, { payload }) {
+      setValueLocalStorage(LocalStorageKeys.userId, payload);
       state.id = payload;
     },
     setLogin(state, { payload }) {
@@ -53,8 +57,8 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(registerUser.pending, () => {
-        console.log('registerUser pending');
+      .addCase(registerUser.pending, (state) => {
+        state.registrationErrorCode = 0;
       })
       .addCase(registerUser.fulfilled, (state, { payload }) => {
         setValueLocalStorage(LocalStorageKeys.userId, payload._id);
@@ -62,8 +66,12 @@ const userSlice = createSlice({
         state.login = payload.login;
         state.userName = payload.name;
       })
-      .addCase(registerUser.rejected, () => {
-        console.log('registerUser rejected');
+      .addCase(registerUser.rejected, (state, { payload }) => {
+        console.log('authUser rejected');
+        state.isUserLogIn = false;
+        if (payload) {
+          state.registrationErrorCode = payload.statusCode ? payload.statusCode : errorPlug;
+        }
       });
 
     builder
@@ -80,11 +88,11 @@ const userSlice = createSlice({
         console.log('authUser rejected');
         state.isUserLogIn = false;
         if (payload) {
-          state.logInErrorCode = payload.statusCode;
+          state.logInErrorCode = payload.statusCode ? payload.statusCode : errorPlug;
         }
       });
   },
 });
 
-export const { setId, setLogin } = userSlice.actions;
+export const { setId, setLogin, userLogOut } = userSlice.actions;
 export default userSlice.reducer;

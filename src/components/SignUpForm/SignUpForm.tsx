@@ -1,34 +1,32 @@
+import AccessibilityNewRoundedIcon from '@mui/icons-material/AccessibilityNewRounded';
 import KeyRoundedIcon from '@mui/icons-material/KeyRounded';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import Button from '@mui/joy/Button';
 
 import TextField from '@mui/joy/TextField';
 import Typography from '@mui/joy/Typography';
-import React, { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
+
 import { useNavigate } from 'react-router-dom';
+
 import { toast } from 'react-toastify';
 
-import { showLogInError } from './showLogInError';
+import { showRegistrationError } from './showRegistrationError';
 
 import { ROUTES } from '../../constants/routes';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { setId, setLogin, userLogOut } from '../../store/slices/user/userSlice';
-import { authUser } from '../../store/slices/user/userThunks';
-import { IUserInfo } from '../../store/slices/users/usersSlice';
-import { getUsers } from '../../store/slices/users/usersThunks';
+import { userLogOut } from '../../store/slices/user/userSlice';
+import { authUser, registerUser } from '../../store/slices/user/userThunks';
 
 interface IFormInput {
+  name: string;
   login: string;
   password: string;
 }
 
-const getUserId = (users: IUserInfo[], login: string) => {
-  const user1 = users.find((user) => user.login === login);
-  return user1?._id;
-};
-
-export const SignInForm = () => {
+export const SignUpForm = () => {
+  const [password, setPassword] = useState('');
   const {
     control,
     handleSubmit,
@@ -37,48 +35,74 @@ export const SignInForm = () => {
   } = useForm<IFormInput>({
     mode: 'onChange',
   });
+
   const navigate = useNavigate();
+
   const dispatch = useAppDispatch();
   const userState = useAppSelector((state) => state.user);
-  const { login, isUserLogIn, logInErrorCode } = userState;
-  const { users, getUsersErrorCode } = useAppSelector((state) => state.users);
+  const { registrationErrorCode, login, isUserLogIn, logInErrorCode } = userState;
 
   const onSubmit: SubmitHandler<IFormInput> = (data: IFormInput) => {
-    dispatch(setLogin(data.login));
-    dispatch(authUser(data));
+    dispatch(registerUser(data));
+    setPassword(data.password);
     reset();
   };
 
   useEffect(() => {
-    if (logInErrorCode) {
-      showLogInError(logInErrorCode);
+    if (registrationErrorCode) {
+      showRegistrationError(registrationErrorCode);
     }
-  }, [logInErrorCode]);
+  }, [registrationErrorCode]);
 
   useEffect(() => {
-    if (getUsersErrorCode) {
-      toast.error('Server error, please try again later');
-      dispatch(userLogOut());
+    if (login) {
+      dispatch(authUser({ login, password }));
     }
-  }, [dispatch, getUsersErrorCode]);
+  }, [dispatch, login, password]);
 
   useEffect(() => {
     if (isUserLogIn) {
-      dispatch(getUsers());
-    }
-  }, [dispatch, isUserLogIn]);
-
-  useEffect(() => {
-    if (isUserLogIn && users.length) {
-      toast.success(`You've successfully signed in`);
-
-      const id = getUserId(users, login) || '';
-      dispatch(setId(id));
       navigate(ROUTES.MAIN.path);
     }
-  }, [dispatch, isUserLogIn, login, navigate, users]);
+  }, [isUserLogIn, navigate]);
+
+  useEffect(() => {
+    if (logInErrorCode) {
+      toast.error('Server error, please try again later');
+      dispatch(userLogOut());
+    }
+  }, [dispatch, logInErrorCode]);
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} autoComplete="false">
+      <Controller
+        name="name"
+        control={control}
+        defaultValue=""
+        rules={{
+          required: 'Field is require',
+          pattern: {
+            value: /[a-zA-Zа-яА-Я]{2,10}$/,
+            message: 'Wrong format',
+          },
+        }}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            type="text"
+            label="Name"
+            placeholder="name"
+            autoComplete="off"
+            startDecorator={<AccessibilityNewRoundedIcon />}
+          />
+        )}
+      />
+      {errors.name && (
+        <Typography level="body2" color="danger">
+          {errors.name.message}
+        </Typography>
+      )}
+
       <Controller
         name="login"
         control={control}
@@ -91,7 +115,14 @@ export const SignInForm = () => {
           },
         }}
         render={({ field }) => (
-          <TextField {...field} type="text" label="Login" placeholder="login" startDecorator={<PersonRoundedIcon />} />
+          <TextField
+            {...field}
+            type="text"
+            label="Login"
+            autoComplete="off"
+            placeholder="login"
+            startDecorator={<PersonRoundedIcon />}
+          />
         )}
       />
       {errors.login && (
@@ -99,7 +130,6 @@ export const SignInForm = () => {
           {errors.login.message}
         </Typography>
       )}
-
       <Controller
         name="password"
         defaultValue=""
@@ -111,6 +141,7 @@ export const SignInForm = () => {
           <TextField
             {...field}
             type="password"
+            autoComplete="off"
             placeholder="password"
             label="Password"
             startDecorator={<KeyRoundedIcon />}
@@ -122,9 +153,8 @@ export const SignInForm = () => {
           {errors.password.message}
         </Typography>
       )}
-
       <Button type="submit" sx={{ mt: 1 }}>
-        Log in
+        Registration
       </Button>
     </form>
   );

@@ -20,7 +20,7 @@ export interface ITokenData {
   token: string;
 }
 
-export const registerUser = createAsyncThunk<ICreateUserResponse, ICreateUser, { rejectValue: string }>(
+export const registerUser = createAsyncThunk<ICreateUserResponse, ICreateUser, { rejectValue: IError }>(
   'user/registerUser',
   async (values, { rejectWithValue }) => {
     try {
@@ -28,7 +28,7 @@ export const registerUser = createAsyncThunk<ICreateUserResponse, ICreateUser, {
       return response.data as ICreateUserResponse;
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        return rejectWithValue(error.response?.data as string);
+        return rejectWithValue(error.response?.data);
       }
       throw error;
     }
