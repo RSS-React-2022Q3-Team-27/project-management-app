@@ -1,35 +1,31 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Outlet } from 'react-router-dom';
+
+import { useAppSelector } from '../../store/hooks';
 
 import { Header } from '../Header';
 import { AppLogo } from '../Header/AppLogo';
 import { Customization } from '../Header/Customization';
 import { MenuButton } from '../Header/MenuButton';
-import { SignInButton } from '../Header/SignInButton';
-import { SignUpButton } from '../Header/SignUpButton';
+import { Nav } from '../Header/Nav';
 import { SideDrawer } from '../SideDrawer';
 
 export const Layout = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const { sideDrawer } = useAppSelector((state) => state.header);
 
-  const openDrawer = () => {
-    setDrawerOpen(true);
-  };
+  useEffect(() => {
+    setDrawerOpen(sideDrawer);
+  }, [sideDrawer]);
 
   return (
     <>
-      {drawerOpen && (
-        <SideDrawer onClose={() => setDrawerOpen(false)}>
-          <SignUpButton isHeader={false} />
-          <SignInButton isHeader={false} />
-        </SideDrawer>
-      )}
+      {drawerOpen && <SideDrawer />}
       <Header>
         <AppLogo />
         <Customization />
-        <MenuButton openDrawer={openDrawer} />
-        <SignInButton isHeader={true} />
-        <SignUpButton isHeader={true} />
+        <MenuButton />
+        {!drawerOpen && <Nav placedInHeader={true} />}
       </Header>
       <Outlet />
     </>

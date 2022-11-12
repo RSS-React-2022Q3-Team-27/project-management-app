@@ -6,8 +6,6 @@ import { ModeToggle } from '../ModeToggle';
 export const Customization = () => {
   return (
     <Box
-      component="header"
-      className="Header"
       sx={[
         {
           marginRight: 2,
