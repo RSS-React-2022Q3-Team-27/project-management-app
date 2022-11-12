@@ -49,7 +49,7 @@ const initialState: IInitialState = {
   login: '',
   token: getValueLocalStorage(LocalStorageKeys.token),
   logInErrorCode: 0,
-  isUserLogIn: false,
+  isUserLogIn: true,
   registrationErrorCode: 0,
   locale: getUserLocale(),
 };

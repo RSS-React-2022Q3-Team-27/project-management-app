@@ -32,14 +32,14 @@ export const getUsers = createAsyncThunk<IUserInfo[], undefined, { rejectValue: 
           'Content-Type': 'application/json',
         },
       });
+
       dispatch(setIsUserLogIn(true));
       dispatch(setUserInfo(id ? getUserDataById(data, id) : getUserDataByLogin(data, login)));
-      console.log('good');
       return data;
     } catch (error) {
-      toast.error('Server error, please try again later');
-      dispatch(userLogOut());
       if (axios.isAxiosError(error)) {
+        toast.error('Server error, please try again later');
+        dispatch(userLogOut());
         return rejectWithValue(error.response?.data);
       }
       throw error;

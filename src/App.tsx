@@ -2,7 +2,7 @@ import './App.css';
 
 import CssBaseline from '@mui/joy/CssBaseline';
 import { CssVarsProvider } from '@mui/joy/styles';
-import { useLayoutEffect } from 'react';
+import React from 'react';
 import { HashRouter as Router, Route, Routes } from 'react-router-dom';
 
 import { ToastContainer } from 'react-toastify';
@@ -10,21 +10,14 @@ import { ToastContainer } from 'react-toastify';
 import { Layout } from './components/Layout';
 import { PrivateRoute } from './components/PrivateRoute/PrivateRoute';
 import { ROUTES } from './constants/routes';
+import { useLogOutAfterTokenExp } from './hooks/useLogOutAfterTokenExp';
 import { Board, Main, NotFound, Profile, SignIn, SignUp, Welcome } from './pages/';
-import { useAppDispatch, useAppSelector } from './store/hooks';
-import { getUsers } from './store/slices/users/usersThunks';
+
 import { theme } from './utils/mui';
 import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
-  const dispatch = useAppDispatch();
-  const { token, isUserLogIn } = useAppSelector((state) => state.user);
-
-  useLayoutEffect(() => {
-    if (token && !isUserLogIn) {
-      dispatch(getUsers());
-    }
-  }, [dispatch, isUserLogIn, token]);
+  useLogOutAfterTokenExp();
 
   return (
     <CssVarsProvider theme={theme} defaultMode="system">
