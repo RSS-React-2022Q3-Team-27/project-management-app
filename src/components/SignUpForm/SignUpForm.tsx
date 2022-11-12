@@ -9,14 +9,10 @@ import { useEffect, useState } from 'react';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 
 import { useNavigate } from 'react-router-dom';
-
 import { toast } from 'react-toastify';
-
-import { showRegistrationError } from './showRegistrationError';
 
 import { ROUTES } from '../../constants/routes';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { userLogOut } from '../../store/slices/user/userSlice';
 import { authUser, registerUser } from '../../store/slices/user/userThunks';
 
 interface IFormInput {
@@ -40,19 +36,12 @@ export const SignUpForm = () => {
 
   const dispatch = useAppDispatch();
   const userState = useAppSelector((state) => state.user);
-  const { registrationErrorCode, login, isUserLogIn, logInErrorCode } = userState;
+  const { login, isUserLogIn } = userState;
 
   const onSubmit: SubmitHandler<IFormInput> = (data: IFormInput) => {
     dispatch(registerUser(data));
     setPassword(data.password);
-    reset();
   };
-
-  useEffect(() => {
-    if (registrationErrorCode) {
-      showRegistrationError(registrationErrorCode);
-    }
-  }, [registrationErrorCode]);
 
   useEffect(() => {
     if (login) {
@@ -62,16 +51,11 @@ export const SignUpForm = () => {
 
   useEffect(() => {
     if (isUserLogIn) {
+      reset();
+      toast.success(`You've successfully signed in`);
       navigate(ROUTES.MAIN.path);
     }
-  }, [isUserLogIn, navigate]);
-
-  useEffect(() => {
-    if (logInErrorCode) {
-      toast.error('Server error, please try again later');
-      dispatch(userLogOut());
-    }
-  }, [dispatch, logInErrorCode]);
+  }, [isUserLogIn, navigate, reset]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} autoComplete="false">

@@ -25,5 +25,7 @@
   "welcome": "Добро пожаловать!",
   "alreadyHaveAnAccount": "Уже есть аккаунт?",
   "signInToContinue.": "Войдите, чтобы продолжить",
-  "dontHaveAnAccount?": "У вас нет аккаунта?"
+  "dontHaveAnAccount?": "У вас нет аккаунта?",
+  "search": "Поиск",
+  "delete": "Удалить"
 }

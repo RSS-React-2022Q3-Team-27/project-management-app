@@ -67,13 +67,30 @@ const userSlice = createSlice({
       state.token = '';
       state.isUserLogIn = false;
     },
+
+    setUserInfo(state, { payload }) {
+      state.login = payload.login;
+      state.id = payload.id;
+      state.userName = payload.name;
+    },
+
+    setToken(state, { payload }) {
+      state.token = payload;
+    },
+
+    setIsUserLogIn(state, { payload }) {
+      state.isUserLogIn = payload;
+    },
+
     setId(state, { payload }) {
       setValueLocalStorage(LocalStorageKeys.userId, payload);
       state.id = payload;
     },
+
     setLogin(state, { payload }) {
       state.login = payload;
     },
+
     setLocale(state, { payload }) {
       state.locale = payload;
       setValueLocalStorage(LocalStorageKeys.locale, payload);
@@ -81,15 +98,18 @@ const userSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+
       .addCase(registerUser.pending, (state) => {
         state.registrationErrorCode = 0;
       })
+
       .addCase(registerUser.fulfilled, (state, { payload }) => {
         setValueLocalStorage(LocalStorageKeys.userId, payload._id);
         state.id = payload._id;
         state.login = payload.login;
         state.userName = payload.name;
       })
+
       .addCase(registerUser.rejected, (state, { payload }) => {
         console.log('authUser rejected');
         state.isUserLogIn = false;
@@ -103,11 +123,12 @@ const userSlice = createSlice({
         console.log('authUser pending');
         state.logInErrorCode = 0;
       })
+
       .addCase(authUser.fulfilled, (state, { payload }) => {
         setValueLocalStorage(LocalStorageKeys.token, payload.token);
         state.token = payload.token;
-        state.isUserLogIn = true;
       })
+
       .addCase(authUser.rejected, (state, { payload }) => {
         console.log('authUser rejected');
         state.isUserLogIn = false;
@@ -118,5 +139,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { setId, setLogin, userLogOut, setLocale } = userSlice.actions;
+export const { setId, setLogin, userLogOut, setLocale, setIsUserLogIn, setUserInfo, setToken } = userSlice.actions;
 export default userSlice.reducer;

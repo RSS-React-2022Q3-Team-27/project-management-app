@@ -9,24 +9,15 @@ import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { showLogInError } from './showLogInError';
-
 import { ROUTES } from '../../constants/routes';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { setId, setLogin, userLogOut } from '../../store/slices/user/userSlice';
+import { setLogin } from '../../store/slices/user/userSlice';
 import { authUser } from '../../store/slices/user/userThunks';
-import { IUserInfo } from '../../store/slices/users/usersSlice';
-import { getUsers } from '../../store/slices/users/usersThunks';
 
 interface IFormInput {
   login: string;
   password: string;
 }
-
-const getUserId = (users: IUserInfo[], login: string) => {
-  const user1 = users.find((user) => user.login === login);
-  return user1?._id;
-};
 
 export const SignInForm = () => {
   const {
@@ -39,44 +30,20 @@ export const SignInForm = () => {
   });
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const userState = useAppSelector((state) => state.user);
-  const { login, isUserLogIn, logInErrorCode } = userState;
-  const { users, getUsersErrorCode } = useAppSelector((state) => state.users);
+  const { isUserLogIn } = useAppSelector((state) => state.user);
 
   const onSubmit: SubmitHandler<IFormInput> = (data: IFormInput) => {
     dispatch(setLogin(data.login));
     dispatch(authUser(data));
-    reset();
   };
 
   useEffect(() => {
-    if (logInErrorCode) {
-      showLogInError(logInErrorCode);
-    }
-  }, [logInErrorCode]);
-
-  useEffect(() => {
-    if (getUsersErrorCode) {
-      toast.error('Server error, please try again later');
-      dispatch(userLogOut());
-    }
-  }, [dispatch, getUsersErrorCode]);
-
-  useEffect(() => {
     if (isUserLogIn) {
-      dispatch(getUsers());
-    }
-  }, [dispatch, isUserLogIn]);
-
-  useEffect(() => {
-    if (isUserLogIn && users.length) {
+      reset();
       toast.success(`You've successfully signed in`);
-
-      const id = getUserId(users, login) || '';
-      dispatch(setId(id));
       navigate(ROUTES.MAIN.path);
     }
-  }, [dispatch, isUserLogIn, login, navigate, users]);
+  }, [isUserLogIn, navigate, reset]);
   return (
     <form onSubmit={handleSubmit(onSubmit)} autoComplete="false">
       <Controller
