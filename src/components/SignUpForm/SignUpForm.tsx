@@ -7,6 +7,7 @@ import TextField from '@mui/joy/TextField';
 import Typography from '@mui/joy/Typography';
 import { useEffect, useState } from 'react';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -22,6 +23,7 @@ interface IFormInput {
 }
 
 export const SignUpForm = () => {
+  const { t } = useTranslation();
   const [password, setPassword] = useState('');
   const {
     control,
@@ -35,8 +37,7 @@ export const SignUpForm = () => {
   const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
-  const userState = useAppSelector((state) => state.user);
-  const { login, isUserLogIn } = userState;
+  const { login, isUserLogIn, locale } = useAppSelector((state) => state.user);
 
   const onSubmit: SubmitHandler<IFormInput> = (data: IFormInput) => {
     dispatch(registerUser(data));
@@ -52,10 +53,10 @@ export const SignUpForm = () => {
   useEffect(() => {
     if (isUserLogIn) {
       reset();
-      toast.success(`You've successfully signed in`);
+      toast.success(locale === 'en' ? `You've successfully signed in` : 'Вы успешно вошли в аккаунт');
       navigate(ROUTES.MAIN.path);
     }
-  }, [isUserLogIn, navigate, reset]);
+  }, [isUserLogIn, locale, navigate, reset]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} autoComplete="false">
@@ -64,18 +65,18 @@ export const SignUpForm = () => {
         control={control}
         defaultValue=""
         rules={{
-          required: 'Field is require',
+          required: locale === 'en' ? 'Field is require' : 'Обязательное поле',
           pattern: {
             value: /[a-zA-Zа-яА-Я]{2,10}$/,
-            message: 'Wrong format',
+            message: locale === 'en' ? 'Wrong format' : 'Неверный формат',
           },
         }}
         render={({ field }) => (
           <TextField
             {...field}
             type="text"
-            label="Name"
-            placeholder="name"
+            label={t('name')}
+            placeholder={t('name')}
             autoComplete="off"
             startDecorator={<AccessibilityNewRoundedIcon />}
           />
@@ -92,19 +93,19 @@ export const SignUpForm = () => {
         control={control}
         defaultValue=""
         rules={{
-          required: 'Field is require',
+          required: locale === 'en' ? 'Field is require' : 'Обязательное поле',
           pattern: {
             value: /[a-zA-Z0-9]{2,10}$/,
-            message: 'Wrong format',
+            message: locale === 'en' ? 'Wrong format' : 'Неверный формат',
           },
         }}
         render={({ field }) => (
           <TextField
             {...field}
             type="text"
-            label="Login"
+            label={t('login')}
             autoComplete="off"
-            placeholder="login"
+            placeholder={t('login')}
             startDecorator={<PersonRoundedIcon />}
           />
         )}
@@ -119,15 +120,15 @@ export const SignUpForm = () => {
         defaultValue=""
         control={control}
         rules={{
-          required: 'Field is require',
+          required: locale === 'en' ? 'Field is require' : 'Обязательное поле',
         }}
         render={({ field }) => (
           <TextField
             {...field}
             type="password"
             autoComplete="off"
-            placeholder="password"
-            label="Password"
+            placeholder={t('password')}
+            label={t('password')}
             startDecorator={<KeyRoundedIcon />}
           />
         )}
@@ -138,7 +139,7 @@ export const SignUpForm = () => {
         </Typography>
       )}
       <Button type="submit" sx={{ mt: 1 }}>
-        Registration
+        {t('registration')}
       </Button>
     </form>
   );

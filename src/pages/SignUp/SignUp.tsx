@@ -1,5 +1,6 @@
 import Sheet from '@mui/joy/Sheet';
 import Typography from '@mui/joy/Typography';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 import { SignUpForm } from '../../components/SignUpForm/SignUpForm';
@@ -7,6 +8,8 @@ import { SignUpForm } from '../../components/SignUpForm/SignUpForm';
 import { ROUTES } from '../../constants/routes';
 
 export const SignUp = () => {
+  const { t } = useTranslation();
+
   return (
     <Sheet
       sx={{
@@ -25,17 +28,17 @@ export const SignUp = () => {
     >
       <div>
         <Typography level="h4" component="h1">
-          <b>Welcome!</b>
+          <b>{t('welcome')}</b>
         </Typography>
-        <Typography level="body2">Registration</Typography>
+        <Typography level="body2">{t('registration')}</Typography>
       </div>
       <SignUpForm />
       <Typography
-        endDecorator={<Link to={`/${ROUTES.SIGN_IN.path}`}>Sign in</Link>}
+        endDecorator={<Link to={`${ROUTES.SIGN_IN.path}`}>{t('signIn')}</Link>}
         fontSize="sm"
         sx={{ alignSelf: 'center' }}
       >
-        Already have an account?
+        {t('alreadyHaveAnAccount')}
       </Typography>
     </Sheet>
   );

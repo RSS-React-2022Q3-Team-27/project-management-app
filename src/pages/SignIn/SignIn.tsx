@@ -1,6 +1,7 @@
 import Sheet from '@mui/joy/Sheet';
 import Typography from '@mui/joy/Typography';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 import { SignInForm } from '../../components/SignInForm/SignInForm';
@@ -8,6 +9,7 @@ import { SignInForm } from '../../components/SignInForm/SignInForm';
 import { ROUTES } from '../../constants/routes';
 
 export const SignIn = () => {
+  const { t } = useTranslation();
   return (
     <Sheet
       sx={{
@@ -26,17 +28,17 @@ export const SignIn = () => {
     >
       <div>
         <Typography level="h4" component="h1">
-          <b>Welcome!</b>
+          <b>{t('welcome')}</b>
         </Typography>
-        <Typography level="body2">Sign in to continue.</Typography>
+        <Typography level="body2">{t('signInToContinue')}.</Typography>
       </div>
       <SignInForm />
       <Typography
-        endDecorator={<Link to={`/${ROUTES.SIGN_UP.path}`}>Sign up</Link>}
+        endDecorator={<Link to={`${ROUTES.SIGN_UP.path}`}>{t('signUp')}</Link>}
         fontSize="sm"
         sx={{ alignSelf: 'center' }}
       >
-        Don&apos;t have an account?
+        {t('dontHaveAnAccount')}?
       </Typography>
     </Sheet>
   );

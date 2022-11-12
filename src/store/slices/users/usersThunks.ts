@@ -23,7 +23,7 @@ export const getUsers = createAsyncThunk<IUserInfo[], undefined, { rejectValue: 
   'users/getUsers',
   async (_, { rejectWithValue, getState, dispatch }) => {
     const state: RootState = <RootState>getState();
-    const { token, login, id } = state.user;
+    const { token, login, id, locale } = state.user;
     try {
       const { data } = await axios.get(`${URL}${API_PATH.users}`, {
         headers: {
@@ -38,7 +38,9 @@ export const getUsers = createAsyncThunk<IUserInfo[], undefined, { rejectValue: 
       return data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        toast.error('Server error, please try again later');
+        toast.error(
+          locale === 'en' ? 'Server error, please try again later' : 'Ошибка на сервере. Пожалуйста, попробуте позднее'
+        );
         dispatch(userLogOut());
         return rejectWithValue(error.response?.data);
       }
