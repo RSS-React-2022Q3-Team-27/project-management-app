@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 
 import App from './App';
 import { store } from './store/store';
+import './translation/i18n';
 
 const container = document.getElementById('root')!;
 const root = createRoot(container);

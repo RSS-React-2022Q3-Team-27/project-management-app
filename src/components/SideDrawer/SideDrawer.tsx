@@ -1,41 +1,45 @@
-import Box, { BoxProps } from '@mui/joy/Box';
+import Box from '@mui/joy/Box';
 import Sheet from '@mui/joy/Sheet';
-import { MouseEventHandler } from 'react';
 
-export const SideDrawer = ({ onClose, ...props }: BoxProps & { onClose: MouseEventHandler<HTMLDivElement> }) => {
+import { useAppDispatch } from '../../store/hooks';
+import { closeSideDrawer } from '../../store/slices/header/headerSlice';
+
+import { Nav } from '../Header/Nav';
+
+const drawerStyle = {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: 2,
+  minWidth: 256,
+  width: 'max-content',
+  height: '100%',
+  position: 'absolute',
+  right: 0,
+  p: 2,
+  boxShadow: 'lg',
+  bgcolor: 'background.componentBg',
+};
+
+export const SideDrawer = () => {
+  const dispatch = useAppDispatch();
+
+  const handleClick = () => {
+    dispatch(closeSideDrawer());
+  };
+
   return (
-    <Box
-      {...props}
-      sx={[
-        { position: 'fixed', zIndex: 1200, width: '100%', height: '100%' },
-        ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
-      ]}
-    >
+    <Box sx={[{ position: 'fixed', zIndex: 1200, width: '100%', height: '100%' }]}>
       <Box
         role="button"
-        onClick={onClose}
+        onClick={handleClick}
         sx={{
           position: 'absolute',
           inset: 0,
           bgcolor: (theme) => `rgba(${theme.vars.palette.neutral.darkChannel} / 0.8)`,
         }}
       />
-      <Sheet
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 2,
-          minWidth: 256,
-          width: 'max-content',
-          height: '100%',
-          position: 'absolute',
-          right: 0,
-          p: 2,
-          boxShadow: 'lg',
-          bgcolor: 'background.componentBg',
-        }}
-      >
-        {props.children}
+      <Sheet sx={drawerStyle}>
+        <Nav placedInHeader={false} />
       </Sheet>
     </Box>
   );

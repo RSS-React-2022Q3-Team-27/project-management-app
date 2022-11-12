@@ -21,7 +21,6 @@ function App() {
   const dispatch = useAppDispatch();
   const userState = useAppSelector((state) => state.user);
   const usersState = useAppSelector((state) => state.users);
-  const navigate = useNavigate();
   const { users, getUsersErrorCode } = usersState;
   const { token, isUserLogIn } = userState;
 
@@ -30,13 +29,6 @@ function App() {
       dispatch(getUsers());
     }
   }, [dispatch, isUserLogIn, token]);
-
-  useEffect(() => {
-    if (getUsersErrorCode) {
-      dispatch(userLogOut());
-      navigate(ROUTES.WELCOME.path);
-    }
-  }, [dispatch, getUsersErrorCode, navigate]);
 
   return (
     <CssVarsProvider theme={theme} defaultMode="system">
