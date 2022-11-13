@@ -53,10 +53,10 @@ export const SignUpForm = () => {
   useEffect(() => {
     if (isUserLogIn) {
       reset();
-      toast.success(locale === 'en' ? `You've successfully signed in` : 'Вы успешно вошли в аккаунт');
+      toast.success(t('youveSuccessfullySignedIn'));
       navigate(ROUTES.MAIN.path);
     }
-  }, [isUserLogIn, locale, navigate, reset]);
+  }, [isUserLogIn, locale, navigate, reset, t]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} autoComplete="false">
@@ -65,10 +65,13 @@ export const SignUpForm = () => {
         control={control}
         defaultValue=""
         rules={{
-          required: locale === 'en' ? 'Field is require' : 'Обязательное поле',
+          required: {
+            value: true,
+            message: t('fieldIsRequire'),
+          },
           pattern: {
             value: /[a-zA-Zа-яА-Я]{2,10}$/,
-            message: locale === 'en' ? 'Wrong format' : 'Неверный формат',
+            message: t('wrongFormat'),
           },
         }}
         render={({ field }) => (
@@ -93,10 +96,13 @@ export const SignUpForm = () => {
         control={control}
         defaultValue=""
         rules={{
-          required: locale === 'en' ? 'Field is require' : 'Обязательное поле',
+          required: {
+            value: true,
+            message: t('fieldIsRequire'),
+          },
           pattern: {
             value: /[a-zA-Z0-9]{2,10}$/,
-            message: locale === 'en' ? 'Wrong format' : 'Неверный формат',
+            message: t('wrongFormat'),
           },
         }}
         render={({ field }) => (
@@ -120,7 +126,10 @@ export const SignUpForm = () => {
         defaultValue=""
         control={control}
         rules={{
-          required: locale === 'en' ? 'Field is require' : 'Обязательное поле',
+          required: {
+            value: true,
+            message: t('fieldIsRequire'),
+          },
         }}
         render={({ field }) => (
           <TextField

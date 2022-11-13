@@ -23,12 +23,12 @@ export interface IInitialState {
   isUserLogIn: boolean;
   logInErrorCode: number;
   registrationErrorCode: number;
-  locale: string;
+  locale: Language;
 }
 
 const getUserLocale = () => {
   const userLocale = navigator.language.split('-')[0];
-  const savedLocale = getValueLocalStorage(LocalStorageKeys.locale);
+  const savedLocale = getValueLocalStorage(LocalStorageKeys.locale) as Language;
 
   console.log(userLocale);
 

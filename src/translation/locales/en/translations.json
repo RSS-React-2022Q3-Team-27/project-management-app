@@ -28,5 +28,11 @@
   "dontHaveAnAccount?": "Don't have an account?",
   "search": "Search",
   "delete": "Delete",
-  "boardAdded": "Board added"
+  "boardAdded": "Board added",
+  "wrongFormat": "Wrong format",
+  "youveSuccessfullySignedIn": "You've successfully signed in",
+  "fieldIsRequire": "Field is require",
+  "wrongLoginOrPassword": "Wrong Login or Password",
+  "loginAlreadyExist" : "Login already exist",
+  "serverError": "Server Error. Please try again later"
 }

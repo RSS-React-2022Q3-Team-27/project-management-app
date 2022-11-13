@@ -7,6 +7,7 @@ import { setToken } from './userSlice';
 
 import { API_PATH } from '../../../constants/API_PATH';
 import { URL } from '../../../constants/URL';
+import { translationObject } from '../../../translation/translationObject';
 import { RootState } from '../../store';
 import { getUsers } from '../users/usersThunks';
 
@@ -26,8 +27,6 @@ export interface ITokenData {
   token: string;
 }
 
-const serverError = (lang: string) => (lang === 'en' ? 'Wrong Login or Password' : 'Неверный логин или пароль');
-
 export const registerUser = createAsyncThunk<ICreateUserResponse, ICreateUser, { rejectValue: IError }>(
   'user/registerUser',
   async (values, { rejectWithValue, getState }) => {
@@ -40,13 +39,13 @@ export const registerUser = createAsyncThunk<ICreateUserResponse, ICreateUser, {
       if (axios.isAxiosError(error)) {
         const errorCode = error.response?.data.statusCode || 9999;
         if (errorCode === 409) {
-          toast.error(locale === 'en' ? 'Login already exist' : 'Такой логин уже существует');
+          toast.error(translationObject[locale].loginAlreadyExist);
         } else {
-          toast.error(serverError(locale));
+          toast.error(translationObject[locale].serverError);
         }
         return rejectWithValue(error.response?.data);
       }
-      toast.error(serverError(locale));
+      toast.error(translationObject[locale].serverError);
       throw error;
     }
   }
@@ -71,13 +70,13 @@ export const authUser = createAsyncThunk<ITokenData, Omit<ICreateUser, 'name'>, 
       if (axios.isAxiosError(error)) {
         const errorCode = error.response?.data.statusCode || 9999;
         if (errorCode === 401) {
-          toast.error(locale === 'en' ? 'Wrong Login or Password' : 'Неверный логин или пароль');
+          toast.error(translationObject[locale].wrongLoginOrPassword);
         } else {
-          toast.error(serverError(locale));
+          toast.error(translationObject[locale].serverError);
         }
         return rejectWithValue(error.response?.data);
       }
-      toast.error(serverError(locale));
+      toast.error(translationObject[locale].serverError);
       throw error;
     }
   }

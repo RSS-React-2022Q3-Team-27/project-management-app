@@ -30,7 +30,7 @@ export const SignIn = () => {
         <Typography level="h4" component="h1">
           <b>{t('welcome')}</b>
         </Typography>
-        <Typography level="body2">{t('signInToContinue')}.</Typography>
+        <Typography level="body2">{t('signInToContinue.')}</Typography>
       </div>
       <SignInForm />
       <Typography
@@ -38,7 +38,7 @@ export const SignIn = () => {
         fontSize="sm"
         sx={{ alignSelf: 'center' }}
       >
-        {t('dontHaveAnAccount')}?
+        {t('dontHaveAnAccount?')}
       </Typography>
     </Sheet>
   );
