@@ -3,4 +3,5 @@ export const API_PATH = {
   signIn: 'auth/signin',
   users: 'users',
   boards: 'boards',
+  boardsSet: 'boardsSet',
 };
