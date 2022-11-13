@@ -18,6 +18,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   useLogOutAfterTokenExp();
+  console.log('app rerender');
 
   return (
     <CssVarsProvider theme={theme} defaultMode="system">
