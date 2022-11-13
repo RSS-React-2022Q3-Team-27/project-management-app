@@ -4,6 +4,7 @@ import { authUser, registerUser } from './userThunks';
 
 import { AppLanguage } from '../../../types/LanguageOptions';
 import { LocalStorageKeys } from '../../../types/LocalStorageKeys';
+import { getLoginState } from '../../../utils/getLoginState';
 import { getUserLocale } from '../../../utils/getUserLocale';
 import { getValueLocalStorage } from '../../../utils/getValueLocalStorage';
 import { removeValueLocalStorage } from '../../../utils/removeValueLocalStorage';
@@ -33,7 +34,7 @@ const initialState: IInitialState = {
   login: '',
   token: getValueLocalStorage(LocalStorageKeys.token),
   logInErrorCode: 0,
-  isUserLogIn: true,
+  isUserLogIn: getLoginState(),
   registrationErrorCode: 0,
   locale: getUserLocale(),
 };
@@ -53,6 +54,7 @@ const userSlice = createSlice({
     },
 
     setUserInfo(state, { payload }) {
+      setValueLocalStorage(LocalStorageKeys.userId, payload._id);
       state.login = payload.login;
       state.id = payload._id;
       state.userName = payload.name;
