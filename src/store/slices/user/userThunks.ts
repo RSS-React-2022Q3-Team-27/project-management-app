@@ -7,8 +7,7 @@ import { setToken } from './userSlice';
 
 import { API_PATH } from '../../../constants/API_PATH';
 import { URL } from '../../../constants/URL';
-import { translationObject } from '../../../translation/translationObject';
-import { RootState } from '../../store';
+import i18n from '../../../translation/i18n';
 
 import { getUsers } from '../users/usersThunks';
 
@@ -30,9 +29,7 @@ export interface ITokenData {
 
 export const registerUser = createAsyncThunk<ICreateUserResponse, ICreateUser, { rejectValue: IError }>(
   'user/registerUser',
-  async (values, { rejectWithValue, getState }) => {
-    const state: RootState = <RootState>getState();
-    const { locale } = state.user;
+  async (values, { rejectWithValue }) => {
     try {
       const { data } = await axios.post(`${URL}${API_PATH.signUp}`, { ...values });
       return data;
@@ -40,13 +37,13 @@ export const registerUser = createAsyncThunk<ICreateUserResponse, ICreateUser, {
       if (axios.isAxiosError(error)) {
         const errorCode = error.response?.data.statusCode || 9999;
         if (errorCode === 409) {
-          toast.error(translationObject[locale].loginAlreadyExist);
+          toast.error(i18n.t('loginAlreadyExist'));
         } else {
-          toast.error(translationObject[locale].serverError);
+          toast.error(i18n.t('serverError'));
         }
         return rejectWithValue(error.response?.data);
       }
-      toast.error(translationObject[locale].serverError);
+      toast.error(i18n.t('serverError'));
 
       throw error;
     }
@@ -60,10 +57,7 @@ export interface IError {
 
 export const authUser = createAsyncThunk<ITokenData, Omit<ICreateUser, 'name'>, { rejectValue: IError }>(
   'user/authUser',
-  async (values, { rejectWithValue, dispatch, getState }) => {
-    const state: RootState = <RootState>getState();
-    const { locale } = state.user;
-
+  async (values, { rejectWithValue, dispatch }) => {
     try {
       const { data } = await axios.post(`${URL}${API_PATH.signIn}`, { ...values });
       dispatch(setToken(data.token));
@@ -73,13 +67,13 @@ export const authUser = createAsyncThunk<ITokenData, Omit<ICreateUser, 'name'>, 
       if (axios.isAxiosError(error)) {
         const errorCode = error.response?.data.statusCode || 9999;
         if (errorCode === 401) {
-          toast.error(translationObject[locale].wrongLoginOrPassword);
+          toast.error(i18n.t('wrongLoginOrPassword'));
         } else {
-          toast.error(translationObject[locale].serverError);
+          toast.error(i18n.t('serverError'));
         }
         return rejectWithValue(error.response?.data);
       }
-      toast.error(translationObject[locale].serverError);
+      toast.error(i18n.t('serverError'));
 
       throw error;
     }

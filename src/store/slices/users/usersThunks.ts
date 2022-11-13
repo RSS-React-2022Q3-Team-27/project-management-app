@@ -7,7 +7,7 @@ import { IUserInfo } from './usersSlice';
 
 import { API_PATH } from '../../../constants/API_PATH';
 import { URL } from '../../../constants/URL';
-import { translationObject } from '../../../translation/translationObject';
+import i18n from '../../../translation/i18n';
 
 import { RootState } from '../../store';
 import { setIsUserLogIn, setUserInfo, userLogOut } from '../user/userSlice';
@@ -25,7 +25,7 @@ export const getUsers = createAsyncThunk<IUserInfo[], undefined, { rejectValue: 
   'users/getUsers',
   async (_, { rejectWithValue, getState, dispatch }) => {
     const state: RootState = <RootState>getState();
-    const { token, login, id, locale } = state.user;
+    const { token, login, id } = state.user;
 
     try {
       const { data } = await axios.get(`${URL}${API_PATH.users}`, {
@@ -41,7 +41,7 @@ export const getUsers = createAsyncThunk<IUserInfo[], undefined, { rejectValue: 
       return data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        toast.error(translationObject[locale].serverError);
+        toast.error(i18n.t('serverError'));
 
         dispatch(userLogOut());
         return rejectWithValue(error.response?.data);
