@@ -54,7 +54,7 @@ const userSlice = createSlice({
 
     setUserInfo(state, { payload }) {
       state.login = payload.login;
-      state.id = payload.id;
+      state.id = payload._id;
       state.userName = payload.name;
     },
 
