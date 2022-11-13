@@ -1,6 +1,7 @@
 import Sheet from '@mui/joy/Sheet';
 import Typography from '@mui/joy/Typography';
 import { useTranslation } from 'react-i18next';
+
 import { Link } from 'react-router-dom';
 
 import { SignUpForm } from '../../components/SignUpForm/SignUpForm';

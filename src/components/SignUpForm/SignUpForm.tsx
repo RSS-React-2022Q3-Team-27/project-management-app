@@ -24,6 +24,7 @@ interface IFormInput {
 
 export const SignUpForm = () => {
   const { t } = useTranslation();
+
   const [password, setPassword] = useState('');
   const {
     control,

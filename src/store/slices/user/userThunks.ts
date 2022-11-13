@@ -9,6 +9,7 @@ import { API_PATH } from '../../../constants/API_PATH';
 import { URL } from '../../../constants/URL';
 import { translationObject } from '../../../translation/translationObject';
 import { RootState } from '../../store';
+
 import { getUsers } from '../users/usersThunks';
 
 export interface ICreateUser {
@@ -46,6 +47,7 @@ export const registerUser = createAsyncThunk<ICreateUserResponse, ICreateUser, {
         return rejectWithValue(error.response?.data);
       }
       toast.error(translationObject[locale].serverError);
+
       throw error;
     }
   }
@@ -61,6 +63,7 @@ export const authUser = createAsyncThunk<ITokenData, Omit<ICreateUser, 'name'>, 
   async (values, { rejectWithValue, dispatch, getState }) => {
     const state: RootState = <RootState>getState();
     const { locale } = state.user;
+
     try {
       const { data } = await axios.post(`${URL}${API_PATH.signIn}`, { ...values });
       dispatch(setToken(data.token));
@@ -77,6 +80,7 @@ export const authUser = createAsyncThunk<ITokenData, Omit<ICreateUser, 'name'>, 
         return rejectWithValue(error.response?.data);
       }
       toast.error(translationObject[locale].serverError);
+
       throw error;
     }
   }
