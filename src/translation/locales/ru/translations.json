@@ -28,8 +28,5 @@
   "dontHaveAnAccount?": "У вас нет аккаунта?",
   "search": "Поиск",
   "delete": "Удалить",
-  "boardAdded": "Доска добавлена",
-  "signInToContinue": "Войдите, чтобы продолжить",
-  "dontHaveAnAccount": "Ещё нет аккаунта",
-  "loginIn": "Войти"
+  "boardAdded": "Доска добавлена"
 }

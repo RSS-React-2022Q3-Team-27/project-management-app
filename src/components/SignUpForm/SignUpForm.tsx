@@ -139,7 +139,7 @@ export const SignUpForm = () => {
         </Typography>
       )}
       <Button type="submit" sx={{ mt: 1 }}>
-        {t('registration')}
+        {t('signUp')}
       </Button>
     </form>
   );

@@ -12,6 +12,8 @@ export interface IToken {
   id: string;
 }
 
+let timeout = setTimeout(() => {}, 500);
+
 export const useLogOutAfterTokenExp = () => {
   const dispatch = useAppDispatch();
   const token = useAppSelector((state) => state.user.token);
@@ -20,7 +22,7 @@ export const useLogOutAfterTokenExp = () => {
 
   useEffect(() => {
     if (timer) {
-      setTimeout(() => {
+      timeout = setTimeout(() => {
         dispatch(userLogOut());
       }, timer);
     }
@@ -31,5 +33,6 @@ export const useLogOutAfterTokenExp = () => {
     if (!decryptedToken) {
       dispatch(setIsUserLogIn(false));
     }
+    return () => clearTimeout(timeout);
   }, [decryptedToken, dispatch, timer]);
 };

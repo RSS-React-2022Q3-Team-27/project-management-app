@@ -28,8 +28,5 @@
   "dontHaveAnAccount?": "Don't have an account?",
   "search": "Search",
   "delete": "Delete",
-  "boardAdded": "Board added",
-  "signInToContinue": "Sign in to continue",
-  "dontHaveAnAccount": "Don't have an account",
-  "loginIn": "Login In"
+  "boardAdded": "Board added"
 }

@@ -30,7 +30,7 @@ export const SignUp = () => {
         <Typography level="h4" component="h1">
           <b>{t('welcome')}</b>
         </Typography>
-        <Typography level="body2">{t('registration')}</Typography>
+        <Typography level="body2">{t('signUp')}</Typography>
       </div>
       <SignUpForm />
       <Typography
