@@ -14,8 +14,8 @@ export interface IToken {
 
 export const useLogOutAfterTokenExp = () => {
   const dispatch = useAppDispatch();
-  const token = useAppSelector((state) => state.user.token);
-  const decryptedToken = token && (jwtDecode(token) as IToken);
+  const { token, id } = useAppSelector((state) => state.user);
+  const decryptedToken = id && token && (jwtDecode(token) as IToken);
   const timer = decryptedToken && Math.ceil(+((decryptedToken.exp - Date.now() / 1000) * 1000).toFixed(2));
 
   useEffect(() => {
