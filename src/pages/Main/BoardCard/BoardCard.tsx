@@ -12,13 +12,24 @@ type BoardCardPropsType = {
 export const BoardCard: React.FC<BoardCardPropsType> = ({ board }) => {
   const { t } = useTranslation();
 
+  let data;
+  try {
+    data = JSON.parse(board.title);
+  } catch (error) {
+    data = {
+      title: board.title,
+      description: '',
+    };
+  }
+  const { title, description } = data;
+
   return (
     <Card variant="outlined" sx={{ width: 280, height: 280, display: 'flex', flexDirection: 'column' }}>
       <Typography level="h2" fontSize="md" sx={{ mb: 0.5 }}>
-        {board.title}
+        {title}
       </Typography>
       <Typography level="body2" sx={{ height: '100%' }}>
-        None
+        {description}
       </Typography>
 
       <Box sx={{ justifySelf: 'flex-end', alignSelf: 'flex-end', display: 'flex', gap: 1 }}>
