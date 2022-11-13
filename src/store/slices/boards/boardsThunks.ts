@@ -12,7 +12,6 @@ export const getBoardsByUserId = createAsyncThunk<BoardType[], unknown, { reject
   async (_, { getState, rejectWithValue }) => {
     const { user } = getState() as RootState;
     const config = {
-      data: { userId: user.id },
       headers: {
         Authorization: `Bearer ${user.token}`,
         Accept: 'application/json',
@@ -21,7 +20,7 @@ export const getBoardsByUserId = createAsyncThunk<BoardType[], unknown, { reject
     };
 
     try {
-      const response = await axios.get(`${URL}${API_PATH.boards}`, config);
+      const response = await axios.get(`${URL}${API_PATH.boardsSet}/${user.id}`, config);
 
       return response.data;
     } catch (error) {
