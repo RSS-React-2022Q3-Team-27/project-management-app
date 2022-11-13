@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { setLocale } from '../../../store/slices/user/userSlice';
 
-import { Language } from '../../../types/LanguageOptions';
+import { AppLanguage } from '../../../types/LanguageOptions';
 
 export const LanguageSelect = () => {
   const { i18n } = useTranslation();
@@ -17,7 +17,7 @@ export const LanguageSelect = () => {
   useEffect(() => {
     i18n.changeLanguage(locale);
 
-    if (locale === Language.en) {
+    if (locale === AppLanguage.en) {
       setLangSwitch(false);
     } else {
       setLangSwitch(true);
@@ -28,11 +28,11 @@ export const LanguageSelect = () => {
     setLangSwitch(event.target.checked);
 
     if (event.target.checked) {
-      dispatch(setLocale(Language.ru));
-      i18n.changeLanguage(Language.ru);
+      dispatch(setLocale(AppLanguage.ru));
+      i18n.changeLanguage(AppLanguage.ru);
     } else {
-      dispatch(setLocale(Language.en));
-      i18n.changeLanguage(Language.en);
+      dispatch(setLocale(AppLanguage.en));
+      i18n.changeLanguage(AppLanguage.en);
     }
   };
 

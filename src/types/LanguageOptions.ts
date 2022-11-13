@@ -1,4 +1,4 @@
-export enum Language {
+export enum AppLanguage {
   ru = 'ru',
   en = 'en',
 }

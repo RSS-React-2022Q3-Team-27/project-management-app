@@ -2,8 +2,9 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import { authUser, registerUser } from './userThunks';
 
-import { Language } from '../../../types/LanguageOptions';
+import { AppLanguage } from '../../../types/LanguageOptions';
 import { LocalStorageKeys } from '../../../types/LocalStorageKeys';
+import { getUserLocale } from '../../../utils/getUserLocale';
 import { getValueLocalStorage } from '../../../utils/getValueLocalStorage';
 import { removeValueLocalStorage } from '../../../utils/removeValueLocalStorage';
 import { setValueLocalStorage } from '../../../utils/setValueLocalStorage';
@@ -23,25 +24,8 @@ export interface IInitialState {
   isUserLogIn: boolean;
   logInErrorCode: number;
   registrationErrorCode: number;
-  locale: Language;
+  locale: AppLanguage;
 }
-
-const getUserLocale = () => {
-  const userLocale = navigator.language.split('-')[0];
-  const savedLocale = getValueLocalStorage(LocalStorageKeys.locale) as Language;
-
-  console.log(userLocale);
-
-  if (savedLocale) {
-    return savedLocale;
-  }
-
-  if (userLocale === Language.en || userLocale === Language.ru) {
-    return userLocale;
-  }
-
-  return Language.en;
-};
 
 const initialState: IInitialState = {
   id: getValueLocalStorage(LocalStorageKeys.userId),
