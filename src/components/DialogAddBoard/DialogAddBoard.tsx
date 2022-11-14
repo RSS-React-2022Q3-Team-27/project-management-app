@@ -13,14 +13,9 @@ import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
-import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-import { isAddedFalse } from '../../../store/slices/boards/boardsSlice';
-import { createBoard } from '../../../store/slices/boards/boardsThunks';
-
-type DialogPropsType = {
-  closeHandle: () => void;
-  isOpened: boolean;
-};
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { isAddedFalse, setIsOpenedDialogAddBoard } from '../../store/slices/boards/boardsSlice';
+import { createBoard } from '../../store/slices/boards/boardsThunks';
 
 type FormType = {
   title: string;
@@ -32,8 +27,8 @@ const clearForm = {
   description: '',
 };
 
-export default function DialogAddBoard(props: DialogPropsType) {
-  const { isAdded } = useAppSelector((state) => state.boards);
+export default function DialogAddBoard() {
+  const { isAdded, isOpenedDialogAddBoard } = useAppSelector((state) => state.boards);
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const { control, handleSubmit, reset } = useForm<FormType>();
@@ -47,7 +42,7 @@ export default function DialogAddBoard(props: DialogPropsType) {
 
   const onClose = () => {
     reset(clearForm);
-    props.closeHandle();
+    dispatch(setIsOpenedDialogAddBoard(false));
   };
 
   const onSubmit: SubmitHandler<FormType> = (data) => {
@@ -56,7 +51,7 @@ export default function DialogAddBoard(props: DialogPropsType) {
   };
 
   return (
-    <Modal open={props.isOpened} onClose={onClose}>
+    <Modal open={isOpenedDialogAddBoard} onClose={onClose}>
       <ModalDialog
         aria-labelledby="basic-modal-dialog-title"
         aria-describedby="basic-modal-dialog-description"
@@ -89,7 +84,7 @@ export default function DialogAddBoard(props: DialogPropsType) {
               render={({ field }) => {
                 return (
                   <FormControl>
-                    <FormLabel>{t('description')}</FormLabel>
+                    <FormLabel required>{t('description')}</FormLabel>
                     <Textarea {...field} minRows={3} required />
                   </FormControl>
                 );

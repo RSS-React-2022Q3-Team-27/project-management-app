@@ -2,6 +2,7 @@ import Box from '@mui/joy/Box';
 import Sheet from '@mui/joy/Sheet';
 import { Outlet } from 'react-router-dom';
 
+import DialogAddBoard from '../DialogAddBoard/DialogAddBoard';
 import { Footer } from '../Footer';
 
 import { Header } from '../Header';
@@ -23,6 +24,7 @@ export const Layout = () => {
         <Outlet />
       </Box>
       <Footer />
+      <DialogAddBoard />
     </Sheet>
   );
 };
