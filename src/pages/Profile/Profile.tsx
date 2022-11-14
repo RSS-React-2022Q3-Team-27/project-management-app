@@ -1,4 +1,4 @@
-import { Box, Button, Divider, IconButton, Modal, ModalClose, ModalDialog, Sheet, Typography } from '@mui/joy';
+import { Box, Button, Modal, ModalClose, ModalDialog, Sheet, Typography } from '@mui/joy';
 import Avatar from '@mui/joy/Avatar';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
