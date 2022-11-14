@@ -49,7 +49,7 @@ export const Header = (props: BoxProps) => {
             position: 'sticky',
             top: 0,
             zIndex: 1100,
-            transition: '0.5s',
+            transitionDuration: '0.3s',
           },
           ...(Array.isArray(props.sx) ? props.sx : [props.sx]),
         ]}

@@ -41,5 +41,18 @@
   "confirmCancel": "Нет",
   "confirmationText": "Вы уверенны, что хотите это сделать?",
   "youWillLogOutAfter": "Вы выйдете из аккаунта через",
-  "editProfile": "Редактировать профиль"
+  "editProfile": "Редактировать профиль",
+  "promo": "Простой и эффективный способ организации, планирования и отслеживания прогресса ваших проектов.",
+  "promoTitle1": "Для",
+  "promoTitle2": "любых",
+  "promoTitle3": "задач",
+  "firstAdvantage": "Работайте в команде",
+  "secondAdvantage": "Создавайте любое количество досок",
+  "thirdAdvantage": "Отслеживайте персональные задачи",
+  "aboutCourse": "Это приложение для управления проектами создано в рамках финального задания курса RS School React.",
+  "frontend": "Frontend",
+  "frontendTech": "технологии: React, TypeScript, React Redux Toolkit, i18next, Material Ui, React Hook Form",
+  "firstDev": "Игорь",
+  "secondDev": "Галина",
+  "thirdDev": "Оксана"
 }

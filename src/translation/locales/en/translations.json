@@ -41,5 +41,18 @@
   "confirmCancel": "Not sure",
   "confirmationText": "Are you sure you want to do this?",
   "youWillLogOutAfter": "You will log out after",
-  "editProfile": "Edit profile"
+  "editProfile": "Edit profile",
+  "promo": "The simple but efficient way to organize, plan and track progress on your projects.",
+  "promoTitle1": "Manage",
+  "promoTitle2": "any",
+  "promoTitle3": "tasks",
+  "firstAdvantage": "Work in team",
+  "secondAdvantage": "Create as many boards as you need",
+  "thirdAdvantage": "Track personal tasks",
+  "aboutCourse": "This Project Management App is created as final task of RS School React course.",
+  "frontend": "Frontend",
+  "frontendTech": "technologies used: React, TypeScript, React Redux Toolkit, i18next, Material Ui, React Hook Form",
+  "firstDev": "Igor",
+  "secondDev": "Galina",
+  "thirdDev": "Oxana"
 }
