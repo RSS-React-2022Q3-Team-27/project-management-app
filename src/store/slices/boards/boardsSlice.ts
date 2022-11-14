@@ -1,10 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { getBoardsByUserId, createBoard } from './boardsThunks';
+import { getBoardsByUserId, createBoard, deleteBoard } from './boardsThunks';
 
 export type BoardType = {
   _id: string;
   title: string;
+  description: string;
   owner: string;
   users: string[];
 };
@@ -12,11 +13,13 @@ export type BoardType = {
 export type BoardsStateType = {
   boards: BoardType[];
   isAdded: boolean;
+  isDeleted: boolean;
 };
 
 const initialState: BoardsStateType = {
   boards: [],
   isAdded: false,
+  isDeleted: false,
 };
 
 const boardsSlice = createSlice({
@@ -28,6 +31,9 @@ const boardsSlice = createSlice({
     },
     isAddedFalse(state) {
       state.isAdded = false;
+    },
+    isDeletedFalse(state) {
+      state.isDeleted = false;
     },
   },
   extraReducers: (builder) => {
@@ -55,8 +61,21 @@ const boardsSlice = createSlice({
       .addCase(createBoard.rejected, () => {
         console.log('createBoard rejected');
       });
+
+    builder
+      .addCase(deleteBoard.pending, () => {
+        console.log('deleteBoard pending');
+      })
+      .addCase(deleteBoard.fulfilled, (state, { payload }) => {
+        console.log('deleteBoard fulfilled');
+        state.boards = state.boards.filter((board) => board._id !== payload._id);
+        state.isDeleted = true;
+      })
+      .addCase(deleteBoard.rejected, () => {
+        console.log('deleteBoard rejected');
+      });
   },
 });
 
-export const { clearBoards, isAddedFalse } = boardsSlice.actions;
+export const { clearBoards, isAddedFalse, isDeletedFalse } = boardsSlice.actions;
 export default boardsSlice.reducer;

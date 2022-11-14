@@ -33,6 +33,11 @@
   "youveSuccessfullySignedIn": "You've successfully signed in",
   "fieldIsRequire": "Field is require",
   "wrongLoginOrPassword": "Wrong Login or Password",
-  "loginAlreadyExist" : "Login already exist",
-  "serverError": "Server Error. Please try again later"
+  "loginAlreadyExist": "Login already exist",
+  "serverError": "Server Error. Please try again later",
+  "boardDeleted": "Board deleted",
+  "confirmation": "Confirmation",
+  "confirmSure": "Sure",
+  "confirmCancel": "Not sure",
+  "confirmationText": "Are you sure you want to do this?"
 }
