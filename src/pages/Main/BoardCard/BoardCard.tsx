@@ -21,9 +21,13 @@ export const BoardCard: React.FC<BoardCardPropsType> = ({ board, setBoardId }) =
 
   const { title, description } = JSON.parse(board.title);
 
-  const onClick = () => {
+  const onClickDelete = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
     setBoardId(board._id);
     dispatch(setConfirmOpened(true));
+  };
+  const onClickEdit = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
   };
 
   return (
@@ -38,13 +42,13 @@ export const BoardCard: React.FC<BoardCardPropsType> = ({ board, setBoardId }) =
 
         <Box sx={{ justifySelf: 'flex-end', alignSelf: 'flex-end', display: 'flex', gap: 1 }}>
           <Tooltip title={t('edit')} arrow placement="bottom" variant="solid">
-            <IconButton color="neutral" variant="soft" size="sm">
+            <IconButton color="neutral" variant="soft" size="sm" onClick={onClickEdit}>
               <EditIcon />
             </IconButton>
           </Tooltip>
 
           <Tooltip title={t('delete')} arrow placement="bottom" variant="solid">
-            <IconButton color="neutral" variant="soft" size="sm" onClick={onClick}>
+            <IconButton color="neutral" variant="soft" size="sm" onClick={onClickDelete}>
               <DeleteIcon />
             </IconButton>
           </Tooltip>
