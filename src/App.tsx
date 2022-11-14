@@ -5,7 +5,7 @@ import { CssVarsProvider } from '@mui/joy/styles';
 import React from 'react';
 import { HashRouter as Router, Route, Routes } from 'react-router-dom';
 
-import { ToastContainer } from 'react-toastify';
+import { toast, ToastContainer } from 'react-toastify';
 
 import { Layout } from './components/Layout';
 import { PrivateRoute } from './components/PrivateRoute/PrivateRoute';
@@ -18,7 +18,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   useLogOutAfterTokenExp();
-  console.log('app rerender');
+  toast.info('app rerender');
 
   return (
     <CssVarsProvider theme={theme} defaultMode="system">

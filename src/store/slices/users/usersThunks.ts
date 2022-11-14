@@ -25,7 +25,7 @@ export const getUsers = createAsyncThunk<IUserInfo[], undefined, { rejectValue: 
   'users/getUsers',
   async (_, { rejectWithValue, getState, dispatch }) => {
     const state: RootState = <RootState>getState();
-    const { token, login, id } = state.user;
+    const { token, login, id, isUserLogIn } = state.user;
 
     try {
       const { data } = await axios.get(`${URL}${API_PATH.users}`, {
@@ -36,7 +36,9 @@ export const getUsers = createAsyncThunk<IUserInfo[], undefined, { rejectValue: 
         },
       });
 
-      dispatch(setIsUserLogIn(true));
+      if (!isUserLogIn) {
+        dispatch(setIsUserLogIn(true));
+      }
       dispatch(setUserInfo(id ? getUserDataById(data, id) : getUserDataByLogin(data, login)));
       return data;
     } catch (error) {

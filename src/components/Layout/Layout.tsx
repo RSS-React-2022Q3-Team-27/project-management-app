@@ -1,3 +1,4 @@
+import { Sheet } from '@mui/joy';
 import Box from '@mui/joy/Box';
 import { Outlet } from 'react-router-dom';
 
@@ -8,12 +9,13 @@ import { SideDrawer } from '../SideDrawer';
 
 export const Layout = () => {
   return (
-    <Box
+    <Sheet
       sx={{
-        display: 'flex',
-        flexDirection: 'column',
+        display: 'grid',
+        gridTemplateRows: 'max-content 1fr max-content',
         minHeight: '100vh',
       }}
+      variant="soft"
     >
       <SideDrawer />
       <Header />
@@ -21,6 +23,6 @@ export const Layout = () => {
         <Outlet />
       </Box>
       <Footer />
-    </Box>
+    </Sheet>
   );
 };

@@ -39,5 +39,7 @@
   "confirmation": "Подтверждение",
   "confirmSure": "Уверен",
   "confirmCancel": "Нет",
-  "confirmationText": "Вы уверенны, что хотите это сделать?"
+  "confirmationText": "Вы уверенны, что хотите это сделать?",
+  "youWillLogOutAfter": "Вы выйдете из аккаунта через",
+  "editProfile": "Редактировать профиль"
 }
