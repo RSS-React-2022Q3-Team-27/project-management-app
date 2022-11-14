@@ -5,6 +5,7 @@ import { getBoardsByUserId, createBoard, deleteBoard } from './boardsThunks';
 export type BoardType = {
   _id: string;
   title: string;
+  description: string;
   owner: string;
   users: string[];
 };

@@ -81,10 +81,21 @@ export default function DialogAddBoard(props: DialogPropsType) {
               render={({ field }) => <TextField {...field} label={t('title')} autoFocus required />}
             />
 
-            <FormControl>
-              <FormLabel>{t('description')}</FormLabel>
-              <Textarea minRows={2} required />
-            </FormControl>
+            <Controller
+              name="description"
+              control={control}
+              defaultValue=""
+              rules={{ required: 'Field is require' }}
+              render={({ field }) => {
+                return (
+                  <FormControl>
+                    <FormLabel>{t('description')}</FormLabel>
+                    <Textarea {...field} minRows={3} required />
+                  </FormControl>
+                );
+              }}
+            />
+
             <Button type="submit">{t('createNewBoard')}</Button>
           </Stack>
         </form>

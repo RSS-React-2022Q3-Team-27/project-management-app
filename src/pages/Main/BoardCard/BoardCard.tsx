@@ -19,6 +19,8 @@ export const BoardCard: React.FC<BoardCardPropsType> = ({ board, setBoardId }) =
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
 
+  const { title, description } = JSON.parse(board.title);
+
   const onClick = () => {
     setBoardId(board._id);
     dispatch(setConfirmOpened(true));
