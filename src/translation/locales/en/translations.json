@@ -54,5 +54,8 @@
   "frontendTech": "technologies used: React, TypeScript, React Redux Toolkit, i18next, Material Ui, React Hook Form",
   "firstDev": "Igor",
   "secondDev": "Galina",
-  "thirdDev": "Oxana"
+  "thirdDev": "Oxana",
+  "pageNotFound": "Page Not Found",
+  "toWelcomePage": "To Welcome Page",
+  "toMainPage": "To Main Page"
 }

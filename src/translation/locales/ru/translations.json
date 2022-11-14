@@ -54,5 +54,8 @@
   "frontendTech": "технологии: React, TypeScript, React Redux Toolkit, i18next, Material Ui, React Hook Form",
   "firstDev": "Игорь",
   "secondDev": "Галина",
-  "thirdDev": "Оксана"
+  "thirdDev": "Оксана",
+  "pageNotFound": "Страница не найдена",
+  "toWelcomePage": "На промо страницу",
+  "toMainPage": "На главную"
 }
