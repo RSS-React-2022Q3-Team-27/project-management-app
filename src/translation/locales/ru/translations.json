@@ -30,9 +30,14 @@
   "delete": "Удалить",
   "boardAdded": "Доска добавлена",
   "wrongFormat": "Неверный формат",
-  "youveSuccessfullySignedIn" : "Вы успешно вошли в аккаунт",
-  "fieldIsRequire" : "Обязательное поле",
+  "youveSuccessfullySignedIn": "Вы успешно вошли в аккаунт",
+  "fieldIsRequire": "Обязательное поле",
   "wrongLoginOrPassword": "Неверный логин или пароль",
-  "loginAlreadyExist" : "Такой логин уже существует",
-  "serverError": "Ошибка сервера. Пожалуйста, попробуйте позднее"
+  "loginAlreadyExist": "Такой логин уже существует",
+  "serverError": "Ошибка сервера. Пожалуйста, попробуйте позднее",
+  "boardDeleted": "Доска удалена",
+  "confirmation": "Подтверждение",
+  "confirmSure": "Уверен",
+  "confirmCancel": "Нет",
+  "confirmationText": "Вы уверенны, что хотите это сделать?"
 }

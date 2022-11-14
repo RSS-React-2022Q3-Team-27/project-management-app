@@ -63,3 +63,26 @@ export const createBoard = createAsyncThunk<BoardType, Omit<BoardType, '_id' | '
     }
   }
 );
+
+export const deleteBoard = createAsyncThunk<BoardType, string, { rejectValue: string }>(
+  'boards/deleteBoard',
+  async (id, { getState, rejectWithValue }) => {
+    const { user } = getState() as RootState;
+    const config = {
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    };
+    try {
+      const response = await axios.delete(`${URL}${API_PATH.boards}/${id}`, config);
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return rejectWithValue(error.response?.data as string);
+      }
+      throw error;
+    }
+  }
+);
