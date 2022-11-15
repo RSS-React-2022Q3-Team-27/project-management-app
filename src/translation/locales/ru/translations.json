@@ -21,6 +21,7 @@
   "description": "Описание",
   "createTask": "Создать задачу",
   "createColumn": "Создать колонку",
+  "newColumn": "Новая колонка",
   "registration": "Регистрация",
   "welcome": "Добро пожаловать!",
   "alreadyHaveAnAccount": "Уже есть аккаунт?",
@@ -57,5 +58,6 @@
   "thirdDev": "Оксана",
   "pageNotFound": "Страница не найдена",
   "toWelcomePage": "На промо страницу",
-  "toMainPage": "На главную"
+  "toMainPage": "На главную",
+  "newColumnIsAdded": "Новая колонка добавлена"
 }

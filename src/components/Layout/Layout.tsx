@@ -13,7 +13,7 @@ export const Layout = () => {
     <Sheet
       sx={{
         display: 'grid',
-        gridTemplateRows: 'max-content 1fr max-content',
+        gridTemplateRows: 'min-content 1fr min-content',
         minHeight: '100vh',
       }}
       variant="soft"

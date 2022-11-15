@@ -36,13 +36,9 @@ export const createBoard = createAsyncThunk<BoardType, Omit<BoardType, '_id' | '
   'boards/createBoard',
   async (data, { getState, rejectWithValue }) => {
     const { user } = getState() as RootState;
-    const title = JSON.stringify({
-      title: data.title,
-      description: data.description,
-    });
+
     const body = {
-      title,
-      users: data.users,
+      ...data,
       owner: user.id,
     };
     const config = {

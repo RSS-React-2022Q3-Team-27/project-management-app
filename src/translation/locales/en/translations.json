@@ -21,6 +21,7 @@
   "description": "Description",
   "createTask": "Create task",
   "createColumn": "Create column",
+  "newColumn": "New Column",
   "registration": "Registration",
   "welcome": "Welcome!",
   "alreadyHaveAnAccount": "Already have an account?",
@@ -57,5 +58,6 @@
   "thirdDev": "Oxana",
   "pageNotFound": "Page Not Found",
   "toWelcomePage": "To Welcome Page",
-  "toMainPage": "To Main Page"
+  "toMainPage": "To Main Page",
+  "newColumnIsAdded": "New column is added"
 }
