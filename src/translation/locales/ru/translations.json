@@ -57,5 +57,7 @@
   "thirdDev": "Оксана",
   "pageNotFound": "Страница не найдена",
   "toWelcomePage": "На промо страницу",
-  "toMainPage": "На главную"
+  "toMainPage": "На главную",
+  "boardEdited": "Доска изменена",
+  "editBoard": "Редактировать доску"
 }
