@@ -21,7 +21,6 @@ export const Main = () => {
 
   const onClick = () => {
     dispatch(setIsOpenedDialogAddBoard(true));
-    console.log('open +');
   };
 
   return (
