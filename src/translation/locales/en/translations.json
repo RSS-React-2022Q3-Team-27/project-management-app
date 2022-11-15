@@ -21,6 +21,7 @@
   "description": "Description",
   "createTask": "Create task",
   "createColumn": "Create column",
+  "newColumn": "New Column",
   "registration": "Registration",
   "welcome": "Welcome!",
   "alreadyHaveAnAccount": "Already have an account?",
@@ -59,5 +60,6 @@
   "toWelcomePage": "To Welcome Page",
   "toMainPage": "To Main Page",
   "boardEdited": "Board edited",
-  "editBoard": "Edit board"
+  "editBoard": "Edit board",
+  "newColumnIsAdded": "New column is added"
 }

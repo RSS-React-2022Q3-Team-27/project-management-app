@@ -4,4 +4,5 @@ export const API_PATH = {
   users: 'users',
   boards: 'boards',
   boardsSet: 'boardsSet',
+  columns: 'columns',
 };

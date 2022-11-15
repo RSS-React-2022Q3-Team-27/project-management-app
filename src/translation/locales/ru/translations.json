@@ -21,6 +21,7 @@
   "description": "Описание",
   "createTask": "Создать задачу",
   "createColumn": "Создать колонку",
+  "newColumn": "Новая колонка",
   "registration": "Регистрация",
   "welcome": "Добро пожаловать!",
   "alreadyHaveAnAccount": "Уже есть аккаунт?",
@@ -59,5 +60,6 @@
   "toWelcomePage": "На промо страницу",
   "toMainPage": "На главную",
   "boardEdited": "Доска изменена",
-  "editBoard": "Редактировать доску"
+  "editBoard": "Редактировать доску",
+  "newColumnIsAdded": "Новая колонка добавлена"
 }

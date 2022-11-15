@@ -19,7 +19,7 @@ export const BoardCard: React.FC<BoardCardPropsType> = ({ board, setBoardId }) =
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
 
-  const { title, description } = JSON.parse(board.title);
+  const { title, description } = board;
 
   const onClickDelete = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
