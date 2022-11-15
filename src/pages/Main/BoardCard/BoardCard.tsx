@@ -8,7 +8,7 @@ import { ROUTES } from '../../../constants/routes';
 
 import { useAppDispatch } from '../../../store/hooks';
 import { setConfirmOpened } from '../../../store/slices/app/appSlice';
-import { BoardType, setIsOpenedDialogEditBoard } from '../../../store/slices/boards/boardsSlice';
+import { BoardType, setCurrentBoard, setIsOpenedDialogEditBoard } from '../../../store/slices/boards/boardsSlice';
 
 type BoardCardPropsType = {
   board: BoardType;
@@ -28,7 +28,7 @@ export const BoardCard: React.FC<BoardCardPropsType> = ({ board, setBoardId }) =
   };
   const onClickEdit = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
-    setBoardId(board._id);
+    dispatch(setCurrentBoard(board));
     dispatch(setIsOpenedDialogEditBoard(true));
   };
 

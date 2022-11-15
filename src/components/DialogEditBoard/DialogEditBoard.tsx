@@ -8,13 +8,12 @@ import Textarea from '@mui/joy/Textarea';
 import TextField from '@mui/joy/TextField';
 import Typography from '@mui/joy/Typography';
 
-import { useEffect } from 'react';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
 
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { isEditedFalse, setIsOpenedDialogEditBoard } from '../../store/slices/boards/boardsSlice';
+import { setCurrentBoard, setIsOpenedDialogEditBoard } from '../../store/slices/boards/boardsSlice';
+import { editBoard } from '../../store/slices/boards/boardsThunks';
 
 type FormType = {
   title: string;
@@ -27,29 +26,24 @@ const clearForm = {
 };
 
 export const DialogEditBoard = () => {
-  const { isEdited, isOpenedDialogEditBoard } = useAppSelector((state) => state.boards);
+  const { currentBoard } = useAppSelector((state) => state.boards);
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const { control, handleSubmit, reset } = useForm<FormType>();
 
-  useEffect(() => {
-    if (isEdited) {
-      toast.success(t('boardEdited'));
-      dispatch(isEditedFalse());
-    }
-  }, [isEdited, dispatch, t]);
-
   const onClose = () => {
     reset(clearForm);
+    dispatch(setCurrentBoard(null));
     dispatch(setIsOpenedDialogEditBoard(false));
   };
 
-  const onSubmit: SubmitHandler<FormType> = () => {
+  const onSubmit: SubmitHandler<FormType> = (data) => {
+    dispatch(editBoard({ ...data, users: [] }));
     onClose();
   };
 
   return (
-    <Modal open={isOpenedDialogEditBoard} onClose={onClose}>
+    <Modal open={true} onClose={onClose}>
       <ModalDialog
         aria-labelledby="basic-modal-dialog-title"
         aria-describedby="basic-modal-dialog-description"
@@ -69,7 +63,7 @@ export const DialogEditBoard = () => {
             <Controller
               name="title"
               control={control}
-              defaultValue={`title`}
+              defaultValue={currentBoard?.title}
               rules={{ required: 'Field is require' }}
               render={({ field }) => <TextField {...field} label={t('title')} autoFocus required />}
             />
@@ -77,7 +71,7 @@ export const DialogEditBoard = () => {
             <Controller
               name="description"
               control={control}
-              defaultValue={`description`}
+              defaultValue={currentBoard?.description}
               rules={{ required: 'Field is require' }}
               render={({ field }) => {
                 return (

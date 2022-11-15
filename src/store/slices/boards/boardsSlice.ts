@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { getBoardsByUserId, createBoard, deleteBoard } from './boardsThunks';
+import { getBoardsByUserId, createBoard, deleteBoard, editBoard } from './boardsThunks';
 
 export type BoardType = {
   _id: string;
@@ -17,6 +17,7 @@ export type BoardsStateType = {
   isEdited: boolean;
   isOpenedDialogAddBoard: boolean;
   isOpenedDialogEditBoard: boolean;
+  currentBoard: BoardType | null;
 };
 
 const initialState: BoardsStateType = {
@@ -26,6 +27,7 @@ const initialState: BoardsStateType = {
   isEdited: false,
   isOpenedDialogAddBoard: false,
   isOpenedDialogEditBoard: false,
+  currentBoard: null,
 };
 
 const boardsSlice = createSlice({
@@ -49,6 +51,9 @@ const boardsSlice = createSlice({
     },
     setIsOpenedDialogEditBoard(state, { payload }) {
       state.isOpenedDialogEditBoard = payload;
+    },
+    setCurrentBoard(state, { payload }) {
+      state.currentBoard = payload;
     },
   },
   extraReducers: (builder) => {
@@ -89,6 +94,25 @@ const boardsSlice = createSlice({
       .addCase(deleteBoard.rejected, () => {
         console.log('deleteBoard rejected');
       });
+
+    builder
+      .addCase(editBoard.pending, () => {
+        console.log('editBoard pending');
+      })
+      .addCase(editBoard.fulfilled, (state, { payload }) => {
+        console.log('editBoard fulfilled');
+        state.boards = state.boards.map((board) => {
+          if (board._id !== payload._id) {
+            return board;
+          } else {
+            return payload;
+          }
+        });
+        state.isEdited = true;
+      })
+      .addCase(editBoard.rejected, () => {
+        console.log('editBoard rejected');
+      });
   },
 });
 
@@ -99,5 +123,6 @@ export const {
   isEditedFalse,
   setIsOpenedDialogAddBoard,
   setIsOpenedDialogEditBoard,
+  setCurrentBoard,
 } = boardsSlice.actions;
 export default boardsSlice.reducer;

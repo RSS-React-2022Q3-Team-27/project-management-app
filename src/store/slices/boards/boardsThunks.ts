@@ -82,3 +82,33 @@ export const deleteBoard = createAsyncThunk<BoardType, string, { rejectValue: st
     }
   }
 );
+
+export const editBoard = createAsyncThunk<BoardType, Omit<BoardType, '_id' | 'owner'>, { rejectValue: string }>(
+  'boards/editBoard',
+  async (data, { getState, rejectWithValue }) => {
+    const { user } = getState() as RootState;
+    const { boards } = getState() as RootState;
+    const boardId = boards.currentBoard?._id;
+
+    const body = {
+      ...data,
+      owner: user.id,
+    };
+    const config = {
+      headers: {
+        Authorization: `Bearer ${user.token}`,
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+    };
+    try {
+      const response = await axios.put(`${URL}${API_PATH.boards}/${boardId}`, body, config);
+      return response.data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        return rejectWithValue(error.response?.data as string);
+      }
+      throw error;
+    }
+  }
+);
