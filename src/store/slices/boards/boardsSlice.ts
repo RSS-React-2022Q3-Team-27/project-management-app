@@ -14,14 +14,18 @@ export type BoardsStateType = {
   boards: BoardType[];
   isAdded: boolean;
   isDeleted: boolean;
+  isEdited: boolean;
   isOpenedDialogAddBoard: boolean;
+  isOpenedDialogEditBoard: boolean;
 };
 
 const initialState: BoardsStateType = {
   boards: [],
   isAdded: false,
   isDeleted: false,
+  isEdited: false,
   isOpenedDialogAddBoard: false,
+  isOpenedDialogEditBoard: false,
 };
 
 const boardsSlice = createSlice({
@@ -37,8 +41,14 @@ const boardsSlice = createSlice({
     isDeletedFalse(state) {
       state.isDeleted = false;
     },
+    isEditedFalse(state) {
+      state.isEdited = false;
+    },
     setIsOpenedDialogAddBoard(state, { payload }) {
       state.isOpenedDialogAddBoard = payload;
+    },
+    setIsOpenedDialogEditBoard(state, { payload }) {
+      state.isOpenedDialogEditBoard = payload;
     },
   },
   extraReducers: (builder) => {
@@ -82,5 +92,12 @@ const boardsSlice = createSlice({
   },
 });
 
-export const { clearBoards, isAddedFalse, isDeletedFalse, setIsOpenedDialogAddBoard } = boardsSlice.actions;
+export const {
+  clearBoards,
+  isAddedFalse,
+  isDeletedFalse,
+  isEditedFalse,
+  setIsOpenedDialogAddBoard,
+  setIsOpenedDialogEditBoard,
+} = boardsSlice.actions;
 export default boardsSlice.reducer;
