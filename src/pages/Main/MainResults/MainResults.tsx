@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
 import { DialogConfirm } from '../../../components/DialogConfirm/DialogConfirm';
+import { DialogEditBoard } from '../../../components/DialogEditBoard/DialogEditBoard';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { isDeletedFalse } from '../../../store/slices/boards/boardsSlice';
 import { deleteBoard } from '../../../store/slices/boards/boardsThunks';
@@ -38,6 +39,7 @@ export const MainResults = () => {
         {cards}
       </Box>
       <DialogConfirm onConfirm={onConfirm} />
+      <DialogEditBoard />
     </>
   );
 };
