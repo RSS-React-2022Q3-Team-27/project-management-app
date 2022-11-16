@@ -8,10 +8,11 @@ import { useEffect, useState } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
+import { useCreateColumnMutation } from '../../../store/slices/board/boardApi';
 import { closeAddColumnModal } from '../../../store/slices/board/boardSlice';
-import { createColumn } from '../../../store/slices/board/BoardThunks';
 
 type AddColumnFormType = {
   title: string;
@@ -21,9 +22,10 @@ export const AddColumnModal = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { control, handleSubmit, reset } = useForm<AddColumnFormType>();
-  const { isModalOpened } = useAppSelector((state) => state.board);
+  const { isModalOpened, columnsLength } = useAppSelector((state) => state.board);
   const { id } = useParams();
   const [modalStatus, setModalStatus] = useState(false);
+  const [createColumn, { isError }] = useCreateColumnMutation();
 
   useEffect(() => {
     setModalStatus(isModalOpened);
@@ -35,12 +37,21 @@ export const AddColumnModal = () => {
     reset();
   };
 
-  const onSubmit: SubmitHandler<AddColumnFormType> = (title: AddColumnFormType) => {
-    if (id) {
-      dispatch(createColumn({ ...title, id }));
-    }
+  const onSubmit: SubmitHandler<AddColumnFormType> = async (formData: AddColumnFormType) => {
+    const body = {
+      title: formData.title,
+      order: columnsLength,
+    };
 
     handleClose();
+
+    if (id) {
+      await createColumn({ id, body }).unwrap();
+
+      if (isError) {
+        toast.error('Error');
+      }
+    }
   };
 
   return (

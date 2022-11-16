@@ -59,5 +59,7 @@
   "pageNotFound": "Page Not Found",
   "toWelcomePage": "To Welcome Page",
   "toMainPage": "To Main Page",
+  "boardEdited": "Board edited",
+  "editBoard": "Edit board",
   "newColumnIsAdded": "New column is added"
 }

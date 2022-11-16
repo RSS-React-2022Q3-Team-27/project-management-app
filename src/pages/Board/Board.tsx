@@ -1,44 +1,29 @@
-import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import ArrowBackIosNewRoundedIcon from '@mui/icons-material/ArrowBackIosNewRounded';
 import Box from '@mui/joy/Box';
-import Button from '@mui/joy/Button';
 import Link from '@mui/joy/Link';
 import Typography from '@mui/joy/Typography';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams, Link as RouterLink } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import { AddColumnModal } from '../../components/Board/AddColumnModal';
+import { Columns } from '../../components/Board/Columns';
 
 import { ROUTES } from '../../constants/routes';
 
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { openAddColumnModal } from '../../store/slices/board/boardSlice';
-import { getColumnsInBoard } from '../../store/slices/board/BoardThunks';
+import { useGetBoardByIdQuery } from '../../store/slices/board/boardApi';
 
 export const Board = () => {
   const { t } = useTranslation();
-  const { title, columns } = useAppSelector((state) => state.board);
-  const { id } = useParams();
-  const dispatch = useAppDispatch();
+  const { id } = useParams<{ id?: string }>();
+  const { data, isError } = useGetBoardByIdQuery(id || '');
 
   useEffect(() => {
-    if (id) {
-      dispatch(getColumnsInBoard(id));
+    if (isError) {
+      toast.error('Error');
     }
-  }, [dispatch, id]);
-
-  const handleClick = () => {
-    dispatch(openAddColumnModal());
-  };
-
-  const boardColumns = columns.map((column) => (
-    <Box key={column._id} sx={{ width: 260, flexShrink: 0 }}>
-      <Typography component="h4" sx={{ fontSize: { xs: 16, sm: 24 } }}>
-        {column.title}
-      </Typography>
-    </Box>
-  ));
+  }, [isError]);
 
   return (
     <Box
@@ -63,26 +48,9 @@ export const Board = () => {
         {t('toMainPage')}
       </Link>
       <Typography component="h2" sx={{ fontSize: { xs: 24, sm: 36 } }}>
-        {title}
+        {data?.title}
       </Typography>
-      <Box sx={{ flexGrow: 1, position: 'relative' }}>
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'flex-start',
-            overflowX: 'auto',
-            position: 'absolute',
-            gap: 1,
-            inset: 0,
-            pr: 2,
-          }}
-        >
-          {boardColumns}
-          <Button startDecorator={<AddRoundedIcon />} sx={{ width: 260, flexShrink: 0 }} onClick={handleClick}>
-            {t('newColumn')}
-          </Button>
-        </Box>
-      </Box>
+      <Columns />
       <AddColumnModal />
     </Box>
   );
