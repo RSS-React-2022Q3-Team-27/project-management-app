@@ -34,6 +34,7 @@
   "youveSuccessfullySignedIn": "You've successfully signed in",
   "fieldIsRequire": "Field is require",
   "wrongLoginOrPassword": "Wrong Login or Password",
+  "wrongPassword": "Wrong password",
   "loginAlreadyExist": "Login already exist",
   "serverError": "Server Error. Please try again later",
   "boardDeleted": "Board deleted",
@@ -61,5 +62,11 @@
   "toMainPage": "To Main Page",
   "boardEdited": "Board edited",
   "editBoard": "Edit board",
-  "newColumnIsAdded": "New column is added"
+  "newColumnIsAdded": "New column is added",
+  "deleteUser": "Delete user",
+  "twoToTenLetters": "Two to ten letters (en or ru)",
+  "twoToTenLettersLogin": "Two to ten letters (en) or numbers",
+  "confirmByPassword": "Confirm changes by current password",
+  "cancel": "Cancel",
+  "change": "Change"
 }

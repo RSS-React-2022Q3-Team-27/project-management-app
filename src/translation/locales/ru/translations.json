@@ -34,6 +34,7 @@
   "youveSuccessfullySignedIn": "Вы успешно вошли в аккаунт",
   "fieldIsRequire": "Обязательное поле",
   "wrongLoginOrPassword": "Неверный логин или пароль",
+  "wrongPassword": "Неверный логин или пароль",
   "loginAlreadyExist": "Такой логин уже существует",
   "serverError": "Ошибка сервера. Пожалуйста, попробуйте позднее",
   "boardDeleted": "Доска удалена",
@@ -42,7 +43,7 @@
   "confirmCancel": "Нет",
   "confirmationText": "Вы уверенны, что хотите это сделать?",
   "youWillLogOutAfter": "Вы выйдете из аккаунта через",
-  "editProfile": "Редактировать профиль",
+  "editProfile": "Редактировать",
   "promo": "Простой и эффективный способ организации, планирования и отслеживания прогресса ваших проектов.",
   "promoTitle1": "Для",
   "promoTitle2": "любых",
@@ -61,5 +62,11 @@
   "toMainPage": "На главную",
   "boardEdited": "Доска изменена",
   "editBoard": "Редактировать доску",
-  "newColumnIsAdded": "Новая колонка добавлена"
+  "newColumnIsAdded": "Новая колонка добавлена",
+  "deleteUser": "Удалить",
+  "twoToTenLetters": "От двух до десяти букв (русские и английские)",
+  "twoToTenLettersLogin": "От двух до десяти букв (английских) или цифр",
+  "confirmByPassword": "Подтвердите изменения текущим паролем",
+  "cancel": "Отмена",
+  "change": "Изменить"
 }

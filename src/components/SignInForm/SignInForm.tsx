@@ -4,7 +4,7 @@ import Button from '@mui/joy/Button';
 
 import TextField from '@mui/joy/TextField';
 import Typography from '@mui/joy/Typography';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
@@ -23,6 +23,7 @@ interface IFormInput {
 
 export const SignInForm = () => {
   const { t } = useTranslation();
+  const [userLogin, setUserLogin] = useState('');
   const {
     control,
     handleSubmit,
@@ -36,17 +37,18 @@ export const SignInForm = () => {
   const { isUserLogIn, locale } = useAppSelector((state) => state.user);
 
   const onSubmit: SubmitHandler<IFormInput> = (data: IFormInput) => {
-    dispatch(setLogin(data.login));
+    setUserLogin(data.login);
     dispatch(authUser(data));
   };
 
   useEffect(() => {
     if (isUserLogIn) {
+      dispatch(setLogin(userLogin));
       reset();
       toast.success(t('youveSuccessfullySignedIn'));
       navigate(ROUTES.MAIN.path);
     }
-  }, [isUserLogIn, locale, navigate, reset, t]);
+  }, [dispatch, isUserLogIn, locale, navigate, reset, t, userLogin]);
   return (
     <form onSubmit={handleSubmit(onSubmit)} autoComplete="false">
       <Controller

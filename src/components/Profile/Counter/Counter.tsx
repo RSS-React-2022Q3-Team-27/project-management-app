@@ -1,4 +1,5 @@
-import { Box, Typography } from '@mui/joy';
+import AccessTimeFilledIcon from '@mui/icons-material/AccessTimeFilled';
+import { Box, Chip, Typography } from '@mui/joy';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -27,10 +28,12 @@ export const Counter = () => {
   }, [counter]);
   return (
     <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
-      <Typography level="body2">{t('youWillLogOutAfter')}:</Typography>
-      <Typography level="body2" color={counter < 1800 ? 'danger' : 'primary'}>
-        {msToTime(counter)}
-      </Typography>
+      <Chip variant="soft" size="lg" startDecorator={<AccessTimeFilledIcon />}>
+        <Typography level="body2">{t('youWillLogOutAfter')}:</Typography>
+        <Typography level="body2" color={counter < 1800 ? 'danger' : 'primary'} sx={{ paddingLeft: 1 }}>
+          {msToTime(counter)}
+        </Typography>
+      </Chip>
     </Box>
   );
 };
