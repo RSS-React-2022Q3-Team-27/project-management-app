@@ -1,25 +1,22 @@
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { useAppDispatch } from '../../../store/hooks';
 
-import { useDeleteColumnMutation, useGetColumnsInBoardQuery } from '../../../store/slices/board/boardApi';
+import { useGetColumnsInBoardQuery } from '../../../store/slices/board/boardApi';
 import { openAddColumnModal, setColumnsLength } from '../../../store/slices/board/boardSlice';
-import { DialogConfirm } from '../../DialogConfirm/DialogConfirm';
 import { Column } from '../Column';
 
 export const Columns = () => {
   const { t } = useTranslation();
   const { id } = useParams<{ id?: string }>();
   const { data, isError } = useGetColumnsInBoardQuery(id || '');
-  const [deleteColumn] = useDeleteColumnMutation();
   const dispatch = useAppDispatch();
-  const [columnId, setColumnId] = useState('');
 
   useEffect(() => {
     if (isError) {
@@ -34,17 +31,7 @@ export const Columns = () => {
     dispatch(setColumnsLength(data?.length));
   };
 
-  const onConfirm = async () => {
-    const column = data?.find((column) => column._id === columnId);
-    if (column) {
-      const { _id: columnId, boardId } = column;
-      await deleteColumn({ columnId, boardId }).unwrap();
-    }
-  };
-
-  const boardColumns = data?.map((column) => (
-    <Column key={column._id} column={column} setColumnId={(id: string) => setColumnId(id)} />
-  ));
+  const boardColumns = data?.map((column) => <Column key={column._id} column={column} />);
 
   return (
     <>
@@ -73,7 +60,6 @@ export const Columns = () => {
           </Button>
         </Box>
       </Box>
-      <DialogConfirm onConfirm={onConfirm} />
     </>
   );
 };

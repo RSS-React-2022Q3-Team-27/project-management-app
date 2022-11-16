@@ -4,23 +4,25 @@ import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
 import IconButton from '@mui/joy/IconButton';
 import Typography from '@mui/joy/Typography';
-import { FC } from 'react';
+import { FC, useContext } from 'react';
 
-import { useAppDispatch } from '../../../store/hooks';
-import { setConfirmOpened } from '../../../store/slices/app/appSlice';
-import { ColumnType } from '../../../store/slices/board/boardApi';
+import { Context } from '../../../Context/Context';
+import { ReducerTypes } from '../../../Context/contextReducer/ReducerTypes';
+
+import { ColumnType, useDeleteColumnMutation } from '../../../store/slices/board/boardApi';
 
 type ColumnPropsType = {
   column: ColumnType;
-  setColumnId: (id: string) => void;
 };
 
-export const Column: FC<ColumnPropsType> = ({ column, setColumnId }) => {
-  const dispatch = useAppDispatch();
-
-  const onClickDelete = () => {
-    setColumnId(column._id);
-    dispatch(setConfirmOpened(true));
+export const Column: FC<ColumnPropsType> = ({ column }) => {
+  const { contextDispatch } = useContext(Context);
+  const [deleteColumn] = useDeleteColumnMutation();
+  const onClickDelete = async () => {
+    contextDispatch({
+      type: ReducerTypes.cb,
+      payload: () => deleteColumn({ columnId: column._id, boardId: column.boardId }).unwrap(),
+    });
   };
 
   return (

@@ -1,31 +1,35 @@
 import DeleteIcon from '@mui/icons-material/DeleteOutline';
 import EditIcon from '@mui/icons-material/EditOutlined';
 import { Box, Card, IconButton, Typography, Tooltip } from '@mui/joy';
+import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 import { ROUTES } from '../../../constants/routes';
+import { Context } from '../../../Context/Context';
+import { ReducerTypes } from '../../../Context/contextReducer/ReducerTypes';
 
 import { useAppDispatch } from '../../../store/hooks';
-import { setConfirmOpened } from '../../../store/slices/app/appSlice';
 import { BoardType, setCurrentBoard, setIsOpenedDialogEditBoard } from '../../../store/slices/boards/boardsSlice';
+import { deleteBoard } from '../../../store/slices/boards/boardsThunks';
 
 type BoardCardPropsType = {
   board: BoardType;
-  setBoardId: (id: string) => void;
 };
 
-export const BoardCard: React.FC<BoardCardPropsType> = ({ board, setBoardId }) => {
+export const BoardCard: React.FC<BoardCardPropsType> = ({ board }) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
+  const { contextDispatch } = useContext(Context);
 
   const { title, description } = board;
 
   const onClickDelete = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
-    setBoardId(board._id);
-    dispatch(setConfirmOpened(true));
+    contextDispatch({ type: ReducerTypes.cb, payload: () => dispatch(deleteBoard(board._id)) });
+    console.log('setCb');
   };
+
   const onClickEdit = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     dispatch(setCurrentBoard(board));
