@@ -12,9 +12,9 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { ROUTES } from '../../constants/routes';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { setLogin } from '../../store/slices/user/userSlice';
-import { authUser } from '../../store/slices/user/userThunks';
+import { useAppDispatch } from '../../store/hooks';
+import { useLogInUserMutation } from '../../store/slices/user/authApi';
+import { setIsUserLogIn, setLogin, setToken } from '../../store/slices/user/userSlice';
 
 interface IFormInput {
   login: string;
@@ -27,26 +27,27 @@ export const SignInForm = () => {
     control,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm<IFormInput>({
     mode: 'onChange',
   });
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { isUserLogIn } = useAppSelector((state) => state.user);
+  const [logInUser, { error: logInError }] = useLogInUserMutation();
 
-  const onSubmit: SubmitHandler<IFormInput> = (data: IFormInput) => {
+  const onSubmit: SubmitHandler<IFormInput> = async (data: IFormInput) => {
+    const token = await logInUser({ login: data.login, password: data.password });
+    dispatch(setToken(token));
+    dispatch(setIsUserLogIn(true));
     dispatch(setLogin(data.login));
-    dispatch(authUser(data));
+    toast.success(t('youveSuccessfullySignedIn'));
+    navigate(ROUTES.MAIN.path);
   };
 
   useEffect(() => {
-    if (isUserLogIn) {
-      reset();
-      toast.success(t('youveSuccessfullySignedIn'));
-      navigate(ROUTES.MAIN.path);
+    if (logInError) {
+      toast.error(t('wrongLoginOrPassword'));
     }
-  }, [isUserLogIn, navigate, reset, t]);
+  }, [logInError, t]);
   return (
     <form onSubmit={handleSubmit(onSubmit)} autoComplete="false">
       <Controller

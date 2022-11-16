@@ -9,6 +9,8 @@
   "name": "Name",
   "login": "Login",
   "password": "Password",
+  "verifyPassword": "Verify password",
+  "pswdNotMach": "Passwords do not mach",
   "myTasks": "My Tasks",
   "boards": "Boards",
   "newBoard": "New Board",
