@@ -1,19 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-export type ColumnType = {
-  _id: string;
-  title: string;
-  order: number;
-  boardId: string;
-};
-
-export type FoundedBoardType = {
-  _id: string;
-  title: string;
-  owner: string;
-  users: string[];
-};
-
 type BoardStateType = {
   isModalOpened: boolean;
 };

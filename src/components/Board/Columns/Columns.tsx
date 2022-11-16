@@ -1,7 +1,6 @@
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
-import Typography from '@mui/joy/Typography';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
@@ -11,6 +10,7 @@ import { useAppDispatch } from '../../../store/hooks';
 
 import { useGetColumnsInBoardQuery } from '../../../store/slices/board/boardApi';
 import { openAddColumnModal } from '../../../store/slices/board/boardSlice';
+import { Column } from '../Column';
 
 export const Columns = () => {
   const { t } = useTranslation();
@@ -28,13 +28,7 @@ export const Columns = () => {
     dispatch(openAddColumnModal());
   };
 
-  const boardColumns = data?.map((column) => (
-    <Box key={column._id} sx={{ width: 260, flexShrink: 0 }}>
-      <Typography component="h4" sx={{ fontSize: { xs: 16, sm: 24 } }}>
-        {column.title}
-      </Typography>
-    </Box>
-  ));
+  const boardColumns = data?.map((column) => <Column key={column._id} column={column} />);
 
   return (
     <Box sx={{ flexGrow: 1, position: 'relative' }}>
