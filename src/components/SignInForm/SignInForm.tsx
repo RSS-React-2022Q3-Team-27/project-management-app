@@ -33,7 +33,7 @@ export const SignInForm = () => {
   });
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { isUserLogIn, locale } = useAppSelector((state) => state.user);
+  const { isUserLogIn } = useAppSelector((state) => state.user);
 
   const onSubmit: SubmitHandler<IFormInput> = (data: IFormInput) => {
     dispatch(setLogin(data.login));
@@ -46,7 +46,7 @@ export const SignInForm = () => {
       toast.success(t('youveSuccessfullySignedIn'));
       navigate(ROUTES.MAIN.path);
     }
-  }, [isUserLogIn, locale, navigate, reset, t]);
+  }, [isUserLogIn, navigate, reset, t]);
   return (
     <form onSubmit={handleSubmit(onSubmit)} autoComplete="false">
       <Controller

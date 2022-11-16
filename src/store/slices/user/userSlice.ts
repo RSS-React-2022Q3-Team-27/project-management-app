@@ -2,10 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import { authUser, registerUser } from './userThunks';
 
-import { AppLanguage } from '../../../types/LanguageOptions';
 import { LocalStorageKeys } from '../../../types/LocalStorageKeys';
 import { getLoginState } from '../../../utils/getLoginState';
-import { getUserLocale } from '../../../utils/getUserLocale';
 import { getValueLocalStorage } from '../../../utils/getValueLocalStorage';
 import { removeValueLocalStorage } from '../../../utils/removeValueLocalStorage';
 import { setValueLocalStorage } from '../../../utils/setValueLocalStorage';
@@ -25,7 +23,6 @@ export interface IInitialState {
   isUserLogIn: boolean;
   logInErrorCode: number;
   registrationErrorCode: number;
-  locale: AppLanguage;
 }
 
 const initialState: IInitialState = {
@@ -36,7 +33,6 @@ const initialState: IInitialState = {
   logInErrorCode: 0,
   isUserLogIn: getLoginState(),
   registrationErrorCode: 0,
-  locale: getUserLocale(),
 };
 
 const userSlice = createSlice({
@@ -75,11 +71,6 @@ const userSlice = createSlice({
 
     setLogin(state, { payload }) {
       state.login = payload;
-    },
-
-    setLocale(state, { payload }) {
-      state.locale = payload;
-      setValueLocalStorage(LocalStorageKeys.locale, payload);
     },
   },
   extraReducers: (builder) => {
@@ -125,5 +116,5 @@ const userSlice = createSlice({
   },
 });
 
-export const { setId, setLogin, userLogOut, setLocale, setIsUserLogIn, setUserInfo, setToken } = userSlice.actions;
+export const { setId, setLogin, userLogOut, setIsUserLogIn, setUserInfo, setToken } = userSlice.actions;
 export default userSlice.reducer;
