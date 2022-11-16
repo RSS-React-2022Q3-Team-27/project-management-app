@@ -13,7 +13,10 @@ export type ColumnType = {
 };
 
 export type CreateColumnType = {
-  title: string;
+  body: {
+    title: string;
+    order: number;
+  };
   id: string;
 };
 
@@ -24,7 +27,16 @@ export type FoundedBoardType = {
   users: string[];
 };
 
-type DeleteColumnType = {
+type UpdateColumnType = {
+  boardId: string;
+  columnId: string;
+  body: {
+    title: string;
+    order: number;
+  };
+};
+
+export type DeleteColumnType = {
   boardId: string;
   columnId: string;
 };
@@ -62,10 +74,16 @@ export const boardApi = createApi({
       query: (data) => ({
         url: `${API_PATH.boards}/${data.id}/${API_PATH.columns}`,
         method: 'POST',
-        body: {
-          title: data.title,
-          order: 0,
-        },
+        body: data.body,
+      }),
+      invalidatesTags: ['Columns'],
+    }),
+
+    updateColumn: build.mutation<ColumnType, UpdateColumnType>({
+      query: (data) => ({
+        url: `${API_PATH.boards}/${data.boardId}/${API_PATH.columns}/${data.columnId}`,
+        method: 'PUT',
+        body: data.body,
       }),
       invalidatesTags: ['Columns'],
     }),
@@ -80,5 +98,10 @@ export const boardApi = createApi({
   }),
 });
 
-export const { useGetBoardByIdQuery, useGetColumnsInBoardQuery, useCreateColumnMutation, useDeleteColumnMutation } =
-  boardApi;
+export const {
+  useGetBoardByIdQuery,
+  useGetColumnsInBoardQuery,
+  useCreateColumnMutation,
+  useUpdateColumnMutation,
+  useDeleteColumnMutation,
+} = boardApi;

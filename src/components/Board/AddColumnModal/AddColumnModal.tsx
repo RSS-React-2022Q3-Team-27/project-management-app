@@ -22,7 +22,7 @@ export const AddColumnModal = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { control, handleSubmit, reset } = useForm<AddColumnFormType>();
-  const { isModalOpened } = useAppSelector((state) => state.board);
+  const { isModalOpened, columnsLength } = useAppSelector((state) => state.board);
   const { id } = useParams();
   const [modalStatus, setModalStatus] = useState(false);
   const [createColumn, { isError }] = useCreateColumnMutation();
@@ -38,12 +38,15 @@ export const AddColumnModal = () => {
   };
 
   const onSubmit: SubmitHandler<AddColumnFormType> = async (formData: AddColumnFormType) => {
-    const title = formData.title;
+    const body = {
+      title: formData.title,
+      order: columnsLength,
+    };
 
     handleClose();
 
     if (id) {
-      await createColumn({ id, title }).unwrap();
+      await createColumn({ id, body }).unwrap();
 
       if (isError) {
         toast.error('Error');
