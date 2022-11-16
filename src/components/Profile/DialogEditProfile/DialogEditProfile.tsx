@@ -17,6 +17,7 @@ import { loginValidate } from './loginValidate';
 import { nameValidate } from './nameValidate';
 
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
+import { useGetUsersQuery } from '../../../store/slices/user/userApi';
 import { setLogInErrorCode } from '../../../store/slices/user/userSlice';
 import { authUser, ICreateUser, updateUser } from '../../../store/slices/user/userThunks';
 
@@ -33,7 +34,8 @@ export const DialogEditProfile = ({ openDialog, isDialogOpen }: IProps) => {
   const [newLogin, setNewLogin] = useState(login);
   const [password, setPassword] = useState('');
   const [changeInput, setChangeInput] = useState(true);
-  const [data, setData] = useState<null | ICreateUser>(null);
+  const { data, isLoading, isError, error } = useGetUsersQuery(undefined);
+  console.log(data, isLoading, isError, error);
 
   const onClose = () => {
     openDialog(false);
@@ -49,13 +51,13 @@ export const DialogEditProfile = ({ openDialog, isDialogOpen }: IProps) => {
     setPassword(e.target.value);
   };
 
-  useEffect(() => {
-    if (logInErrorCode === 200) {
-      dispatch(updateUser({ name: newName, login: newLogin, password: 'test' }));
-      console.log('updateUser');
-      dispatch(setLogInErrorCode());
-    }
-  }, [dispatch, data, logInErrorCode, newName, newLogin, password, openDialog]);
+  // useEffect(() => {
+  //   if (logInErrorCode === 200) {
+  //     dispatch(updateUser({ name: newName, login: newLogin, password: 'test' }));
+  //     console.log('updateUser');
+  //     dispatch(setLogInErrorCode());
+  //   }
+  // }, [dispatch, data, logInErrorCode, newName, newLogin, password, openDialog]);
 
   return (
     <>

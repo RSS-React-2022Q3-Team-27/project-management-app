@@ -6,6 +6,7 @@ import boardSlice from './slices/board/boardSlice';
 
 import boardsSlice from './slices/boards/boardsSlice';
 import headerSlice from './slices/header/headerSlice';
+import { userApi } from './slices/user/userApi';
 
 import userSlice from './slices/user/userSlice';
 import usersSlice from './slices/users/usersSlice';
@@ -19,8 +20,9 @@ export const store = configureStore({
     app: appSlice,
     board: boardSlice,
     [boardApi.reducerPath]: boardApi.reducer,
+    [userApi.reducerPath]: userApi.reducer,
   },
-  middleware: (gDM) => gDM().concat(boardApi.middleware),
+  middleware: (gDM) => gDM().concat([boardApi.middleware, userApi.middleware]),
 });
 
 export type AppDispatch = typeof store.dispatch;

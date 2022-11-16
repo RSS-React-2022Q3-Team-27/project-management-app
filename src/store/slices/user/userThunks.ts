@@ -72,7 +72,7 @@ export const authUser = createAsyncThunk<ITokenData, Omit<ICreateUser, 'name'>, 
       if (axios.isAxiosError(error)) {
         const errorCode = error.response?.data.statusCode || 9999;
         if (errorCode === 401) {
-          toast.error(i18n.t(isUserLogIn ? 'wrongLoginOrPassword' : 'wrongPassword'));
+          toast.error(i18n.t('wrongLoginOrPassword'));
         } else {
           toast.error(i18n.t('serverError'));
         }

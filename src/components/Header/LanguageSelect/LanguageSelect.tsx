@@ -3,37 +3,26 @@ import Typography from '@mui/joy/Typography';
 import { ChangeEvent, Fragment, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-import { setLocale } from '../../../store/slices/user/userSlice';
-
 import { AppLanguage } from '../../../types/LanguageOptions';
+import { LocalStorageKeys } from '../../../types/LocalStorageKeys';
+import { getUserLocale } from '../../../utils/getUserLocale';
 
 export const LanguageSelect = () => {
   const { i18n } = useTranslation();
-  const [langSwitch, setLangSwitch] = useState(false);
-  const { locale } = useAppSelector((state) => state.user);
-  const dispatch = useAppDispatch();
+  const [langSwitch, setLangSwitch] = useState(getUserLocale());
 
   useEffect(() => {
-    i18n.changeLanguage(locale);
+    i18n.changeLanguage(langSwitch ? AppLanguage.ru : AppLanguage.en);
+  }, [i18n, langSwitch]);
 
-    if (locale === AppLanguage.en) {
-      setLangSwitch(false);
-    } else {
-      setLangSwitch(true);
-    }
-  }, [i18n, locale]);
+  const changeLocale = (locale: AppLanguage) => {
+    i18n.changeLanguage(locale);
+    localStorage.setItem(LocalStorageKeys.locale, locale);
+  };
 
   const handleSwitch = (event: ChangeEvent<HTMLInputElement>) => {
     setLangSwitch(event.target.checked);
-
-    if (event.target.checked) {
-      dispatch(setLocale(AppLanguage.ru));
-      i18n.changeLanguage(AppLanguage.ru);
-    } else {
-      dispatch(setLocale(AppLanguage.en));
-      i18n.changeLanguage(AppLanguage.en);
-    }
+    event.target.checked ? changeLocale(AppLanguage.ru) : changeLocale(AppLanguage.en);
   };
 
   return (

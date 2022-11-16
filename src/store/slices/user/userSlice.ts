@@ -2,10 +2,8 @@ import { createSlice } from '@reduxjs/toolkit';
 
 import { authUser, registerUser, updateUser } from './userThunks';
 
-import { AppLanguage } from '../../../types/LanguageOptions';
 import { LocalStorageKeys } from '../../../types/LocalStorageKeys';
 import { getLoginState } from '../../../utils/getLoginState';
-import { getUserLocale } from '../../../utils/getUserLocale';
 import { getValueLocalStorage } from '../../../utils/getValueLocalStorage';
 import { removeValueLocalStorage } from '../../../utils/removeValueLocalStorage';
 import { setValueLocalStorage } from '../../../utils/setValueLocalStorage';
@@ -26,7 +24,6 @@ export interface IInitialState {
   logInErrorCode: number;
   registrationErrorCode: number;
   updateError: number;
-  locale: AppLanguage;
 }
 
 const initialState: IInitialState = {
@@ -38,7 +35,6 @@ const initialState: IInitialState = {
   isUserLogIn: getLoginState(),
   registrationErrorCode: 0,
   updateError: 0,
-  locale: getUserLocale(),
 };
 
 const userSlice = createSlice({
@@ -56,6 +52,8 @@ const userSlice = createSlice({
     },
 
     setUserInfo(state, { payload }) {
+      console.log(payload);
+
       setValueLocalStorage(LocalStorageKeys.userId, payload._id);
       state.login = payload.login;
       state.id = payload._id;
@@ -81,11 +79,6 @@ const userSlice = createSlice({
 
     setLogInErrorCode(state) {
       state.logInErrorCode = 0;
-    },
-
-    setLocale(state, { payload }) {
-      state.locale = payload;
-      setValueLocalStorage(LocalStorageKeys.locale, payload);
     },
   },
   extraReducers: (builder) => {
@@ -148,6 +141,6 @@ const userSlice = createSlice({
   },
 });
 
-export const { setId, setLogin, userLogOut, setLocale, setIsUserLogIn, setUserInfo, setToken, setLogInErrorCode } =
+export const { setId, setLogin, userLogOut, setIsUserLogIn, setUserInfo, setToken, setLogInErrorCode } =
   userSlice.actions;
 export default userSlice.reducer;

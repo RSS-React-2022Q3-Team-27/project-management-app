@@ -39,6 +39,7 @@ export const getUsers = createAsyncThunk<IUserInfo[], undefined, { rejectValue: 
       if (!isUserLogIn) {
         dispatch(setIsUserLogIn(true));
       }
+
       dispatch(setUserInfo(id ? getUserDataById(data, id) : getUserDataByLogin(data, login)));
       return data;
     } catch (error) {
