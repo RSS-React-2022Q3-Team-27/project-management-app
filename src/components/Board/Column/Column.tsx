@@ -33,10 +33,12 @@ export const Column: FC<ColumnPropsType> = ({ column, setColumnId }) => {
           <DeleteIcon onClick={onClickDelete} />
         </IconButton>
       </Box>
-      <Box sx={{ height: '100%', border: 1, borderColor: 'grey.200', borderRadius: 8 }}></Box>
-      <Button startDecorator={<AddRoundedIcon />} sx={{ width: 260 }} variant="outlined" color="neutral">
-        Add task
-      </Button>
+      <Box sx={{ height: '100%', border: 1, borderColor: 'grey.200', borderRadius: 8 }}>
+        {'tasks'}
+        <Button startDecorator={<AddRoundedIcon />} sx={{ width: 260 }} variant="outlined" color="neutral">
+          Add task
+        </Button>
+      </Box>
     </Box>
   );
 };
