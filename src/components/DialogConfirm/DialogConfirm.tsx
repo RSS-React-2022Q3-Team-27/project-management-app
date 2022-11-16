@@ -32,7 +32,7 @@ export const DialogConfirm = () => {
       <Modal
         aria-labelledby="alert-dialog-modal-title"
         aria-describedby="alert-dialog-modal-description"
-        open={typeof contextState.cb === 'function' ? true : false}
+        open={typeof contextState.cb === 'function'}
         onClose={onClose}
       >
         <ModalDialog variant="outlined" role="alertdialog">
