@@ -5,27 +5,26 @@ import Divider from '@mui/joy/Divider';
 import Modal from '@mui/joy/Modal';
 import ModalDialog from '@mui/joy/ModalDialog';
 import Typography from '@mui/joy/Typography';
-import { FC } from 'react';
+import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { setConfirmOpened } from '../../store/slices/app/appSlice';
+import { Context } from '../../Context/Context';
+import { ReducerTypes } from '../../Context/contextReducer/ReducerTypes';
 
-type ConfirmPropsType = {
-  onConfirm: () => void;
-};
-
-export const DialogConfirm: FC<ConfirmPropsType> = (props) => {
-  const { confirmOpened } = useAppSelector((state) => state.app);
-  const dispatch = useAppDispatch();
+export const DialogConfirm = () => {
+  const { contextState, contextDispatch } = useContext(Context);
   const { t } = useTranslation();
 
   const onClose = () => {
-    dispatch(setConfirmOpened(false));
+    contextDispatch({ type: ReducerTypes.null, payload: null });
   };
+
   const onClick = () => {
-    props.onConfirm();
-    dispatch(setConfirmOpened(false));
+    if (contextState.cb) {
+      console.log('delete');
+      contextState.cb();
+      contextDispatch({ type: ReducerTypes.null, payload: null });
+    }
   };
 
   return (
@@ -33,7 +32,7 @@ export const DialogConfirm: FC<ConfirmPropsType> = (props) => {
       <Modal
         aria-labelledby="alert-dialog-modal-title"
         aria-describedby="alert-dialog-modal-description"
-        open={confirmOpened}
+        open={typeof contextState.cb === 'function'}
         onClose={onClose}
       >
         <ModalDialog variant="outlined" role="alertdialog">
