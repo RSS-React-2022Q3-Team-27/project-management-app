@@ -33,11 +33,12 @@ export const SignInForm = () => {
   } = useForm<IFormInput>({
     mode: 'onChange',
   });
-  const { login, token } = useAppSelector((state) => state.user);
+  const { login, token, id } = useAppSelector((state) => state.user);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [logInUser, { error: logInError }] = useLogInUserMutation();
-  const { data: usersData, refetch, error: getUsersError } = useGetUsersQuery(undefined);
+  const { data: usersData, refetch, error: getUsersError, isError } = useGetUsersQuery(undefined);
+  console.log(status);
 
   const onSubmit: SubmitHandler<IFormInput> = async (data: IFormInput) => {
     const token = await logInUser({ login: data.login, password: data.password }).unwrap();
@@ -63,10 +64,10 @@ export const SignInForm = () => {
   }, [logInError, t]);
 
   useEffect(() => {
-    if (getUsersError && token) {
-      toast.error(t('serverError'));
+    if (isError && token) {
+      toast.error(`${t('serverError')} getUsers`);
     }
-  }, [getUsersError, logInError, t, token]);
+  }, [getUsersError, isError, logInError, t, token]);
   return (
     <form onSubmit={handleSubmit(onSubmit)} autoComplete="false">
       <Controller
