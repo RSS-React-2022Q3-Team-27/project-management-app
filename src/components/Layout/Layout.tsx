@@ -3,6 +3,7 @@ import Sheet from '@mui/joy/Sheet';
 import { Outlet } from 'react-router-dom';
 
 import DialogAddBoard from '../DialogAddBoard/DialogAddBoard';
+import { DialogConfirm } from '../DialogConfirm/DialogConfirm';
 import { Footer } from '../Footer';
 
 import { Header } from '../Header';
@@ -19,6 +20,7 @@ export const Layout = () => {
       variant="soft"
     >
       <SideDrawer />
+      <DialogConfirm />
       <Header />
       <Box component="main">
         <Outlet />
