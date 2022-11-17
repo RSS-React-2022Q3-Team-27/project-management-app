@@ -14,7 +14,7 @@ import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { useCreateColumnMutation } from '../../../store/slices/board/boardApi';
 import { closeAddColumnModal } from '../../../store/slices/board/boardSlice';
 
-type AddColumnFormType = {
+export type AddColumnFormType = {
   title: string;
 };
 

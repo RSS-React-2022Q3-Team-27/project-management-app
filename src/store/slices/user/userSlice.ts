@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { authUser, registerUser } from './userThunks';
+import { authUser, registerUser, updateUser } from './userThunks';
 
 import { LocalStorageKeys } from '../../../types/LocalStorageKeys';
 import { getLoginState } from '../../../utils/getLoginState';
@@ -23,6 +23,7 @@ export interface IInitialState {
   isUserLogIn: boolean;
   logInErrorCode: number;
   registrationErrorCode: number;
+  updateError: number;
 }
 
 const initialState: IInitialState = {
@@ -33,6 +34,7 @@ const initialState: IInitialState = {
   logInErrorCode: 0,
   isUserLogIn: getLoginState(),
   registrationErrorCode: 0,
+  updateError: 0,
 };
 
 const userSlice = createSlice({
@@ -50,6 +52,8 @@ const userSlice = createSlice({
     },
 
     setUserInfo(state, { payload }) {
+      console.log(payload);
+
       setValueLocalStorage(LocalStorageKeys.userId, payload._id);
       state.login = payload.login;
       state.id = payload._id;
@@ -57,7 +61,8 @@ const userSlice = createSlice({
     },
 
     setToken(state, { payload }) {
-      state.token = payload;
+      setValueLocalStorage(LocalStorageKeys.token, payload.token);
+      state.token = payload.token;
     },
 
     setIsUserLogIn(state, { payload }) {
@@ -71,6 +76,10 @@ const userSlice = createSlice({
 
     setLogin(state, { payload }) {
       state.login = payload;
+    },
+
+    setLogInErrorCode(state) {
+      state.logInErrorCode = 0;
     },
   },
   extraReducers: (builder) => {
@@ -104,17 +113,35 @@ const userSlice = createSlice({
       .addCase(authUser.fulfilled, (state, { payload }) => {
         setValueLocalStorage(LocalStorageKeys.token, payload.token);
         state.token = payload.token;
+        state.logInErrorCode = 200;
       })
 
       .addCase(authUser.rejected, (state, { payload }) => {
-        console.log('authUser rejected');
-        state.isUserLogIn = false;
         if (payload) {
           state.logInErrorCode = payload.statusCode ? payload.statusCode : errorPlug;
+        }
+      });
+
+    builder
+      .addCase(updateUser.pending, (state) => {
+        state.updateError = 0;
+      })
+
+      .addCase(updateUser.fulfilled, (state, { payload }) => {
+        state.login = payload.login;
+        state.userName = payload.name;
+        state.id = payload._id;
+        setValueLocalStorage(LocalStorageKeys.userId, payload._id);
+      })
+
+      .addCase(updateUser.rejected, (state, { payload }) => {
+        if (payload) {
+          state.updateError = payload.statusCode ? payload.statusCode : errorPlug;
         }
       });
   },
 });
 
-export const { setId, setLogin, userLogOut, setIsUserLogIn, setUserInfo, setToken } = userSlice.actions;
+export const { setId, setLogin, userLogOut, setIsUserLogIn, setUserInfo, setToken, setLogInErrorCode } =
+  userSlice.actions;
 export default userSlice.reducer;

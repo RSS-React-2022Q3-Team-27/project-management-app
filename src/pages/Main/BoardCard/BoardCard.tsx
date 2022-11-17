@@ -27,7 +27,6 @@ export const BoardCard: React.FC<BoardCardPropsType> = ({ board }) => {
   const onClickDelete = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
     contextDispatch({ type: ReducerTypes.cb, payload: () => dispatch(deleteBoard(board._id)) });
-    console.log('setCb');
   };
 
   const onClickEdit = (e: React.MouseEvent<HTMLAnchorElement>) => {

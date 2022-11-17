@@ -4,7 +4,7 @@ import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
 import IconButton from '@mui/joy/IconButton';
 import Typography from '@mui/joy/Typography';
-import { FC, useContext } from 'react';
+import { FC, useContext, useState } from 'react';
 
 import { Context } from '../../../Context/Context';
 import { ReducerTypes } from '../../../Context/contextReducer/ReducerTypes';
@@ -13,6 +13,7 @@ import { useAppDispatch } from '../../../store/hooks';
 import { ColumnType, useDeleteColumnMutation } from '../../../store/slices/board/boardApi';
 import { useGetTasksByColumnIdQuery } from '../../../store/slices/tasks/tasksApi';
 import { openAddTaskModal, setDataForAddTask } from '../../../store/slices/tasks/tasksSlice';
+import { ColumnTitleInput } from '../ColumnTitleInput';
 
 type ColumnPropsType = {
   column: ColumnType;
@@ -26,6 +27,8 @@ export const Column: FC<ColumnPropsType> = ({ column }) => {
   const { data } = useGetTasksByColumnIdQuery({ boardId, columnId });
 
   const tasks = data?.map((task) => <pre key={task._id}>{task.title}</pre>);
+
+  const [isInputActive, setInputActive] = useState(false);
 
   const onClickDelete = async () => {
     contextDispatch({
@@ -41,13 +44,19 @@ export const Column: FC<ColumnPropsType> = ({ column }) => {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, width: 260, flexShrink: 0, height: '100%' }}>
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Typography component="h3" level="h6">
-          {title}
-        </Typography>
-        <IconButton variant="outlined" color="neutral">
-          <DeleteIcon onClick={onClickDelete} />
-        </IconButton>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 1 }}>
+        {isInputActive ? (
+          <ColumnTitleInput column={column} setInputActive={setInputActive} />
+        ) : (
+          <>
+            <Typography component="h3" level="h6" sx={{ width: '100%' }} onClick={() => setInputActive(true)}>
+              {title}
+            </Typography>
+            <IconButton variant="outlined" color="neutral" onClick={onClickDelete}>
+              <DeleteIcon />
+            </IconButton>
+          </>
+        )}
       </Box>
       <Box sx={{ height: '100%', border: 1, borderColor: 'grey.200', borderRadius: 8 }}>
         {tasks}

@@ -21,7 +21,6 @@ export const DialogConfirm = () => {
 
   const onClick = () => {
     if (contextState.cb) {
-      console.log('delete');
       contextState.cb();
       contextDispatch({ type: ReducerTypes.null, payload: null });
     }
