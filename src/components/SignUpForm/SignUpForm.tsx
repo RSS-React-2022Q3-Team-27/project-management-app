@@ -5,7 +5,7 @@ import Button from '@mui/joy/Button';
 
 import TextField from '@mui/joy/TextField';
 import Typography from '@mui/joy/Typography';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
@@ -13,24 +13,33 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { ROUTES } from '../../constants/routes';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { authUser, registerUser } from '../../store/slices/user/userThunks';
+import { useAppDispatch } from '../../store/hooks';
+import { useCreateUserMutation, useLogInUserMutation } from '../../store/slices/user/authApi';
+import { setIsUserLogIn, setToken, setUserInfo } from '../../store/slices/user/userSlice';
 
 interface IFormInput {
   name: string;
   login: string;
   password: string;
+  passwordConfirm: string;
+}
+
+export interface IRegError {
+  status: number;
+  data: {
+    statusCode: number;
+    message: string;
+  };
 }
 
 export const SignUpForm = () => {
   const { t } = useTranslation();
-
-  const [password, setPassword] = useState('');
+  const [createUser, { error: regError }] = useCreateUserMutation();
+  const [logInUser, { error: logInError }] = useLogInUserMutation();
   const {
     control,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm<IFormInput>({
     mode: 'onChange',
   });
@@ -38,26 +47,35 @@ export const SignUpForm = () => {
   const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
-  const { login, isUserLogIn } = useAppSelector((state) => state.user);
 
-  const onSubmit: SubmitHandler<IFormInput> = (data: IFormInput) => {
-    dispatch(registerUser(data));
-    setPassword(data.password);
+  const onSubmit: SubmitHandler<IFormInput> = async (data: IFormInput) => {
+    const { passwordConfirm, ...restData } = data;
+    if (passwordConfirm === restData.password) {
+      const userData = await createUser(restData).unwrap();
+      dispatch(setUserInfo(userData));
+      const token = await logInUser({ login: data.login, password: data.password });
+      dispatch(setToken(token));
+      dispatch(setIsUserLogIn(true));
+      navigate(ROUTES.MAIN.path);
+    } else {
+      toast.error(t('pswdNotMach'));
+    }
   };
 
   useEffect(() => {
-    if (login) {
-      dispatch(authUser({ login, password }));
+    const er = regError as IRegError;
+    if (er && er.status === 409) {
+      toast.error(t('loginAlreadyExist'));
+    } else if (er) {
+      toast.error(t('serverError'));
     }
-  }, [dispatch, login, password]);
+  }, [regError, t]);
 
   useEffect(() => {
-    if (isUserLogIn) {
-      reset();
-      toast.success(t('youveSuccessfullySignedIn'));
-      navigate(ROUTES.MAIN.path);
+    if (logInError) {
+      toast.error(t('serverError'));
     }
-  }, [isUserLogIn, navigate, reset, t]);
+  }, [logInError, t]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} autoComplete="false">
@@ -78,6 +96,7 @@ export const SignUpForm = () => {
         render={({ field }) => (
           <TextField
             {...field}
+            required
             type="text"
             label={t('name')}
             placeholder={t('name')}
@@ -109,6 +128,7 @@ export const SignUpForm = () => {
         render={({ field }) => (
           <TextField
             {...field}
+            required
             type="text"
             label={t('login')}
             autoComplete="off"
@@ -135,6 +155,7 @@ export const SignUpForm = () => {
         render={({ field }) => (
           <TextField
             {...field}
+            required
             type="password"
             autoComplete="off"
             placeholder={t('password')}
@@ -146,6 +167,33 @@ export const SignUpForm = () => {
       {errors.password && (
         <Typography level="body2" color="danger">
           {errors.password.message}
+        </Typography>
+      )}
+      <Controller
+        name="passwordConfirm"
+        defaultValue=""
+        control={control}
+        rules={{
+          required: {
+            value: true,
+            message: t('fieldIsRequire'),
+          },
+        }}
+        render={({ field }) => (
+          <TextField
+            {...field}
+            required
+            type="password"
+            autoComplete="off"
+            placeholder={t('verifyPassword')}
+            label={t('verifyPassword')}
+            startDecorator={<KeyRoundedIcon />}
+          />
+        )}
+      />
+      {errors.passwordConfirm && (
+        <Typography level="body2" color="danger">
+          {errors.passwordConfirm.message}
         </Typography>
       )}
       <Button type="submit" sx={{ mt: 1 }}>

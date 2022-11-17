@@ -4,46 +4,16 @@ import { API_PATH } from '../../../constants/API_PATH';
 import { URL } from '../../../constants/URL';
 
 import { RootState } from '../../store';
+import { ICreateUser } from '../user/userThunks';
 import { IUserInfo } from '../users/usersSlice';
 
-export type ColumnType = {
-  _id: string;
-  title: string;
-  order: number;
-  boardId: string;
-};
-
-export type CreateColumnType = {
-  body: {
-    title: string;
-    order: number;
-  };
+interface IUpdateUserBody {
   id: string;
-};
+  body: ICreateUser;
+}
 
-export type FoundedBoardType = {
-  _id: string;
-  title: string;
-  owner: string;
-  users: string[];
-};
-
-type UpdateColumnType = {
-  boardId: string;
-  columnId: string;
-  body: {
-    title: string;
-    order: number;
-  };
-};
-
-export type DeleteColumnType = {
-  boardId: string;
-  columnId: string;
-};
-
-export const userApi = createApi({
-  reducerPath: 'userApi',
+export const usersApi = createApi({
+  reducerPath: 'usersApi',
   baseQuery: fetchBaseQuery({
     baseUrl: `${URL}`,
     prepareHeaders: (headers, { getState }) => {
@@ -61,12 +31,19 @@ export const userApi = createApi({
         result
           ? [...result.map(({ _id }) => ({ type: 'Users' as const, _id })), { type: 'Users', _id: 'LIST' }]
           : [{ type: 'Users', id: 'LIST' }],
+      // forceRefetch({ currentArg, previousArg }) {
+      //   return currentArg !== previousArg;
+      // },
     }),
     deleteUser: build.mutation<IUserInfo, string>({
       query: (id) => ({ url: `${API_PATH.users}/${id}`, method: 'DELETE' }),
       invalidatesTags: [{ type: 'Users', id: 'LIST' }],
     }),
+    updateUser: build.mutation<IUserInfo, IUpdateUserBody>({
+      query: ({ body, id }) => ({ url: `${API_PATH.users}/${id}`, method: 'PUT', body }),
+      invalidatesTags: [{ type: 'Users', id: 'LIST' }],
+    }),
   }),
 });
 
-export const { useGetUsersQuery, useDeleteUserMutation } = userApi;
+export const { useGetUsersQuery, useDeleteUserMutation, useUpdateUserMutation } = usersApi;

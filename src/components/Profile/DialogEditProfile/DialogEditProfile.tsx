@@ -7,19 +7,17 @@ import Modal from '@mui/joy/Modal';
 import ModalDialog from '@mui/joy/ModalDialog';
 import TextField from '@mui/joy/TextField';
 import Typography from '@mui/joy/Typography';
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-
-import { toast } from 'react-toastify';
 
 import { loginValidate } from './loginValidate';
 
 import { nameValidate } from './nameValidate';
 
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-import { useGetUsersQuery } from '../../../store/slices/user/userApi';
-import { setLogInErrorCode } from '../../../store/slices/user/userSlice';
-import { authUser, ICreateUser, updateUser } from '../../../store/slices/user/userThunks';
+import { useLogInUserMutation } from '../../../store/slices/user/authApi';
+import { setUserInfo } from '../../../store/slices/user/userSlice';
+import { useUpdateUserMutation } from '../../../store/slices/users/usersApi';
 
 interface IProps {
   openDialog: (value: boolean) => void;
@@ -29,35 +27,32 @@ interface IProps {
 export const DialogEditProfile = ({ openDialog, isDialogOpen }: IProps) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
-  const { userName, login, logInErrorCode, updateError } = useAppSelector((state) => state.user);
+  const { userName, login, id } = useAppSelector((state) => state.user);
   const [newName, setNewName] = useState(userName);
   const [newLogin, setNewLogin] = useState(login);
   const [password, setPassword] = useState('');
-  const [changeInput, setChangeInput] = useState(true);
-  const { data, isLoading, isError, error } = useGetUsersQuery(undefined);
-  console.log(data, isLoading, isError, error);
+  const [logInUser, { error: logInError }] = useLogInUserMutation();
+  const [updateUser, { error: updateError }] = useUpdateUserMutation();
 
   const onClose = () => {
     openDialog(false);
   };
 
-  const confirmHandler = () => {
-    setChangeInput(false);
-    dispatch(authUser({ login, password }));
+  const confirmHandler = async () => {
+    if (loginValidate(newLogin) && nameValidate(newName)) {
+      await logInUser({ login, password }).unwrap();
+      const newUserData = await updateUser({
+        id,
+        body: {
+          login: newLogin,
+          name: newName,
+          password,
+        },
+      }).unwrap();
+      console.log(newUserData);
+      dispatch(setUserInfo(newUserData));
+    }
   };
-
-  const passwordOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setChangeInput(true);
-    setPassword(e.target.value);
-  };
-
-  // useEffect(() => {
-  //   if (logInErrorCode === 200) {
-  //     dispatch(updateUser({ name: newName, login: newLogin, password: 'test' }));
-  //     console.log('updateUser');
-  //     dispatch(setLogInErrorCode());
-  //   }
-  // }, [dispatch, data, logInErrorCode, newName, newLogin, password, openDialog]);
 
   return (
     <>
@@ -95,7 +90,7 @@ export const DialogEditProfile = ({ openDialog, isDialogOpen }: IProps) => {
             startDecorator={<PersonRoundedIcon />}
             required
           />
-          {updateError === 409 && (
+          {updateError && (
             <Typography level="body2" color="danger">
               {t('loginAlreadyExist')}
             </Typography>
@@ -106,14 +101,14 @@ export const DialogEditProfile = ({ openDialog, isDialogOpen }: IProps) => {
           <TextField
             name="password"
             value={password}
-            onChange={passwordOnChange}
+            onChange={(e) => setPassword(e.target.value)}
             type="password"
             autoComplete="off"
             placeholder={t('password')}
             label={t('confirmByPassword')}
             startDecorator={<KeyRoundedIcon />}
           />
-          {logInErrorCode === 401 && !changeInput && (
+          {logInError && (
             <Typography level="body2" color="danger">
               {t('wrongPassword')}
             </Typography>

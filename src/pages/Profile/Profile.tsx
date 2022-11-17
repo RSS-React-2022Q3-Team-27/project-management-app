@@ -12,9 +12,8 @@ import { Counter } from '../../components/Profile/Counter/Counter';
 import { DialogEditProfile } from '../../components/Profile/DialogEditProfile/DialogEditProfile';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { setConfirmOpened } from '../../store/slices/app/appSlice';
-import { useDeleteUserMutation } from '../../store/slices/user/userApi';
 import { userLogOut } from '../../store/slices/user/userSlice';
-// import { deleteUser } from '../../store/slices/user/userThunks';
+import { useDeleteUserMutation } from '../../store/slices/users/usersApi';
 
 export const Profile = () => {
   const dispatch = useAppDispatch();
@@ -25,8 +24,7 @@ export const Profile = () => {
   const delUser = async () => {
     console.log('delete', id);
     await deleteUser(id).unwrap();
-    // dispatch(userLogOut());
-    // dispatch(deleteUser());
+    dispatch(userLogOut());
   };
   return (
     <Sheet

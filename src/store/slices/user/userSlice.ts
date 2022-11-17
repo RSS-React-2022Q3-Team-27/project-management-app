@@ -61,7 +61,8 @@ const userSlice = createSlice({
     },
 
     setToken(state, { payload }) {
-      state.token = payload;
+      setValueLocalStorage(LocalStorageKeys.token, payload.token);
+      state.token = payload.token;
     },
 
     setIsUserLogIn(state, { payload }) {

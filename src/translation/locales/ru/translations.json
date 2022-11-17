@@ -9,6 +9,8 @@
   "name": "Имя",
   "login": "Логин",
   "password": "Пароль",
+  "verifyPassword": "Подтвердите пароль",
+  "pswdNotMach": "Пароли не совпадают",
   "myTasks": "Мои задачи",
   "boards": "Доски",
   "newBoard": "Новая доска",

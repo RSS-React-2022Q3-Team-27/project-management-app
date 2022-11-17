@@ -4,7 +4,7 @@ import Button from '@mui/joy/Button';
 
 import TextField from '@mui/joy/TextField';
 import Typography from '@mui/joy/Typography';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
@@ -13,8 +13,11 @@ import { toast } from 'react-toastify';
 
 import { ROUTES } from '../../constants/routes';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { setLogin } from '../../store/slices/user/userSlice';
-import { authUser } from '../../store/slices/user/userThunks';
+import { useLogInUserMutation } from '../../store/slices/user/authApi';
+import { setIsUserLogIn, setLogin, setToken, setUserInfo } from '../../store/slices/user/userSlice';
+import { useGetUsersQuery } from '../../store/slices/users/usersApi';
+import { getUserDataByLogin } from '../../store/slices/users/usersThunks';
+import { IRegError } from '../SignUpForm/SignUpForm';
 
 interface IFormInput {
   login: string;
@@ -23,33 +26,48 @@ interface IFormInput {
 
 export const SignInForm = () => {
   const { t } = useTranslation();
-  const [userLogin, setUserLogin] = useState('');
   const {
     control,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm<IFormInput>({
     mode: 'onChange',
   });
+  const { login, token } = useAppSelector((state) => state.user);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { isUserLogIn } = useAppSelector((state) => state.user);
+  const [logInUser, { error: logInError }] = useLogInUserMutation();
+  const { data: usersData, refetch, error: getUsersError } = useGetUsersQuery(undefined);
 
-  const onSubmit: SubmitHandler<IFormInput> = (data: IFormInput) => {
-    // setUserLogin(data.login);
+  const onSubmit: SubmitHandler<IFormInput> = async (data: IFormInput) => {
+    const token = await logInUser({ login: data.login, password: data.password }).unwrap();
+    console.log(token);
+    dispatch(setToken(token));
+    dispatch(setIsUserLogIn(true));
     dispatch(setLogin(data.login));
-    dispatch(authUser(data));
+    toast.success(t('youveSuccessfullySignedIn'));
+    refetch();
   };
 
   useEffect(() => {
-    if (isUserLogIn) {
-      // dispatch(setLogin(userLogin));
-      reset();
-      toast.success(t('youveSuccessfullySignedIn'));
+    if (usersData) {
+      dispatch(setUserInfo(getUserDataByLogin(usersData, login)));
       navigate(ROUTES.MAIN.path);
     }
-  }, [dispatch, isUserLogIn, navigate, reset, t, userLogin]);
+  }, [dispatch, login, navigate, usersData]);
+
+  useEffect(() => {
+    const error = logInError as IRegError;
+    if (error) {
+      toast.error(t(error.status === 401 ? 'wrongLoginOrPassword' : 'serverError'));
+    }
+  }, [logInError, t]);
+
+  useEffect(() => {
+    if (getUsersError && token) {
+      toast.error(t('serverError'));
+    }
+  }, [getUsersError, logInError, t, token]);
   return (
     <form onSubmit={handleSubmit(onSubmit)} autoComplete="false">
       <Controller
