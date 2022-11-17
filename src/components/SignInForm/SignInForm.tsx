@@ -65,7 +65,7 @@ export const SignInForm = () => {
 
   useEffect(() => {
     if (isError && token) {
-      toast.error(`${t('serverError')} getUsers`);
+      toast.error(t('serverError'));
     }
   }, [getUsersError, isError, logInError, t, token]);
   return (
