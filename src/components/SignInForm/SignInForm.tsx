@@ -37,7 +37,7 @@ export const SignInForm = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [logInUser, { error: logInError }] = useLogInUserMutation();
-  const { data: usersData, refetch, error: getUsersError } = useGetUsersQuery(undefined);
+  const { data: usersData, refetch, isError } = useGetUsersQuery(undefined);
 
   const onSubmit: SubmitHandler<IFormInput> = async (data: IFormInput) => {
     const token = await logInUser({ login: data.login, password: data.password }).unwrap();
@@ -63,10 +63,10 @@ export const SignInForm = () => {
   }, [logInError, t]);
 
   useEffect(() => {
-    if (getUsersError && token) {
+    if (isError && token) {
       toast.error(t('serverError'));
     }
-  }, [getUsersError, logInError, t, token]);
+  }, [isError, logInError, t, token]);
   return (
     <form onSubmit={handleSubmit(onSubmit)} autoComplete="false">
       <Controller
