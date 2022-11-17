@@ -33,12 +33,11 @@ export const SignInForm = () => {
   } = useForm<IFormInput>({
     mode: 'onChange',
   });
-  const { login, token, id } = useAppSelector((state) => state.user);
+  const { login, token } = useAppSelector((state) => state.user);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [logInUser, { error: logInError }] = useLogInUserMutation();
   const { data: usersData, refetch, error: getUsersError, isError } = useGetUsersQuery(undefined);
-  console.log(status);
 
   const onSubmit: SubmitHandler<IFormInput> = async (data: IFormInput) => {
     const token = await logInUser({ login: data.login, password: data.password }).unwrap();
