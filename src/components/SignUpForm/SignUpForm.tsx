@@ -24,7 +24,7 @@ interface IFormInput {
   passwordConfirm: string;
 }
 
-interface IRegError {
+export interface IRegError {
   status: number;
   data: {
     statusCode: number;

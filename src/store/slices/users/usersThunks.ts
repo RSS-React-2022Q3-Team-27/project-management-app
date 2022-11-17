@@ -17,9 +17,9 @@ export interface IError {
   message: string;
 }
 
-const getUserDataByLogin = (users: IUserInfo[], login: string) => users.find((user) => user.login === login);
+export const getUserDataByLogin = (users: IUserInfo[], login: string) => users.find((user) => user.login === login);
 
-const getUserDataById = (users: IUserInfo[], id: string) => users.find((user) => user._id === id);
+export const getUserDataById = (users: IUserInfo[], id: string) => users.find((user) => user._id === id);
 
 export const getUsers = createAsyncThunk<IUserInfo[], undefined, { rejectValue: IError }>(
   'users/getUsers',
