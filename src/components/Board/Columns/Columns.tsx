@@ -1,15 +1,20 @@
-import { DragDropContext, DropResult, Droppable, Draggable } from '@hello-pangea/dnd';
+import { DragDropContext, DropResult, Droppable } from '@hello-pangea/dnd';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 
-import { useGetColumnsInBoardQuery } from '../../../store/slices/board/boardApi';
+import {
+  ColumnType,
+  UpdateSetOfColumns,
+  useGetColumnsInBoardQuery,
+  useUpdateSetOfColumnsMutation,
+} from '../../../store/slices/board/boardApi';
 import { openAddColumnModal, setColumnsLength } from '../../../store/slices/board/boardSlice';
 import { TaskType } from '../../../store/slices/tasks/tasksApi';
 import { Column } from '../Column';
@@ -18,23 +23,25 @@ export const Columns = () => {
   const { t } = useTranslation();
   const { id } = useParams<{ id?: string }>();
   const { data, isError } = useGetColumnsInBoardQuery(id || '');
+  const [updateSetOfColumns] = useUpdateSetOfColumnsMutation();
   const dispatch = useAppDispatch();
   const { columnsData } = useAppSelector((state) => state.board);
+  const [dataToRender, setDataToRender] = useState<ColumnType[]>([]);
 
   useEffect(() => {
     if (isError) {
       toast.error('Error');
+    } else if (data) {
+      setDataToRender([...data].sort((a, b) => a.order - b.order));
     }
-  }, [isError]);
-
-  console.log(data);
+  }, [data, isError]);
 
   const handleClick = () => {
     dispatch(openAddColumnModal());
     dispatch(setColumnsLength(data?.length));
   };
 
-  const onDragEnd = (result: DropResult) => {
+  const onDragEnd = async (result: DropResult) => {
     const { destination, source, type } = result;
 
     if (!destination) {
@@ -46,15 +53,22 @@ export const Columns = () => {
     }
 
     if (type === 'column') {
-      const updatedColumns = Array.from(data || []);
+      const updatedColumns = Array.from(dataToRender);
       const movedColumn = updatedColumns.splice(source.index, 1);
+      const columnsToUpdate: UpdateSetOfColumns[] = [];
+
       updatedColumns.splice(destination.index, 0, ...movedColumn);
 
-      updatedColumns.forEach((column, i) => (updatedColumns[i] = { ...column, order: i }));
+      updatedColumns.forEach((column, i) => {
+        columnsToUpdate.push({ _id: column._id, order: i });
 
-      console.log(data);
-      console.log(updatedColumns);
-      //make request to update updatedColumns set
+        return { ...column, order: i };
+      });
+
+      setDataToRender(updatedColumns);
+
+      await updateSetOfColumns(columnsToUpdate).unwrap();
+
       return;
     }
 
@@ -68,14 +82,14 @@ export const Columns = () => {
       newTasks.splice(destination.index, 0, ...movedTask);
       newTasks.forEach((task, i) => (newTasks[i] = { ...task, order: i }));
 
-      console.log(columnsData[startColumnId]);
-      console.log(newTasks);
+      // console.log(columnsData[startColumnId]);
+      // console.log(newTasks);
       //make request to update newTasks set
       return;
     }
 
     const startTasks: TaskType[] = Array.from(columnsData[startColumnId]);
-    const movedTask = startTasks.splice(source.index, 1);
+    // const movedTask = startTasks.splice(source.index, 1);
     startTasks.forEach((task, i) => (startTasks[i] = { ...task, order: i }));
 
     //get Tasks by endColumnId
@@ -85,7 +99,9 @@ export const Columns = () => {
     //make request to update [startTasks, finishTasks] set
   };
 
-  const boardColumns = data?.map((column, i) => <Column key={column._id} column={column} boardIndex={i} />);
+  const boardColumns = [...dataToRender].map((column, i) => (
+    <Column key={column._id} column={column} columns={dataToRender} boardIndex={i} />
+  ));
 
   return (
     <>
@@ -105,11 +121,7 @@ export const Columns = () => {
           <DragDropContext onDragEnd={onDragEnd}>
             <Droppable droppableId="all-columns" direction="horizontal" type="column">
               {(provided) => (
-                <Box
-                  {...provided.droppableProps}
-                  ref={provided.innerRef}
-                  sx={{ display: 'flex', gap: 2, height: '100%' }}
-                >
+                <Box {...provided.droppableProps} ref={provided.innerRef} sx={{ display: 'flex', height: '100%' }}>
                   {boardColumns}
                   {provided.placeholder}
                 </Box>

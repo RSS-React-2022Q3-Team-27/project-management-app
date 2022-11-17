@@ -41,6 +41,11 @@ export type DeleteColumnType = {
   columnId: string;
 };
 
+export type UpdateSetOfColumns = {
+  _id: string;
+  order: number;
+};
+
 export const boardApi = createApi({
   reducerPath: 'boardApi',
   baseQuery: fetchBaseQuery({
@@ -95,6 +100,15 @@ export const boardApi = createApi({
       }),
       invalidatesTags: ['Columns'],
     }),
+
+    updateSetOfColumns: build.mutation<ColumnType, UpdateSetOfColumns[]>({
+      query: (data) => ({
+        url: `${API_PATH.columnsSet}`,
+        method: 'PATCH',
+        body: data,
+      }),
+      invalidatesTags: ['Columns'],
+    }),
   }),
 });
 
@@ -104,4 +118,5 @@ export const {
   useCreateColumnMutation,
   useUpdateColumnMutation,
   useDeleteColumnMutation,
+  useUpdateSetOfColumnsMutation,
 } = boardApi;

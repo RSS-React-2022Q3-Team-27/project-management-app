@@ -34,8 +34,12 @@ const boardSlice = createSlice({
     saveColumnTasks(state, { payload }) {
       state.columnsData[payload.columnId] = payload.data;
     },
+    deleteColumnTasks(state, { payload }) {
+      delete state.columnsData[payload.columnId];
+    },
   },
 });
 
-export const { openAddColumnModal, closeAddColumnModal, setColumnsLength, saveColumnTasks } = boardSlice.actions;
+export const { openAddColumnModal, closeAddColumnModal, setColumnsLength, saveColumnTasks, deleteColumnTasks } =
+  boardSlice.actions;
 export default boardSlice.reducer;

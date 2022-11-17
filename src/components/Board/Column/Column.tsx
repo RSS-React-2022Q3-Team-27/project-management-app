@@ -12,22 +12,29 @@ import { Context } from '../../../Context/Context';
 import { ReducerTypes } from '../../../Context/contextReducer/ReducerTypes';
 import { useAppDispatch } from '../../../store/hooks';
 
-import { ColumnType, useDeleteColumnMutation } from '../../../store/slices/board/boardApi';
-import { saveColumnTasks } from '../../../store/slices/board/boardSlice';
+import {
+  ColumnType,
+  UpdateSetOfColumns,
+  useDeleteColumnMutation,
+  useUpdateSetOfColumnsMutation,
+} from '../../../store/slices/board/boardApi';
+import { deleteColumnTasks, saveColumnTasks } from '../../../store/slices/board/boardSlice';
 import { useGetTasksByColumnIdQuery } from '../../../store/slices/tasks/tasksApi';
 import { openAddTaskModal, setDataForAddTask } from '../../../store/slices/tasks/tasksSlice';
 import { ColumnTitleInput } from '../ColumnTitleInput';
 
 type ColumnPropsType = {
   column: ColumnType;
+  columns: ColumnType[];
   boardIndex: number;
 };
 
-export const Column: FC<ColumnPropsType> = ({ column, boardIndex }) => {
+export const Column: FC<ColumnPropsType> = ({ column, columns, boardIndex }) => {
   const { title, boardId, _id: columnId } = column;
   const dispatch = useAppDispatch();
   const { contextDispatch } = useContext(Context);
   const [deleteColumn] = useDeleteColumnMutation();
+  const [updateSetOfColumns] = useUpdateSetOfColumnsMutation();
   const { data } = useGetTasksByColumnIdQuery({ boardId, columnId });
 
   useEffect(() => {
@@ -48,10 +55,24 @@ export const Column: FC<ColumnPropsType> = ({ column, boardIndex }) => {
 
   const [isInputActive, setInputActive] = useState(false);
 
+  const handleDelete = async () => {
+    await deleteColumn({ boardId, columnId }).unwrap();
+
+    const newColumns = Array.from(columns);
+    const columnsToUpdate: UpdateSetOfColumns[] = [];
+
+    newColumns.splice(column.order, 1);
+    newColumns.forEach((column, i) => columnsToUpdate.push({ _id: column._id, order: i }));
+
+    await updateSetOfColumns(columnsToUpdate).unwrap();
+
+    dispatch(deleteColumnTasks(columnId));
+  };
+
   const onClickDelete = async () => {
     contextDispatch({
       type: ReducerTypes.cb,
-      payload: () => deleteColumn({ boardId, columnId }).unwrap(),
+      payload: () => handleDelete(),
     });
   };
 
@@ -66,7 +87,7 @@ export const Column: FC<ColumnPropsType> = ({ column, boardIndex }) => {
         <Box
           {...provided.draggableProps}
           ref={provided.innerRef}
-          sx={{ display: 'flex', flexDirection: 'column', gap: 1, width: 260, flexShrink: 0, height: '100%' }}
+          sx={{ display: 'flex', flexDirection: 'column', gap: 1, width: 260, flexShrink: 0, height: '100%', mx: 1 }}
         >
           <Box
             {...provided.dragHandleProps}
