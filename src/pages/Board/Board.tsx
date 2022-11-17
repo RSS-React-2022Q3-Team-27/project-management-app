@@ -8,6 +8,7 @@ import { useParams, Link as RouterLink } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { AddColumnModal } from '../../components/Board/AddColumnModal';
+import { AddTaskModal } from '../../components/Board/AddTaskModal';
 import { Columns } from '../../components/Board/Columns';
 
 import { ROUTES } from '../../constants/routes';
@@ -52,6 +53,7 @@ export const Board = () => {
       </Typography>
       <Columns />
       <AddColumnModal />
+      <AddTaskModal />
     </Box>
   );
 };

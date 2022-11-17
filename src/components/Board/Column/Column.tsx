@@ -8,8 +8,11 @@ import { FC, useContext, useState } from 'react';
 
 import { Context } from '../../../Context/Context';
 import { ReducerTypes } from '../../../Context/contextReducer/ReducerTypes';
+import { useAppDispatch } from '../../../store/hooks';
 
 import { ColumnType, useDeleteColumnMutation } from '../../../store/slices/board/boardApi';
+import { useGetTasksByColumnIdQuery } from '../../../store/slices/tasks/tasksApi';
+import { openAddTaskModal, setDataForAddTask } from '../../../store/slices/tasks/tasksSlice';
 import { ColumnTitleInput } from '../ColumnTitleInput';
 
 type ColumnPropsType = {
@@ -17,15 +20,26 @@ type ColumnPropsType = {
 };
 
 export const Column: FC<ColumnPropsType> = ({ column }) => {
+  const { title, boardId, _id: columnId } = column;
+  const dispatch = useAppDispatch();
   const { contextDispatch } = useContext(Context);
   const [deleteColumn] = useDeleteColumnMutation();
+  const { data } = useGetTasksByColumnIdQuery({ boardId, columnId });
+
+  const tasks = data?.map((task) => <pre key={task._id}>{task.title}</pre>);
+
   const [isInputActive, setInputActive] = useState(false);
 
   const onClickDelete = async () => {
     contextDispatch({
       type: ReducerTypes.cb,
-      payload: () => deleteColumn({ columnId: column._id, boardId: column.boardId }).unwrap(),
+      payload: () => deleteColumn({ boardId, columnId }).unwrap(),
     });
+  };
+
+  const onClickAddTask = () => {
+    dispatch(setDataForAddTask({ boardId, columnId }));
+    dispatch(openAddTaskModal());
   };
 
   return (
@@ -36,7 +50,7 @@ export const Column: FC<ColumnPropsType> = ({ column }) => {
         ) : (
           <>
             <Typography component="h3" level="h6" sx={{ width: '100%' }} onClick={() => setInputActive(true)}>
-              {column.title}
+              {title}
             </Typography>
             <IconButton variant="outlined" color="neutral" onClick={onClickDelete}>
               <DeleteIcon />
@@ -45,8 +59,14 @@ export const Column: FC<ColumnPropsType> = ({ column }) => {
         )}
       </Box>
       <Box sx={{ height: '100%', border: 1, borderColor: 'grey.200', borderRadius: 8 }}>
-        {'tasks'}
-        <Button startDecorator={<AddRoundedIcon />} sx={{ width: 260 }} variant="outlined" color="neutral">
+        {tasks}
+        <Button
+          startDecorator={<AddRoundedIcon />}
+          sx={{ width: 260 }}
+          variant="outlined"
+          color="neutral"
+          onClick={onClickAddTask}
+        >
           Add task
         </Button>
       </Box>
