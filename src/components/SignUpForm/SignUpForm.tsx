@@ -51,9 +51,9 @@ export const SignUpForm = () => {
   const onSubmit: SubmitHandler<IFormInput> = async (data: IFormInput) => {
     const { passwordConfirm, ...restData } = data;
     if (passwordConfirm === restData.password) {
-      const userData = await createUser(data).unwrap();
+      const userData = await createUser(restData).unwrap();
       dispatch(setUserInfo(userData));
-      const token = await logInUser({ login: data.login, password: data.password });
+      const token = await logInUser({ login: data.login, password: data.password }).unwrap();
       dispatch(setToken(token));
       dispatch(setIsUserLogIn(true));
       navigate(ROUTES.MAIN.path);

@@ -40,7 +40,7 @@ export const SignInForm = () => {
   const { data: usersData, refetch, error: getUsersError } = useGetUsersQuery(undefined);
 
   const onSubmit: SubmitHandler<IFormInput> = async (data: IFormInput) => {
-    const token = await logInUser({ login: data.login, password: data.password });
+    const token = await logInUser({ login: data.login, password: data.password }).unwrap();
     dispatch(setToken(token));
     dispatch(setIsUserLogIn(true));
     dispatch(setLogin(data.login));
