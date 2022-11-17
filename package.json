@@ -61,6 +61,7 @@
     ]
   },
   "devDependencies": {
+    "@hello-pangea/dnd": "^16.0.1",
     "@typescript-eslint/eslint-plugin": "^5.42.1",
     "@typescript-eslint/parser": "^5.42.1",
     "eslint": "^8.27.0",
