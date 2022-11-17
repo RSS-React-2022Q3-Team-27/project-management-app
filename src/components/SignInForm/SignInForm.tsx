@@ -41,7 +41,6 @@ export const SignInForm = () => {
 
   const onSubmit: SubmitHandler<IFormInput> = async (data: IFormInput) => {
     const token = await logInUser({ login: data.login, password: data.password }).unwrap();
-    console.log(token);
     dispatch(setToken(token));
     dispatch(setIsUserLogIn(true));
     dispatch(setLogin(data.login));

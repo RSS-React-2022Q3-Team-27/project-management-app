@@ -1,28 +1,28 @@
-import AccessibilityNewRoundedIcon from '@mui/icons-material/AccessibilityNewRounded';
-import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
-import { Box, Button, Chip, Divider, Sheet, Typography } from '@mui/joy';
+import { Box, Button, Divider, Sheet, Typography } from '@mui/joy';
 import Avatar from '@mui/joy/Avatar';
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import img from '../../assets/images/avatar.jpg';
-import { DialogConfirm } from '../../components/DialogConfirm/DialogConfirm';
 
 import { Counter } from '../../components/Profile/Counter/Counter';
 import { DialogEditProfile } from '../../components/Profile/DialogEditProfile/DialogEditProfile';
+import { UserInfoFields } from '../../components/Profile/UserInfoFields/UserInfoFields';
+import { Context } from '../../Context/Context';
+import { ReducerTypes } from '../../Context/contextReducer/ReducerTypes';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { setConfirmOpened } from '../../store/slices/app/appSlice';
 import { userLogOut } from '../../store/slices/user/userSlice';
 import { useDeleteUserMutation } from '../../store/slices/users/usersApi';
 
 export const Profile = () => {
+  const { contextDispatch } = useContext(Context);
   const dispatch = useAppDispatch();
   const [isEditOpen, setIsEditOpen] = useState(false);
-  const { login, userName, id } = useAppSelector((state) => state.user);
+  const { login, id } = useAppSelector((state) => state.user);
   const { t } = useTranslation();
   const [deleteUser] = useDeleteUserMutation();
+
   const delUser = async () => {
-    console.log('delete', id);
     await deleteUser(id).unwrap();
     dispatch(userLogOut());
   };
@@ -87,48 +87,14 @@ export const Profile = () => {
             maxWidth: { xs: 280, sm: '100%' },
           }}
         >
-          <Box
-            sx={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 2,
-              justifyContent: 'space-between',
-              paddingTop: '30px',
-              width: '100%',
-              justifySelf: 'center',
-              height: '100%',
-            }}
-          >
-            <Chip variant="outlined" color="neutral" size="lg" startDecorator={<PersonRoundedIcon />}>
-              <Typography
-                level="h6"
-                sx={{
-                  width: '70px',
-                }}
-              >
-                {t('login')}:
-              </Typography>
-              {login}
-            </Chip>
-            <Chip variant="outlined" color="neutral" size="lg" startDecorator={<AccessibilityNewRoundedIcon />}>
-              <Typography
-                level="h6"
-                sx={{
-                  width: '70px',
-                }}
-              >
-                {t('name')}:
-              </Typography>
-              {userName}
-            </Chip>
-          </Box>
+          <UserInfoFields />
 
           <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, justifyContent: 'space-between', width: '100%' }}>
             <Button
               variant="solid"
               color="danger"
               sx={{ width: 'max-contant' }}
-              onClick={() => dispatch(setConfirmOpened(true))}
+              onClick={() => contextDispatch({ type: ReducerTypes.cb, payload: delUser })}
             >
               {t('deleteUser')}
             </Button>
@@ -150,7 +116,6 @@ export const Profile = () => {
       >
         <Counter />
       </Box>
-      <DialogConfirm onConfirm={delUser} />
       <DialogEditProfile openDialog={setIsEditOpen} isDialogOpen={isEditOpen} />
     </Sheet>
   );

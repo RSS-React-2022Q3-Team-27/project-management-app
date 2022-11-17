@@ -53,7 +53,7 @@ export const SignUpForm = () => {
     if (passwordConfirm === restData.password) {
       const userData = await createUser(restData).unwrap();
       dispatch(setUserInfo(userData));
-      const token = await logInUser({ login: data.login, password: data.password });
+      const token = await logInUser({ login: data.login, password: data.password }).unwrap();
       dispatch(setToken(token));
       dispatch(setIsUserLogIn(true));
       navigate(ROUTES.MAIN.path);

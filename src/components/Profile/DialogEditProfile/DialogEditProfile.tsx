@@ -49,8 +49,8 @@ export const DialogEditProfile = ({ openDialog, isDialogOpen }: IProps) => {
           password,
         },
       }).unwrap();
-      console.log(newUserData);
       dispatch(setUserInfo(newUserData));
+      openDialog(false);
     }
   };
 
