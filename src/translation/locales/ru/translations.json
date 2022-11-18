@@ -44,7 +44,7 @@
   "confirmSure": "Уверен",
   "confirmCancel": "Нет",
   "confirmationText": "Вы уверенны, что хотите это сделать?",
-  "youWillLogOutAfter": "Вы выйдете из аккаунта через",
+  "youWillLogOutAfter": "Выход через",
   "editProfile": "Редактировать",
   "promo": "Простой и эффективный способ организации, планирования и отслеживания прогресса ваших проектов.",
   "promoTitle1": "Для",
@@ -71,5 +71,7 @@
   "confirmByPassword": "Подтвердите изменения текущим паролем",
   "cancel": "Отмена",
   "change": "Изменить",
-  "newTask": "Новая задача"
+  "newTask": "Новая задача",
+  "yourTasks": "Ваши задачи",
+  "yourHaventtGotTasks": "У вас ещё нет задач"
 }

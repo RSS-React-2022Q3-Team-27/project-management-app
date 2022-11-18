@@ -3,7 +3,7 @@ import { Box, Chip, Typography } from '@mui/joy';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { getTimeBeforeExit } from '../../../utils/getTimeBeforeExit';
+import { getTimeBeforeExit } from '../../../../utils/getTimeBeforeExit';
 
 const msToTime = (duration: number) => {
   const seconds = Math.floor((duration / 1000) % 60);

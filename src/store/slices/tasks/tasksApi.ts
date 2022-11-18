@@ -55,7 +55,17 @@ export const tasksApi = createApi({
       }),
       invalidatesTags: ['Tasks'],
     }),
+
+    getTasksByUserId: build.query<TaskType[], string>({
+      query: (id) => ({
+        url: API_PATH.tasksSet,
+        params: {
+          id,
+        },
+      }),
+      providesTags: ['Tasks'],
+    }),
   }),
 });
 
-export const { useGetTasksByColumnIdQuery, useCreateTaskMutation } = tasksApi;
+export const { useGetTasksByColumnIdQuery, useCreateTaskMutation, useGetTasksByUserIdQuery } = tasksApi;

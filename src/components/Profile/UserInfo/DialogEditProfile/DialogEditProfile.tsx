@@ -14,10 +14,10 @@ import { loginValidate } from './loginValidate';
 
 import { nameValidate } from './nameValidate';
 
-import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-import { useLogInUserMutation } from '../../../store/slices/user/authApi';
-import { setUserInfo } from '../../../store/slices/user/userSlice';
-import { useUpdateUserMutation } from '../../../store/slices/users/usersApi';
+import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
+import { useLogInUserMutation } from '../../../../store/slices/user/authApi';
+import { setUserInfo } from '../../../../store/slices/user/userSlice';
+import { useUpdateUserMutation } from '../../../../store/slices/users/usersApi';
 
 interface IProps {
   openDialog: (value: boolean) => void;
