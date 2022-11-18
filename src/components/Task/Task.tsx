@@ -3,6 +3,7 @@ import MoreIcon from '@mui/icons-material/MoreHoriz';
 import { Card, CardContent, Typography, IconButton, Menu, MenuItem } from '@mui/joy';
 import Box from '@mui/joy/Box';
 import { FC, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { TaskType } from '../../store/slices/tasks/tasksApi';
 
@@ -12,6 +13,7 @@ type TaskPropsType = {
 };
 
 export const Task: FC<TaskPropsType> = ({ task, index }) => {
+  const { t } = useTranslation();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const isOpen = Boolean(anchorEl);
 
@@ -54,8 +56,8 @@ export const Task: FC<TaskPropsType> = ({ task, index }) => {
                 </IconButton>
 
                 <Menu id="task-menu" anchorEl={anchorEl} open={isOpen} onClose={closeMenu}>
-                  <MenuItem onClick={onClickEdit}>Edit</MenuItem>
-                  <MenuItem onClick={onClickDelete}>Delete</MenuItem>
+                  <MenuItem onClick={onClickEdit}>{t('edit')}</MenuItem>
+                  <MenuItem onClick={onClickDelete}>{t('delete')}</MenuItem>
                 </Menu>
               </Box>
               <Box>
