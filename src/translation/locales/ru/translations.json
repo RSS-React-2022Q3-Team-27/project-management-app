@@ -44,7 +44,7 @@
   "confirmSure": "Уверен",
   "confirmCancel": "Нет",
   "confirmationText": "Вы уверенны, что хотите это сделать?",
-  "youWillLogOutAfter": "Вы выйдете из аккаунта через",
+  "youWillLogOutAfter": "Выход через",
   "editProfile": "Редактировать",
   "promo": "Простой и эффективный способ организации, планирования и отслеживания прогресса ваших проектов.",
   "promoTitle1": "Для",
@@ -73,5 +73,7 @@
   "change": "Изменить",
   "newTask": "Новая задача",
   "updateTask": "Изменить задачу",
-  "taskUpdated": "Задача изменена"
+  "taskUpdated": "Задача изменена",
+  "yourTasks": "Ваши задачи",
+  "yourHaventtGotTasks": "У вас ещё нет задач"
 }

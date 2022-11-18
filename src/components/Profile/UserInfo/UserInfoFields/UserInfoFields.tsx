@@ -4,7 +4,7 @@ import { Box, Chip, Typography } from '@mui/joy';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { useAppSelector } from '../../../store/hooks';
+import { useAppSelector } from '../../../../store/hooks';
 
 export const UserInfoFields = () => {
   const { login, userName } = useAppSelector((state) => state.user);

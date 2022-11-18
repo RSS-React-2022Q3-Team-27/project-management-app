@@ -6,4 +6,5 @@ export const API_PATH = {
   boardsSet: 'boardsSet',
   columns: 'columns',
   columnsSet: 'columnsSet',
+  tasksSet: 'tasksSet',
 };
