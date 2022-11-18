@@ -5,7 +5,10 @@ import Box from '@mui/joy/Box';
 import { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { useAppDispatch } from '../../store/hooks';
+
 import { TaskType } from '../../store/slices/tasks/tasksApi';
+import { openUpdateTaskModal, setDataForUpdateTask } from '../../store/slices/tasks/tasksSlice';
 
 type TaskPropsType = {
   task: TaskType;
@@ -14,6 +17,7 @@ type TaskPropsType = {
 
 export const Task: FC<TaskPropsType> = ({ task, index }) => {
   const { t } = useTranslation();
+  const dispatch = useAppDispatch();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const isOpen = Boolean(anchorEl);
 
@@ -21,6 +25,8 @@ export const Task: FC<TaskPropsType> = ({ task, index }) => {
     setAnchorEl(event.currentTarget);
   };
   const onClickEdit = () => {
+    dispatch(setDataForUpdateTask(task));
+    dispatch(openUpdateTaskModal());
     closeMenu();
   };
   const onClickDelete = () => {
