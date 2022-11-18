@@ -16,12 +16,20 @@ export type TaskType = {
   users: string[];
 };
 
-export type TaskBodyType = Omit<TaskType, 'boardId' | 'columnId' | '_id'>;
+export type CreateTaskBodyType = Omit<TaskType, 'boardId' | 'columnId' | '_id'>;
+export type UpdateTaskBodyType = Omit<TaskType, 'boardId' | '_id'>;
 
 export type CreateTaskType = {
-  body: TaskBodyType;
+  body: CreateTaskBodyType;
   boardId: string;
   columnId: string;
+};
+
+export type UpdateTaskType = {
+  body: UpdateTaskBodyType;
+  boardId: string;
+  columnId: string;
+  taskId: string;
 };
 
 export const tasksApi = createApi({
@@ -55,7 +63,16 @@ export const tasksApi = createApi({
       }),
       invalidatesTags: ['Tasks'],
     }),
+
+    updateTask: build.mutation<TaskType, UpdateTaskType>({
+      query: (data) => ({
+        url: `${API_PATH.boards}/${data.boardId}/${API_PATH.columns}/${data.columnId}/tasks/${data.taskId}`,
+        method: 'PUT',
+        body: data.body,
+      }),
+      invalidatesTags: ['Tasks'],
+    }),
   }),
 });
 
-export const { useGetTasksByColumnIdQuery, useCreateTaskMutation } = tasksApi;
+export const { useGetTasksByColumnIdQuery, useCreateTaskMutation, useUpdateTaskMutation } = tasksApi;

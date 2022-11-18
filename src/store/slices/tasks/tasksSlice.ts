@@ -3,13 +3,15 @@ import { createSlice } from '@reduxjs/toolkit';
 import { CreateTaskType } from './tasksApi';
 
 type TasksStateType = {
-  isModalOpened: boolean;
+  isAddModalOpened: boolean;
   dataForAddTask: Omit<CreateTaskType, 'body'> | null;
+  isUpdateModalOpened: boolean;
 };
 
 const initialState: TasksStateType = {
-  isModalOpened: false,
+  isAddModalOpened: false,
   dataForAddTask: null,
+  isUpdateModalOpened: false,
 };
 
 const tasksSlice = createSlice({
@@ -17,16 +19,23 @@ const tasksSlice = createSlice({
   initialState,
   reducers: {
     openAddTaskModal(state) {
-      state.isModalOpened = true;
+      state.isAddModalOpened = true;
     },
     closeAddTaskModal(state) {
-      state.isModalOpened = false;
+      state.isAddModalOpened = false;
     },
     setDataForAddTask(state, { payload }) {
       state.dataForAddTask = payload;
     },
+    openUpdateTaskModal(state) {
+      state.isUpdateModalOpened = true;
+    },
+    closeUpdateTaskModal(state) {
+      state.isUpdateModalOpened = false;
+    },
   },
 });
 
-export const { openAddTaskModal, closeAddTaskModal, setDataForAddTask } = tasksSlice.actions;
+export const { openAddTaskModal, closeAddTaskModal, setDataForAddTask, openUpdateTaskModal, closeUpdateTaskModal } =
+  tasksSlice.actions;
 export default tasksSlice.reducer;
