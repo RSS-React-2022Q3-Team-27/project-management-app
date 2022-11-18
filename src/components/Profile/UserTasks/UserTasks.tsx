@@ -145,7 +145,7 @@ export const UserTasks = () => {
             {t('yourHaventtGotTasks')}
           </Typography>
         )}
-        {data?.map((task, i) => (
+        {data?.map((task) => (
           <ProfileTask task={task} key={nanoid()} />
         ))}
       </Box>
