@@ -23,7 +23,7 @@ export const AddTaskModal = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { control, handleSubmit, reset } = useForm<FormType>();
-  const [createTask, { isError, isLoading, isSuccess }] = useCreateTaskMutation();
+  const [createTask, { isError, isSuccess }] = useCreateTaskMutation();
 
   const { isModalOpened, dataForAddTask } = useAppSelector((state) => state.tasks);
   const { id: userId } = useAppSelector((state) => state.user);
@@ -40,16 +40,12 @@ export const AddTaskModal = () => {
         body: { ...data, users: [], order: 0, userId },
         ...dataForAddTask,
       };
-      createTask(task).unwrap();
 
-      if (isLoading) {
-        console.log('creating...');
-      }
+      await createTask(task).unwrap();
 
       if (isError) {
         toast.error('Error');
       }
-
       if (isSuccess) {
         toast.success('taskAdded');
       }
