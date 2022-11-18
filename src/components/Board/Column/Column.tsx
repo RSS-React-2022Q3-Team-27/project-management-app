@@ -21,6 +21,7 @@ import {
 import { deleteColumnTasks, saveColumnTasks } from '../../../store/slices/board/boardSlice';
 import { useGetTasksByColumnIdQuery } from '../../../store/slices/tasks/tasksApi';
 import { openAddTaskModal, setDataForAddTask } from '../../../store/slices/tasks/tasksSlice';
+import { Task } from '../../Task/Task';
 import { ColumnTitleInput } from '../ColumnTitleInput';
 
 type ColumnPropsType = {
@@ -41,17 +42,7 @@ export const Column: FC<ColumnPropsType> = ({ column, columns, boardIndex }) => 
     dispatch(saveColumnTasks({ columnId: column._id, data }));
   }, [column._id, data, dispatch]);
 
-  const tasks = data?.map((task, index) => (
-    <pre key={task._id}>
-      <Draggable draggableId={task._id} index={index}>
-        {(provided) => (
-          <Box sx={{ height: 40 }} {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef}>
-            {task.title}
-          </Box>
-        )}
-      </Draggable>
-    </pre>
-  ));
+  const tasks = data?.map((task, index) => <Task key={task._id} task={task} index={index} />);
 
   const [isInputActive, setInputActive] = useState(false);
 
@@ -106,10 +97,14 @@ export const Column: FC<ColumnPropsType> = ({ column, columns, boardIndex }) => 
               </>
             )}
           </Box>
-          <Box sx={{ height: '100%', border: 1, borderColor: 'grey.200', borderRadius: 8 }}>
+          <Box sx={{ borderColor: 'grey.200', borderRadius: 8 }}>
             <Droppable droppableId={column._id} type="tasks">
               {(provided) => (
-                <List ref={provided.innerRef} {...provided.droppableProps} sx={{ minHeight: 20 }}>
+                <List
+                  ref={provided.innerRef}
+                  {...provided.droppableProps}
+                  sx={{ minHeight: 20, display: 'flex', flexDirection: 'column', gap: 1 }}
+                >
                   {tasks}
                   {provided.placeholder}
                 </List>
@@ -119,7 +114,7 @@ export const Column: FC<ColumnPropsType> = ({ column, columns, boardIndex }) => 
               startDecorator={<AddRoundedIcon />}
               sx={{ width: 260 }}
               variant="outlined"
-              color="neutral"
+              color="primary"
               onClick={onClickAddTask}
             >
               Add task
