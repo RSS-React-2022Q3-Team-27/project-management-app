@@ -70,5 +70,6 @@
   "twoToTenLettersLogin": "Two to ten letters (en) or numbers",
   "confirmByPassword": "Confirm changes by current password",
   "cancel": "Cancel",
-  "change": "Change"
+  "change": "Change",
+  "newTask": "New task"
 }

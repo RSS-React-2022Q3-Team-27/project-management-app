@@ -65,7 +65,7 @@ export const AddTaskModal = () => {
         }}
       >
         <Typography id="add-column-modal-dialog-title" component="h2" level="inherit" fontSize="1.25em" mb="0.25em">
-          {t('newColumn')}
+          {t('newTask')}
         </Typography>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Stack spacing={1}>
@@ -92,7 +92,7 @@ export const AddTaskModal = () => {
               }}
             />
 
-            <Button type="submit">{t('createNewTask')}</Button>
+            <Button type="submit">{t('createTask')}</Button>
           </Stack>
         </form>
       </ModalDialog>
