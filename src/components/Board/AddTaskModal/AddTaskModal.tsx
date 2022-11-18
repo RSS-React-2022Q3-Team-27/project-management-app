@@ -27,6 +27,13 @@ export const AddTaskModal = () => {
 
   const { isAddModalOpened: isModalOpened, dataForAddTask } = useAppSelector((state) => state.tasks);
   const { id: userId } = useAppSelector((state) => state.user);
+  const columnLength = useAppSelector((state) => {
+    if (dataForAddTask) {
+      const { columnId } = dataForAddTask;
+      return state.board.columnsData[columnId]?.length || 0;
+    }
+    return 0;
+  });
 
   const onClose = () => {
     dispatch(setDataForAddTask(null));
@@ -37,7 +44,7 @@ export const AddTaskModal = () => {
   const onSubmit: SubmitHandler<FormType> = async (data) => {
     if (dataForAddTask !== null) {
       const task: CreateTaskType = {
-        body: { ...data, users: [], order: 0, userId },
+        body: { ...data, users: [], order: columnLength, userId },
         ...dataForAddTask,
       };
 
