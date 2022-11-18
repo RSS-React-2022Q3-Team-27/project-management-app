@@ -71,5 +71,7 @@
   "confirmByPassword": "Confirm changes by current password",
   "cancel": "Cancel",
   "change": "Change",
-  "newTask": "New task"
+  "newTask": "New task",
+  "updateTask": "Update task",
+  "taskUpdated": "Task updated"
 }
