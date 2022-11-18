@@ -140,7 +140,11 @@ export const UserTasks = () => {
           minHeight: '100px',
         }}
       >
-        {!data?.length && <Typography level="body1">{t('yourHaventtGotTasks')}</Typography>}
+        {!data?.length && (
+          <Typography sx={{ py: 6, margin: '0 auto' }} level="body1">
+            {t('yourHaventtGotTasks')}
+          </Typography>
+        )}
         {data?.map((task, i) => (
           <ProfileTask task={task} key={nanoid()} />
         ))}
