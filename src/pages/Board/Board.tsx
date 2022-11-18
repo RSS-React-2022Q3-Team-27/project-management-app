@@ -10,6 +10,7 @@ import { toast } from 'react-toastify';
 import { AddColumnModal } from '../../components/Board/AddColumnModal';
 import { AddTaskModal } from '../../components/Board/AddTaskModal';
 import { Columns } from '../../components/Board/Columns';
+import { UpdateTaskModal } from '../../components/Board/UpdateTaskModal';
 
 import { ROUTES } from '../../constants/routes';
 
@@ -54,6 +55,7 @@ export const Board = () => {
       <Columns />
       <AddColumnModal />
       <AddTaskModal />
+      <UpdateTaskModal />
     </Box>
   );
 };

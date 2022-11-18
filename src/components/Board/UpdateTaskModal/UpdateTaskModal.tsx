@@ -11,50 +11,47 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-import { CreateTaskType, useCreateTaskMutation } from '../../../store/slices/tasks/tasksApi';
-import { closeAddTaskModal, setDataForAddTask } from '../../../store/slices/tasks/tasksSlice';
+import { UpdateTaskType, useUpdateTaskMutation } from '../../../store/slices/tasks/tasksApi';
+import { closeUpdateTaskModal } from '../../../store/slices/tasks/tasksSlice';
 
 type FormType = {
   title: string;
   description: string;
 };
 
-export const AddTaskModal = () => {
+export const UpdateTaskModal = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { control, handleSubmit, reset } = useForm<FormType>();
-  const [createTask, { isError, isSuccess }] = useCreateTaskMutation();
+  const [updateTask, { isError, isSuccess }] = useUpdateTaskMutation();
 
-  const { isAddModalOpened: isModalOpened, dataForAddTask } = useAppSelector((state) => state.tasks);
+  const { isUpdateModalOpened } = useAppSelector((state) => state.tasks);
   const { id: userId } = useAppSelector((state) => state.user);
 
   const onClose = () => {
-    dispatch(setDataForAddTask(null));
-    dispatch(closeAddTaskModal());
+    dispatch(closeUpdateTaskModal());
     reset();
   };
 
   const onSubmit: SubmitHandler<FormType> = async (data) => {
-    if (dataForAddTask !== null) {
-      const task: CreateTaskType = {
-        body: { ...data, users: [], order: 0, userId },
-        ...dataForAddTask,
-      };
+    const task: UpdateTaskType = {
+      body: { ...data, users: [], order: 0, userId },
+    };
 
-      await createTask(task).unwrap();
+    await updateTask(task).unwrap();
 
-      if (isError) {
-        toast.error('Error');
-      }
-      if (isSuccess) {
-        toast.success('taskAdded');
-      }
+    if (isError) {
+      toast.error('Error');
     }
+    if (isSuccess) {
+      toast.success('taskAdded');
+    }
+
     onClose();
   };
 
   return (
-    <Modal open={isModalOpened} onClose={onClose}>
+    <Modal open={isUpdateModalOpened} onClose={onClose}>
       <ModalDialog
         aria-labelledby="add-column-modal-dialog-title"
         sx={{
