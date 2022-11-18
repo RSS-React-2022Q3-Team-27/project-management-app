@@ -68,7 +68,7 @@ export const AddTaskModal = () => {
           {t('newColumn')}
         </Typography>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Stack>
+          <Stack spacing={1}>
             <Controller
               name="title"
               control={control}
