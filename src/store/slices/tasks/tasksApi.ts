@@ -57,10 +57,10 @@ export const tasksApi = createApi({
     }),
 
     getTasksByUserId: build.query<TaskType[], string>({
-      query: (id) => ({
+      query: (userId) => ({
         url: API_PATH.tasksSet,
         params: {
-          id,
+          userId,
         },
       }),
       providesTags: ['Tasks'],

@@ -14,7 +14,7 @@ export const ProfileTask = ({ task }: TaskPropsType) => {
   return (
     <Link
       to={`${ROUTES.BOARD.path}/${task.boardId}`}
-      style={{ textDecoration: 'none', maxWidth: '280px', flexShrink: 0, cursor: 'pointer' }}
+      style={{ textDecoration: 'none', width: '280px', flexShrink: 0, cursor: 'pointer' }}
     >
       <Card>
         <CardContent>
