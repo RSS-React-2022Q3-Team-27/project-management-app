@@ -25,7 +25,7 @@ export const AddTaskModal = () => {
   const { control, handleSubmit, reset } = useForm<FormType>();
   const [createTask, { isError, isSuccess }] = useCreateTaskMutation();
 
-  const { isAddModalOpened: isModalOpened, dataForAddTask } = useAppSelector((state) => state.tasks);
+  const { isAddModalOpened, dataForAddTask } = useAppSelector((state) => state.tasks);
   const { id: userId } = useAppSelector((state) => state.user);
   const columnLength = useAppSelector((state) => {
     if (dataForAddTask) {
@@ -61,7 +61,7 @@ export const AddTaskModal = () => {
   };
 
   return (
-    <Modal open={isModalOpened} onClose={onClose}>
+    <Modal open={isAddModalOpened} onClose={onClose}>
       <ModalDialog
         aria-labelledby="add-column-modal-dialog-title"
         sx={{

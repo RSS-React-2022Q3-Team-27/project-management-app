@@ -21,10 +21,10 @@ const tasksSlice = createSlice({
   initialState,
   reducers: {
     openAddTaskModal(state) {
-      state.isUpdateModalOpened = true;
+      state.isAddModalOpened = true;
     },
     closeAddTaskModal(state) {
-      state.isUpdateModalOpened = false;
+      state.isAddModalOpened = false;
     },
     setDataForAddTask(state, { payload }) {
       state.dataForAddTask = payload;
