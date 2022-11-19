@@ -75,5 +75,6 @@
   "updateTask": "Update task",
   "taskUpdated": "Task updated",
   "yourTasks": "Your tasks",
-  "yourHaventtGotTasks": "You haven't got any tasks yet"
+  "yourHaventtGotTasks": "You haven't got any tasks yet",
+  "taskCount": "Tasks: {{count}}"
 }
