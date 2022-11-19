@@ -2,12 +2,17 @@ import { Draggable } from '@hello-pangea/dnd';
 import MoreIcon from '@mui/icons-material/MoreHoriz';
 import { Card, CardContent, Typography, IconButton, Menu, MenuItem } from '@mui/joy';
 import Box from '@mui/joy/Box';
-import { FC, useState } from 'react';
+import { FC, useContext, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
+
+import { Context } from '../../Context/Context';
+
+import { ReducerTypes } from '../../Context/contextReducer/ReducerTypes';
 
 import { useAppDispatch } from '../../store/hooks';
 
-import { TaskType } from '../../store/slices/tasks/tasksApi';
+import { TaskType, useDeleteTaskMutation } from '../../store/slices/tasks/tasksApi';
 import { openUpdateTaskModal, setDataForUpdateTask } from '../../store/slices/tasks/tasksSlice';
 
 type TaskPropsType = {
@@ -20,6 +25,19 @@ export const Task: FC<TaskPropsType> = ({ task, index }) => {
   const dispatch = useAppDispatch();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const isOpen = Boolean(anchorEl);
+  const [deleteTask, { isSuccess }] = useDeleteTaskMutation();
+  const { contextDispatch } = useContext(Context);
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success(t('taskDeleted'));
+    }
+  }, [isSuccess, t]);
+
+  const deleteTaskCb = async () => {
+    const { boardId, columnId, _id: taskId } = task;
+    await deleteTask({ boardId, columnId, taskId }).unwrap();
+  };
 
   const onClickOpenMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -30,6 +48,7 @@ export const Task: FC<TaskPropsType> = ({ task, index }) => {
     closeMenu();
   };
   const onClickDelete = () => {
+    contextDispatch({ type: ReducerTypes.cb, payload: deleteTaskCb });
     closeMenu();
   };
   const closeMenu = () => {
