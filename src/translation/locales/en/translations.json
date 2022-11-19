@@ -66,8 +66,8 @@
   "editBoard": "Edit board",
   "newColumnIsAdded": "New column is added",
   "deleteUser": "Delete user",
-  "twoToTenLetters": "Two to ten letters (en or ru)",
-  "twoToTenLettersLogin": "Two to ten letters (en) or numbers",
+  "twoToTenLetters": "2-10 letters (en or ru)",
+  "twoToTenLettersLogin": "2-10 letters (en) or numbers",
   "confirmByPassword": "Confirm changes by current password",
   "cancel": "Cancel",
   "change": "Change",
@@ -76,5 +76,6 @@
   "taskUpdated": "Task updated",
   "yourTasks": "Your tasks",
   "yourHaventtGotTasks": "You haven't got any tasks yet",
+  "taskDeleted": "Task deleted",
   "taskCount": "Tasks: {{count}}"
 }

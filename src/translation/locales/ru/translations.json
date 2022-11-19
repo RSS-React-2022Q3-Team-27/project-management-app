@@ -66,8 +66,8 @@
   "editBoard": "Редактировать доску",
   "newColumnIsAdded": "Новая колонка добавлена",
   "deleteUser": "Удалить",
-  "twoToTenLetters": "От двух до десяти букв (русские и английские)",
-  "twoToTenLettersLogin": "От двух до десяти букв (английских) или цифр",
+  "twoToTenLetters": "2-10 букв (русские и английские)",
+  "twoToTenLettersLogin": "2-10 букв (английских) или цифр",
   "confirmByPassword": "Подтвердите изменения текущим паролем",
   "cancel": "Отмена",
   "change": "Изменить",
@@ -76,5 +76,6 @@
   "taskUpdated": "Задача изменена",
   "yourTasks": "Ваши задачи",
   "yourHaventtGotTasks": "У вас ещё нет задач",
+  "taskDeleted": "Задача удалена",
   "taskCount": "Задач: {{count}}"
 }

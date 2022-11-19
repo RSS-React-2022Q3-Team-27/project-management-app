@@ -90,7 +90,7 @@ export const SignUpForm = () => {
           },
           pattern: {
             value: /[a-zA-Zа-яА-Я]{2,10}$/,
-            message: t('wrongFormat'),
+            message: `${t('wrongFormat')} (${t('twoToTenLetters')})`,
           },
         }}
         render={({ field }) => (
@@ -101,6 +101,7 @@ export const SignUpForm = () => {
             label={t('name')}
             placeholder={t('name')}
             autoComplete="off"
+            title={t('twoToTenLetters')}
             startDecorator={<AccessibilityNewRoundedIcon />}
           />
         )}
@@ -122,7 +123,7 @@ export const SignUpForm = () => {
           },
           pattern: {
             value: /[a-zA-Z0-9]{2,10}$/,
-            message: t('wrongFormat'),
+            message: `${t('wrongFormat')} (${t('twoToTenLettersLogin')})`,
           },
         }}
         render={({ field }) => (
@@ -132,6 +133,7 @@ export const SignUpForm = () => {
             type="text"
             label={t('login')}
             autoComplete="off"
+            title={t('twoToTenLettersLogin')}
             placeholder={t('login')}
             startDecorator={<PersonRoundedIcon />}
           />

@@ -32,6 +32,12 @@ export type UpdateTaskType = {
   taskId: string;
 };
 
+export type DeletedTaskType = {
+  boardId: string;
+  columnId: string;
+  taskId: string;
+};
+
 export const tasksApi = createApi({
   reducerPath: 'tasksApi',
   baseQuery: fetchBaseQuery({
@@ -87,6 +93,14 @@ export const tasksApi = createApi({
       query: (boardId) => `${API_PATH.tasksSet}/${boardId}`,
       providesTags: ['Tasks'],
     }),
+
+    deleteTask: build.mutation<TaskType, DeletedTaskType>({
+      query: (data) => ({
+        url: `${API_PATH.boards}/${data.boardId}/${API_PATH.columns}/${data.columnId}/tasks/${data.taskId}`,
+        method: 'DELETE',
+      }),
+      invalidatesTags: ['Tasks'],
+    }),
   }),
 });
 
@@ -96,4 +110,5 @@ export const {
   useUpdateTaskMutation,
   useGetTasksByUserIdQuery,
   useGetTasksByBoardIdQuery,
+  useDeleteTaskMutation,
 } = tasksApi;
