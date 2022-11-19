@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { ROUTES } from '../../constants/routes';
-import { useAppDispatch } from '../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { useCreateUserMutation, useLogInUserMutation } from '../../store/slices/user/authApi';
 import { setIsUserLogIn, setToken, setUserInfo } from '../../store/slices/user/userSlice';
 
@@ -33,6 +33,12 @@ export interface IRegError {
 }
 
 export const SignUpForm = () => {
+  const navigate = useNavigate();
+  const { isUserLogIn } = useAppSelector((state) => state.user);
+  if (isUserLogIn) {
+    navigate(ROUTES.MAIN.path);
+  }
+
   const { t } = useTranslation();
   const [createUser, { error: regError }] = useCreateUserMutation();
   const [logInUser, { error: logInError }] = useLogInUserMutation();
@@ -43,8 +49,6 @@ export const SignUpForm = () => {
   } = useForm<IFormInput>({
     mode: 'onChange',
   });
-
-  const navigate = useNavigate();
 
   const dispatch = useAppDispatch();
 
