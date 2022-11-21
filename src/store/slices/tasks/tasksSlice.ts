@@ -7,6 +7,8 @@ type TasksStateType = {
   dataForAddTask: Omit<CreateTaskType, 'body'> | null;
   isUpdateModalOpened: boolean;
   dataForUpdateTask: TaskType | null;
+  searchQuery: string;
+  searchQueryResults: TaskType[];
 };
 
 const initialState: TasksStateType = {
@@ -14,6 +16,8 @@ const initialState: TasksStateType = {
   dataForAddTask: null,
   isUpdateModalOpened: false,
   dataForUpdateTask: null,
+  searchQuery: '',
+  searchQueryResults: [],
 };
 
 const tasksSlice = createSlice({
@@ -38,6 +42,12 @@ const tasksSlice = createSlice({
     setDataForUpdateTask(state, { payload }) {
       state.dataForUpdateTask = payload;
     },
+    setSearchQuery(state, { payload }) {
+      state.searchQuery = payload;
+    },
+    setSearchQueryResults(state, { payload }) {
+      state.searchQueryResults = payload;
+    },
   },
 });
 
@@ -48,5 +58,7 @@ export const {
   openUpdateTaskModal,
   closeUpdateTaskModal,
   setDataForUpdateTask,
+  setSearchQuery,
+  setSearchQueryResults,
 } = tasksSlice.actions;
 export default tasksSlice.reducer;

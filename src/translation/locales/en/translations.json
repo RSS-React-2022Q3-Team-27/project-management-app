@@ -74,5 +74,7 @@
   "yourTasks": "Your tasks",
   "yourHaventtGotTasks": "You haven't got any tasks yet",
   "taskDeleted": "Task deleted",
-  "taskCount": "Tasks: {{count}}"
+  "taskCount": "Tasks: {{count}}",
+  "noResults": "No results",
+  "board": "Board"
 }

@@ -74,5 +74,7 @@
   "yourTasks": "Ваши задачи",
   "yourHaventtGotTasks": "У вас ещё нет задач",
   "taskDeleted": "Задача удалена",
-  "taskCount": "Задач: {{count}}"
+  "taskCount": "Задач: {{count}}",
+  "noResults": "Нет результатов",
+  "board": "Доска"
 }
