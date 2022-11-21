@@ -48,11 +48,8 @@ export const Column: FC<ColumnPropsType> = ({ column, columns, boardIndex }) => 
     if (isError) {
       toast.error('Error');
     } else if (data) {
-      const sortingData = data && [...data].sort((a, b) => a.order - b.order);
-      dispatch(saveColumnTasks({ columnId: column._id, data: sortingData }));
-      setTasksToRender(sortingData);
+      dispatch(saveColumnTasks({ columnId: column._id, data }));
     }
-    console.log('data render');
   }, [column._id, data, dispatch, isError]);
 
   useEffect(() => {
@@ -60,7 +57,6 @@ export const Column: FC<ColumnPropsType> = ({ column, columns, boardIndex }) => 
     if (tasks) {
       setTasksToRender(tasks);
     }
-    console.log('redux render');
   }, [columnId, columnsData]);
 
   const [isInputActive, setInputActive] = useState(false);

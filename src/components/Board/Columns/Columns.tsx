@@ -16,7 +16,7 @@ import {
   useUpdateSetOfColumnsMutation,
 } from '../../../store/slices/board/boardApi';
 import { openAddColumnModal, saveColumnTasks, setColumnsLength } from '../../../store/slices/board/boardSlice';
-import { TaskType } from '../../../store/slices/tasks/tasksApi';
+import { TaskType, UpdateSetOfTaskType, useUpdateSetOfTasksMutation } from '../../../store/slices/tasks/tasksApi';
 import { Column } from '../Column';
 
 export const Columns = () => {
@@ -24,6 +24,7 @@ export const Columns = () => {
   const { id } = useParams<{ id?: string }>();
   const { data, isError } = useGetColumnsInBoardQuery(id || '');
   const [updateSetOfColumns] = useUpdateSetOfColumnsMutation();
+  const [updateSetOfTasks] = useUpdateSetOfTasksMutation();
   const dispatch = useAppDispatch();
   const { columnsData } = useAppSelector((state) => state.board);
   const [columnsToRender, setColumnsToRender] = useState<ColumnType[]>([]);
@@ -43,7 +44,6 @@ export const Columns = () => {
 
   const onDragEnd = async (result: DropResult) => {
     const { destination, source, type } = result;
-    console.log(destination, source, type);
 
     if (!destination) {
       return;
@@ -85,21 +85,43 @@ export const Columns = () => {
 
       dispatch(saveColumnTasks({ columnId: startColumnId, data: tasks }));
 
-      console.log(tasks);
-      console.log(columnsData[startColumnId]);
-      //make request to update newTasks set
+      const setOfTasks: UpdateSetOfTaskType = tasks.map((task) => {
+        const { _id, order, columnId } = task;
+        return { _id, order, columnId };
+      });
+      await updateSetOfTasks(setOfTasks).unwrap();
+
       return;
     }
 
-    // const startTasks: TaskType[] = Array.from(columnsData[startColumnId]);
-    // const movedTask = startTasks.splice(source.index, 1);
-    // startTasks.forEach((task, i) => (startTasks[i] = { ...task, order: i }));
+    if (startColumnId !== endColumnId) {
+      const startTasks: TaskType[] = Array.from(columnsData[startColumnId]);
+      const finishTasks: TaskType[] = Array.from(columnsData[endColumnId]);
+      const movedTask = startTasks.splice(source.index, 1);
 
-    //get Tasks by endColumnId
-    //finishTasks = Array.from(Tasks)
-    //finishTasks.splice(destination.index, 0, ...movedTask);
-    //finishTasks.forEach((task, i) => (finishTasks[i] = { ...task, order: i }));
-    //make request to update [startTasks, finishTasks] set
+      startTasks.forEach((task, i) => (startTasks[i] = { ...task, order: i }));
+
+      finishTasks.splice(destination.index, 0, ...movedTask);
+      finishTasks.forEach((task, i) => (finishTasks[i] = { ...task, order: i, columnId: endColumnId }));
+
+      dispatch(saveColumnTasks({ columnId: startColumnId, data: startTasks }));
+      dispatch(saveColumnTasks({ columnId: endColumnId, data: finishTasks }));
+
+      const startSetOfTasks: UpdateSetOfTaskType = startTasks.map((task) => {
+        const { _id, order, columnId } = task;
+        return { _id, order, columnId };
+      });
+      const finishSetOfTasks: UpdateSetOfTaskType = finishTasks.map((task) => {
+        const { _id, order, columnId } = task;
+        return { _id, order, columnId };
+      });
+
+      const setOfTasks: UpdateSetOfTaskType = [...startSetOfTasks, ...finishSetOfTasks];
+
+      await updateSetOfTasks(setOfTasks).unwrap();
+
+      return;
+    }
   };
 
   const boardColumns = [...columnsToRender].map((column, i) => (
