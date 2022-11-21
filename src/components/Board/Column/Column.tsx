@@ -8,11 +8,13 @@ import List from '@mui/joy/List';
 import Typography from '@mui/joy/Typography';
 import { FC, useContext, useEffect, useState } from 'react';
 
+import { toast } from 'react-toastify';
+
 import styles from './column.module.css';
 
 import { Context } from '../../../Context/Context';
 import { ReducerTypes } from '../../../Context/contextReducer/ReducerTypes';
-import { useAppDispatch } from '../../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 
 import {
   ColumnType,
@@ -21,7 +23,7 @@ import {
   useUpdateSetOfColumnsMutation,
 } from '../../../store/slices/board/boardApi';
 import { deleteColumnTasks, saveColumnTasks } from '../../../store/slices/board/boardSlice';
-import { useGetTasksByColumnIdQuery } from '../../../store/slices/tasks/tasksApi';
+import { TaskType, useGetTasksByColumnIdQuery } from '../../../store/slices/tasks/tasksApi';
 import { openAddTaskModal, setDataForAddTask } from '../../../store/slices/tasks/tasksSlice';
 import { Task } from '../../Task/Task';
 import { ColumnTitleInput } from '../ColumnTitleInput';
@@ -38,13 +40,24 @@ export const Column: FC<ColumnPropsType> = ({ column, columns, boardIndex }) => 
   const { contextDispatch } = useContext(Context);
   const [deleteColumn] = useDeleteColumnMutation();
   const [updateSetOfColumns] = useUpdateSetOfColumnsMutation();
-  const { data } = useGetTasksByColumnIdQuery({ boardId, columnId });
+  const { data, isError } = useGetTasksByColumnIdQuery({ boardId, columnId });
+  const [tasksToRender, setTasksToRender] = useState<TaskType[]>([]);
+  const { columnsData } = useAppSelector((state) => state.board);
 
   useEffect(() => {
-    dispatch(saveColumnTasks({ columnId: column._id, data }));
-  }, [column._id, data, dispatch]);
+    if (isError) {
+      toast.error('Error');
+    } else if (data) {
+      dispatch(saveColumnTasks({ columnId: column._id, data }));
+    }
+  }, [column._id, data, dispatch, isError]);
 
-  const tasks = data?.map((task, index) => <Task key={task._id} task={task} index={index} />);
+  useEffect(() => {
+    const tasks = columnsData[columnId];
+    if (tasks) {
+      setTasksToRender(tasks);
+    }
+  }, [columnId, columnsData]);
 
   const [isInputActive, setInputActive] = useState(false);
 
@@ -73,6 +86,8 @@ export const Column: FC<ColumnPropsType> = ({ column, columns, boardIndex }) => 
     dispatch(setDataForAddTask({ boardId, columnId }));
     dispatch(openAddTaskModal());
   };
+
+  const tasks = tasksToRender?.map((task, index) => <Task key={task._id} task={task} index={index} />);
 
   return (
     <Draggable draggableId={column._id} index={boardIndex}>
