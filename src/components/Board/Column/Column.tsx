@@ -71,12 +71,15 @@ export const Column: FC<ColumnPropsType> = ({ column, columns, boardIndex, tasks
   };
 
   const onClickAddTask = () => {
+    console.log('order', column.tasksData.length);
     dispatch(setNewTaskOrder(column.tasksData.length));
     dispatch(setDataForAddTask({ boardId, columnId }));
     dispatch(openAddTaskModal());
   };
 
-  const tasks = column.tasksData.map((task, index) => <Task key={task._id} task={task} index={index} />);
+  const tasks = column.tasksData.map((task, index) => (
+    <Task key={task._id} task={task} index={index} column={column} />
+  ));
 
   return (
     <Draggable draggableId={columnId} index={boardIndex}>

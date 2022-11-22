@@ -11,21 +11,32 @@ import { Context } from '../../Context/Context';
 import { ReducerTypes } from '../../Context/contextReducer/ReducerTypes';
 
 import { useAppDispatch } from '../../store/hooks';
+import { ColumnType } from '../../store/slices/board/boardApi';
 
-import { TaskType, useDeleteTaskMutation } from '../../store/slices/tasks/tasksApi';
+import {
+  TaskType,
+  UpdateSetOfTaskType,
+  useDeleteTaskMutation,
+  useUpdateSetOfTasksMutation,
+} from '../../store/slices/tasks/tasksApi';
 import { openUpdateTaskModal, setDataForUpdateTask } from '../../store/slices/tasks/tasksSlice';
 
 type TaskPropsType = {
   task: TaskType;
   index: number;
+  column: {
+    columnData: ColumnType;
+    tasksData: TaskType[];
+  };
 };
 
-export const Task: FC<TaskPropsType> = ({ task, index }) => {
+export const Task: FC<TaskPropsType> = ({ task, index, column }) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const isOpen = Boolean(anchorEl);
   const [deleteTask, { isSuccess }] = useDeleteTaskMutation();
+  const [updateSetOfTasks] = useUpdateSetOfTasksMutation();
   const { contextDispatch } = useContext(Context);
 
   useEffect(() => {
@@ -35,8 +46,20 @@ export const Task: FC<TaskPropsType> = ({ task, index }) => {
   }, [isSuccess, t]);
 
   const deleteTaskCb = async () => {
-    const { boardId, columnId, _id: taskId } = task;
+    const { boardId, columnId, _id: taskId, order } = task;
+
     await deleteTask({ boardId, columnId, taskId }).unwrap();
+
+    const tasks = Array.from(column.tasksData);
+
+    const setOfTasks: UpdateSetOfTaskType = [];
+
+    tasks.splice(order, 1);
+    tasks.forEach((taskData, i) => {
+      setOfTasks.push({ _id: taskData._id, columnId: taskData.columnId, order: i });
+    });
+
+    await updateSetOfTasks(setOfTasks).unwrap();
   };
 
   const onClickOpenMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
