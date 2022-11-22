@@ -6,15 +6,13 @@ import Button from '@mui/joy/Button';
 import IconButton from '@mui/joy/IconButton';
 import List from '@mui/joy/List';
 import Typography from '@mui/joy/Typography';
-import { FC, useContext, useEffect, useState } from 'react';
-
-import { toast } from 'react-toastify';
+import { FC, useContext, useState } from 'react';
 
 import styles from './column.module.css';
 
 import { Context } from '../../../Context/Context';
 import { ReducerTypes } from '../../../Context/contextReducer/ReducerTypes';
-import { useAppDispatch, useAppSelector } from '../../../store/hooks';
+import { useAppDispatch } from '../../../store/hooks';
 
 import {
   ColumnType,
@@ -22,57 +20,47 @@ import {
   useDeleteColumnMutation,
   useUpdateSetOfColumnsMutation,
 } from '../../../store/slices/board/boardApi';
-import { deleteColumnTasks, saveColumnTasks } from '../../../store/slices/board/boardSlice';
-import { TaskType, useGetTasksByColumnIdQuery } from '../../../store/slices/tasks/tasksApi';
-import { openAddTaskModal, setDataForAddTask } from '../../../store/slices/tasks/tasksSlice';
+import { TaskType } from '../../../store/slices/tasks/tasksApi';
+import { openAddTaskModal, setDataForAddTask, setNewTaskOrder } from '../../../store/slices/tasks/tasksSlice';
 import { Task } from '../../Task/Task';
 import { ColumnTitleInput } from '../ColumnTitleInput';
 
 type ColumnPropsType = {
-  column: ColumnType;
-  columns: ColumnType[];
+  column: {
+    columnData: ColumnType;
+    tasksData: TaskType[];
+  };
+  columns: {
+    columnData: ColumnType;
+    tasksData: TaskType[];
+  }[];
   boardIndex: number;
+  tasksRefetch: () => void;
 };
 
-export const Column: FC<ColumnPropsType> = ({ column, columns, boardIndex }) => {
-  const { title, boardId, _id: columnId } = column;
+export const Column: FC<ColumnPropsType> = ({ column, columns, boardIndex, tasksRefetch }) => {
+  const { title, boardId, _id: columnId, order } = column.columnData;
   const dispatch = useAppDispatch();
   const { contextDispatch } = useContext(Context);
   const [deleteColumn] = useDeleteColumnMutation();
   const [updateSetOfColumns] = useUpdateSetOfColumnsMutation();
-  const { data, isError } = useGetTasksByColumnIdQuery({ boardId, columnId });
-  const [tasksToRender, setTasksToRender] = useState<TaskType[]>([]);
-  const { columnsData } = useAppSelector((state) => state.board);
-
-  useEffect(() => {
-    if (isError) {
-      toast.error('Error');
-    } else if (data) {
-      dispatch(saveColumnTasks({ columnId: column._id, data }));
-    }
-  }, [column._id, data, dispatch, isError]);
-
-  useEffect(() => {
-    const tasks = columnsData[columnId];
-    if (tasks) {
-      setTasksToRender(tasks);
-    }
-  }, [columnId, columnsData]);
 
   const [isInputActive, setInputActive] = useState(false);
 
   const handleDelete = async () => {
     await deleteColumn({ boardId, columnId }).unwrap();
 
+    tasksRefetch();
+
+    if (columns.length < 2) return;
+
     const newColumns = Array.from(columns);
     const columnsToUpdate: UpdateSetOfColumns[] = [];
 
-    newColumns.splice(column.order, 1);
-    newColumns.forEach((column, i) => columnsToUpdate.push({ _id: column._id, order: i }));
+    newColumns.splice(order, 1);
+    newColumns.forEach((column, i) => columnsToUpdate.push({ _id: column.columnData._id, order: i }));
 
     await updateSetOfColumns(columnsToUpdate).unwrap();
-
-    dispatch(deleteColumnTasks(columnId));
   };
 
   const onClickDelete = async () => {
@@ -83,14 +71,15 @@ export const Column: FC<ColumnPropsType> = ({ column, columns, boardIndex }) => 
   };
 
   const onClickAddTask = () => {
+    dispatch(setNewTaskOrder(column.tasksData.length));
     dispatch(setDataForAddTask({ boardId, columnId }));
     dispatch(openAddTaskModal());
   };
 
-  const tasks = tasksToRender?.map((task, index) => <Task key={task._id} task={task} index={index} />);
+  const tasks = column.tasksData.map((task, index) => <Task key={task._id} task={task} index={index} />);
 
   return (
-    <Draggable draggableId={column._id} index={boardIndex}>
+    <Draggable draggableId={columnId} index={boardIndex}>
       {(provided) => (
         <Box
           {...provided.draggableProps}
@@ -102,7 +91,7 @@ export const Column: FC<ColumnPropsType> = ({ column, columns, boardIndex }) => 
             sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 1 }}
           >
             {isInputActive ? (
-              <ColumnTitleInput column={column} setInputActive={setInputActive} />
+              <ColumnTitleInput column={column.columnData} setInputActive={setInputActive} />
             ) : (
               <>
                 <Typography component="h3" level="h6" sx={{ width: '100%' }} onClick={() => setInputActive(true)}>
@@ -115,12 +104,12 @@ export const Column: FC<ColumnPropsType> = ({ column, columns, boardIndex }) => 
             )}
           </Box>
           <Box className={styles.list} sx={{ overflowY: 'auto' }}>
-            <Droppable droppableId={column._id} type="tasks">
+            <Droppable droppableId={columnId} type="tasks">
               {(provided) => (
                 <List
                   ref={provided.innerRef}
                   {...provided.droppableProps}
-                  sx={{ display: 'flex', flexDirection: 'column', gap: 1, mr: 1 }}
+                  sx={{ display: 'flex', flexDirection: 'column', mr: 1 }}
                 >
                   {tasks}
                   {provided.placeholder}

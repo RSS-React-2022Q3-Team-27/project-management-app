@@ -59,7 +59,7 @@ export const Task: FC<TaskPropsType> = ({ task, index }) => {
     <Draggable key={task._id} draggableId={task._id} index={index}>
       {(provided) => (
         <Box {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef}>
-          <Card>
+          <Card sx={{ my: 0.5 }}>
             <CardContent>
               <Box
                 sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}

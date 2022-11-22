@@ -9,6 +9,7 @@ type TasksStateType = {
   dataForUpdateTask: TaskType | null;
   searchQuery: string;
   searchQueryResults: TaskType[];
+  newTaskOrder: number;
 };
 
 const initialState: TasksStateType = {
@@ -18,6 +19,7 @@ const initialState: TasksStateType = {
   dataForUpdateTask: null,
   searchQuery: '',
   searchQueryResults: [],
+  newTaskOrder: 0,
 };
 
 const tasksSlice = createSlice({
@@ -48,6 +50,9 @@ const tasksSlice = createSlice({
     setSearchQueryResults(state, { payload }) {
       state.searchQueryResults = payload;
     },
+    setNewTaskOrder(state, { payload }) {
+      state.newTaskOrder = payload;
+    },
   },
 });
 
@@ -60,5 +65,6 @@ export const {
   setDataForUpdateTask,
   setSearchQuery,
   setSearchQueryResults,
+  setNewTaskOrder,
 } = tasksSlice.actions;
 export default tasksSlice.reducer;
