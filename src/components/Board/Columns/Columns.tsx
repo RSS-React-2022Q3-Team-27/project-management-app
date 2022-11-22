@@ -2,6 +2,7 @@ import { DragDropContext, DropResult, Droppable } from '@hello-pangea/dnd';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
+import CircularProgress from '@mui/joy/CircularProgress';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
@@ -11,7 +12,6 @@ import { useAppDispatch } from '../../../store/hooks';
 
 import {
   ColumnType,
-  UpdateSetOfColumns,
   useGetColumnsInBoardQuery,
   useUpdateSetOfColumnsMutation,
 } from '../../../store/slices/board/boardApi';
@@ -22,6 +22,7 @@ import {
   useGetTasksByBoardIdQuery,
   useUpdateSetOfTasksMutation,
 } from '../../../store/slices/tasks/tasksApi';
+import { changeColumnsOrder, changeColumnsTasksOrder, changeTasksOrder } from '../../../utils/changeDataOrder';
 import { Column } from '../Column';
 
 type columnToRenderType = {
@@ -34,8 +35,13 @@ type columnToRenderType = {
 export const Columns = () => {
   const { t } = useTranslation();
   const { id } = useParams<{ id?: string }>();
-  const { data: columns, isError: isColumnsError } = useGetColumnsInBoardQuery(id || '');
-  const { data: tasks, isError: isTasksError, refetch: tasksRefetch } = useGetTasksByBoardIdQuery(id || '');
+  const { data: columns, isError: isColumnsError, isLoading: isColumnsLoading } = useGetColumnsInBoardQuery(id || '');
+  const {
+    data: tasks,
+    isError: isTasksError,
+    refetch: tasksRefetch,
+    isLoading: isTasksLoading,
+  } = useGetTasksByBoardIdQuery(id || '');
   const [updateSetOfColumns] = useUpdateSetOfColumnsMutation();
   const [updateSetOfTasks] = useUpdateSetOfTasksMutation();
   const dispatch = useAppDispatch();
@@ -52,18 +58,15 @@ export const Columns = () => {
         dataToRender[column._id] = { columnData: column, tasksData: [] };
       });
 
-      console.log('tasks', tasks);
-
       if (tasks && tasks.length) {
-        console.log('tasks', JSON.stringify(tasks));
         tasks.forEach((task) => {
-          const place = dataToRender[task.columnId];
-          console.log('tasksData', JSON.stringify(place.tasksData));
-          place.tasksData[task.order] = task;
+          const column = dataToRender[task.columnId];
+
+          if (column) {
+            column.tasksData[task.order] = task;
+          }
         });
       }
-
-      console.log(dataToRender);
 
       setColumnsToRender(dataToRender);
     }
@@ -86,26 +89,9 @@ export const Columns = () => {
     }
 
     if (type === 'column') {
-      const updatedColumns = Array.from([...Object.values(columnsToRender)]);
-      const movedColumn = updatedColumns.splice(source.index, 1);
-      const columnsToUpdate: UpdateSetOfColumns[] = [];
-
-      updatedColumns.splice(destination.index, 0, ...movedColumn);
-
-      const dataToRender: columnToRenderType = {};
-
-      updatedColumns.forEach((column, i) => {
-        columnsToUpdate.push({ _id: column.columnData._id, order: i });
-        dataToRender[column.columnData._id] = {
-          columnData: { ...column.columnData, order: i },
-          tasksData: column.tasksData,
-        };
-
-        return { ...column, column: { ...column.columnData, order: i } };
-      });
+      const { columnsToUpdate, dataToRender } = changeColumnsOrder(columnsToRender, source.index, destination.index);
 
       setColumnsToRender(dataToRender);
-
       await updateSetOfColumns(columnsToUpdate).unwrap();
 
       return;
@@ -115,20 +101,15 @@ export const Columns = () => {
     const endColumnId = destination.droppableId;
 
     if (startColumnId === endColumnId) {
-      const tasks: TaskType[] = Array.from(columnsToRender[startColumnId].tasksData);
-      const movedTask = tasks.splice(source.index, 1);
-      const setOfTasks: UpdateSetOfTaskType = [];
-      console.log('task', tasks);
-
-      tasks.splice(destination.index, 0, ...movedTask);
-      tasks.forEach((task, i) => {
-        setOfTasks.push({ _id: task._id, order: i, columnId: startColumnId });
-
-        return { ...task, order: i };
-      });
+      const { updatedTasks, setOfTasks } = changeTasksOrder(
+        columnsToRender,
+        startColumnId,
+        source.index,
+        destination.index
+      );
 
       setColumnsToRender((data) => {
-        data[startColumnId].tasksData = [...tasks];
+        data[startColumnId].tasksData = [...updatedTasks];
 
         return data;
       });
@@ -139,24 +120,13 @@ export const Columns = () => {
     }
 
     if (startColumnId !== endColumnId) {
-      const startTasks: TaskType[] = Array.from(columnsToRender[startColumnId].tasksData);
-      const finishTasks: TaskType[] = Array.from(columnsToRender[endColumnId].tasksData);
-      const movedTask = startTasks.splice(source.index, 1);
-      const startSetOfTasks: UpdateSetOfTaskType = [];
-      const finishSetOfTasks: UpdateSetOfTaskType = [];
-
-      startTasks.forEach((task, i) => {
-        startSetOfTasks.push({ _id: task._id, order: i, columnId: startColumnId });
-
-        return { ...task, order: i };
-      });
-
-      finishTasks.splice(destination.index, 0, ...movedTask);
-      finishTasks.forEach((task, i) => {
-        finishSetOfTasks.push({ _id: task._id, order: i, columnId: endColumnId });
-
-        return { ...task, order: i, columnId: endColumnId };
-      });
+      const { startTasks, finishTasks, startSetOfTasks, finishSetOfTasks } = changeColumnsTasksOrder(
+        columnsToRender,
+        startColumnId,
+        endColumnId,
+        source.index,
+        destination.index
+      );
 
       setColumnsToRender((data) => {
         data[startColumnId].tasksData = [...startTasks];
@@ -185,40 +155,44 @@ export const Columns = () => {
 
   return (
     <>
-      <Box sx={{ flexGrow: 1, position: 'relative' }}>
-        <Box
-          sx={{
-            display: 'flex',
-            alignItems: 'flex-start',
-            overflowX: 'auto',
-            position: 'absolute',
-            gap: 2,
-            inset: 0,
-            pr: 2,
-            py: 2,
-          }}
-        >
-          <DragDropContext onDragEnd={onDragEnd}>
-            <Droppable droppableId="all-columns" direction="horizontal" type="column">
-              {(provided) => (
-                <Box {...provided.droppableProps} ref={provided.innerRef} sx={{ display: 'flex', height: '100%' }}>
-                  {boardColumns}
-                  {provided.placeholder}
-                </Box>
-              )}
-            </Droppable>
-          </DragDropContext>
-          <Button
-            variant="plain"
-            color="neutral"
-            startDecorator={<AddRoundedIcon />}
-            sx={{ width: 260, flexShrink: 0 }}
-            onClick={handleClick}
+      {isColumnsLoading || isTasksLoading ? (
+        <CircularProgress sx={{ mx: 'auto', mt: 10 }} />
+      ) : (
+        <Box sx={{ flexGrow: 1, position: 'relative' }}>
+          <Box
+            sx={{
+              display: 'flex',
+              alignItems: 'flex-start',
+              overflowX: 'auto',
+              position: 'absolute',
+              gap: 2,
+              inset: 0,
+              pr: 2,
+              py: 2,
+            }}
           >
-            {t('newColumn')}
-          </Button>
+            <DragDropContext onDragEnd={onDragEnd}>
+              <Droppable droppableId="all-columns" direction="horizontal" type="column">
+                {(provided) => (
+                  <Box {...provided.droppableProps} ref={provided.innerRef} sx={{ display: 'flex', height: '100%' }}>
+                    {boardColumns}
+                    {provided.placeholder}
+                  </Box>
+                )}
+              </Droppable>
+            </DragDropContext>
+            <Button
+              variant="plain"
+              color="neutral"
+              startDecorator={<AddRoundedIcon />}
+              sx={{ width: 260, flexShrink: 0 }}
+              onClick={handleClick}
+            >
+              {t('newColumn')}
+            </Button>
+          </Box>
         </Box>
-      </Box>
+      )}
     </>
   );
 };

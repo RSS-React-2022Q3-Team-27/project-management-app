@@ -71,7 +71,6 @@ export const Column: FC<ColumnPropsType> = ({ column, columns, boardIndex, tasks
   };
 
   const onClickAddTask = () => {
-    console.log('order', column.tasksData.length);
     dispatch(setNewTaskOrder(column.tasksData.length));
     dispatch(setDataForAddTask({ boardId, columnId }));
     dispatch(openAddTaskModal());
