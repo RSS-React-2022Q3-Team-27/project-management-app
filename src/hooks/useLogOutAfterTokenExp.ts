@@ -10,7 +10,7 @@ export const useLogOutAfterTokenExp = () => {
   const dispatch = useAppDispatch();
   const timer = getTimeBeforeExit();
   useEffect(() => {
-    if (timer) {
+    if (timer > 0) {
       dispatch(getUsers());
       const timeout = setTimeout(() => {
         dispatch(userLogOut());
