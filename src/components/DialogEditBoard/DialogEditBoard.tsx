@@ -7,13 +7,16 @@ import Stack from '@mui/joy/Stack';
 import Textarea from '@mui/joy/Textarea';
 import TextField from '@mui/joy/TextField';
 import Typography from '@mui/joy/Typography';
+import { useEffect, useCallback } from 'react';
 
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
+import { toast } from 'react-toastify';
+
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { EditBoardType, useEditBoardMutation } from '../../store/slices/boards/boardsApi';
 import { setCurrentBoard, setIsOpenedDialogEditBoard } from '../../store/slices/boards/boardsSlice';
-import { editBoard } from '../../store/slices/boards/boardsThunks';
 
 type FormType = {
   title: string;
@@ -30,16 +33,27 @@ export const DialogEditBoard = () => {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const { control, handleSubmit, reset } = useForm<FormType>();
+  const [editBoard, { isSuccess }] = useEditBoardMutation();
 
-  const onClose = () => {
+  const onClose = useCallback(() => {
     reset(clearForm);
     dispatch(setCurrentBoard(null));
     dispatch(setIsOpenedDialogEditBoard(false));
-  };
+  }, [dispatch, reset]);
 
-  const onSubmit: SubmitHandler<FormType> = (data) => {
-    dispatch(editBoard({ ...data, users: [] }));
-    onClose();
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success(t('boardEdited'));
+      onClose();
+    }
+  }, [isSuccess, t, onClose]);
+
+  const onSubmit: SubmitHandler<FormType> = (formData) => {
+    const data: EditBoardType = {
+      body: { ...formData, users: [], owner: currentBoard?.owner ?? '' },
+      boardId: currentBoard?._id ?? '',
+    };
+    editBoard(data);
   };
 
   return (

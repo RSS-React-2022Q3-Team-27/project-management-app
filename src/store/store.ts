@@ -3,6 +3,7 @@ import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
 import appSlice from './slices/app/appSlice';
 import { boardApi } from './slices/board/boardApi';
 import boardSlice from './slices/board/boardSlice';
+import { boardsApi } from './slices/boards/boardsApi';
 
 import boardsSlice from './slices/boards/boardsSlice';
 import headerSlice from './slices/header/headerSlice';
@@ -27,9 +28,16 @@ export const store = configureStore({
     [tasksApi.reducerPath]: tasksApi.reducer,
     [authApi.reducerPath]: authApi.reducer,
     [usersApi.reducerPath]: usersApi.reducer,
+    [boardsApi.reducerPath]: boardsApi.reducer,
   },
   middleware: (gDM) =>
-    gDM().concat([boardApi.middleware, authApi.middleware, usersApi.middleware, tasksApi.middleware]),
+    gDM().concat([
+      boardApi.middleware,
+      authApi.middleware,
+      usersApi.middleware,
+      tasksApi.middleware,
+      boardsApi.middleware,
+    ]),
 });
 
 export type AppDispatch = typeof store.dispatch;

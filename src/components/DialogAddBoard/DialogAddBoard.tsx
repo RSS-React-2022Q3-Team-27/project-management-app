@@ -14,8 +14,8 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { isAddedFalse, setIsOpenedDialogAddBoard } from '../../store/slices/boards/boardsSlice';
-import { createBoard } from '../../store/slices/boards/boardsThunks';
+import { CreateBoardType, useCreateBoardMutation } from '../../store/slices/boards/boardsApi';
+import { setIsOpenedDialogAddBoard } from '../../store/slices/boards/boardsSlice';
 
 type FormType = {
   title: string;
@@ -28,17 +28,18 @@ const clearForm = {
 };
 
 export default function DialogAddBoard() {
-  const { isAdded, isOpenedDialogAddBoard } = useAppSelector((state) => state.boards);
+  const { isOpenedDialogAddBoard } = useAppSelector((state) => state.boards);
+  const { id: userId } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const { control, handleSubmit, reset } = useForm<FormType>();
+  const [createBoard, { isSuccess }] = useCreateBoardMutation();
 
   useEffect(() => {
-    if (isAdded) {
+    if (isSuccess) {
       toast.success(t('boardAdded'));
-      dispatch(isAddedFalse());
     }
-  }, [isAdded, dispatch, t]);
+  }, [isSuccess, t]);
 
   const onClose = () => {
     reset(clearForm);
@@ -46,7 +47,12 @@ export default function DialogAddBoard() {
   };
 
   const onSubmit: SubmitHandler<FormType> = (data) => {
-    dispatch(createBoard({ ...data, users: [] }));
+    const body: CreateBoardType = {
+      ...data,
+      users: [],
+      owner: userId,
+    };
+    createBoard(body);
     onClose();
   };
 
