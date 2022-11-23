@@ -76,5 +76,6 @@
   "taskDeleted": "Task deleted",
   "taskCount": "Tasks: {{count}}",
   "noResults": "No results",
-  "board": "Board"
+  "board": "Board",
+  "taskAdded": "Task added"
 }
