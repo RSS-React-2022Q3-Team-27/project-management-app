@@ -10,6 +10,8 @@ import Typography from '@mui/joy/Typography';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { toast } from 'react-toastify';
+
 import { loginValidate } from './loginValidate';
 
 import { nameValidate } from './nameValidate';
@@ -38,19 +40,31 @@ export const DialogEditProfile = ({ openDialog, isDialogOpen }: IProps) => {
     openDialog(false);
   };
 
-  const confirmHandler = async () => {
+  const confirmHandler = () => {
     if (loginValidate(newLogin) && nameValidate(newName)) {
-      await logInUser({ login, password }).unwrap();
-      const newUserData = await updateUser({
-        id,
-        body: {
-          login: newLogin,
-          name: newName,
-          password,
-        },
-      }).unwrap();
-      dispatch(setUserInfo(newUserData));
-      openDialog(false);
+      logInUser({ login, password })
+        .unwrap()
+        .then(async () => {
+          const newUserData = await updateUser({
+            id,
+            body: {
+              login: newLogin,
+              name: newName,
+              password,
+            },
+          })
+            .unwrap()
+            .catch(() => toast.error(t('serverError')));
+
+          if (!newUserData) {
+            return;
+          }
+
+          dispatch(setUserInfo(newUserData));
+
+          openDialog(false);
+        })
+        .catch(() => {});
     }
   };
 

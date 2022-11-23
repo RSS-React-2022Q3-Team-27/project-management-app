@@ -4,10 +4,10 @@ import { useTranslation } from 'react-i18next';
 
 import styles from './SearchResults.module.css';
 
-import { ProfileTask } from '../../../../components/Profile/UserTasks/ProfileTask/ProfileTask';
+import { ProfileTask } from '../../../components/Profile/UserTasks/ProfileTask/ProfileTask';
 
-import { useAppSelector } from '../../../../store/hooks';
-import { useGetBoardsByUserIdQuery } from '../../../../store/slices/boards/boardsApi';
+import { useAppSelector } from '../../../store/hooks';
+import { useGetBoardsByUserIdQuery } from '../../../store/slices/boards/boardsApi';
 
 export const SearchResults = () => {
   const { searchQueryResults } = useAppSelector((state) => state.tasks);
@@ -15,7 +15,7 @@ export const SearchResults = () => {
   const { data } = useGetBoardsByUserIdQuery(id);
   const { t } = useTranslation();
 
-  const queryBoards = [...new Set(searchQueryResults.map((task) => task.boardId))];
+  const queryBoards = [...new Set(searchQueryResults.filter((task) => task.userId === id).map((task) => task.boardId))];
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', gap: 2 }}>
@@ -27,7 +27,6 @@ export const SearchResults = () => {
                 width: 300,
                 height: 350,
                 overflow: 'auto',
-                my: 4,
                 py: 3,
                 px: 2,
                 display: 'flex',

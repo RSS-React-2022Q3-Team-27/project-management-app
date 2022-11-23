@@ -3,8 +3,12 @@ import Sheet from '@mui/joy/Sheet';
 import { MainHeader } from './MainHeader/MainHeader';
 import { MainResults } from './MainResults/MainResults';
 import { MainSearch } from './MainSearch/MainSearch';
+import { SearchResults } from './SearchResults/SearchResults';
+
+import { useAppSelector } from '../../store/hooks';
 
 export const Main = () => {
+  const { searchQuery } = useAppSelector((state) => state.tasks);
   return (
     <Sheet
       sx={{
@@ -20,7 +24,7 @@ export const Main = () => {
     >
       <MainSearch />
       <MainHeader />
-      <MainResults />
+      {searchQuery ? <SearchResults /> : <MainResults />}
     </Sheet>
   );
 };

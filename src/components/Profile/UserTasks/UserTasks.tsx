@@ -19,18 +19,29 @@ export const UserTasks = () => {
   const queryBoards = [...new Set(data?.map((task) => task.boardId))];
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', gap: 2 }}>
-      <Typography level="h2">{t('yourTasks')}</Typography>
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        gap: 2,
+        my: 4,
+        mx: 2,
+      }}
+    >
+      <Typography level="h2" sx={{ my: 2 }}>
+        {t('yourTasks')}
+      </Typography>
       <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', gap: 2 }}>
         {data?.length
-          ? queryBoards.map((board, i) => (
+          ? queryBoards.map((board) => (
               <Sheet
                 key={board}
                 sx={{
                   width: 300,
                   height: 350,
                   overflow: 'auto',
-                  my: 4,
                   py: 3,
                   px: 2,
                   display: 'flex',

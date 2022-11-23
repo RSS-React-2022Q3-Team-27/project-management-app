@@ -53,22 +53,29 @@ export const SignUpForm = () => {
 
   const onSubmit: SubmitHandler<IFormInput> = async (data: IFormInput) => {
     const { passwordConfirm, ...restData } = data;
+
     if (passwordConfirm === restData.password) {
       const userData = await createUser(restData)
         .unwrap()
         .catch((error) => errorHandler(error));
+
       if (!userData) {
         return;
       }
+
       dispatch(setUserInfo(userData));
+
       const token = await logInUser({ login: data.login, password: data.password })
         .unwrap()
         .catch((error) => errorHandler(error));
+
       if (!token) {
         return;
       }
+
       dispatch(setToken(token));
       dispatch(setIsUserLogIn(true));
+
       navigate(ROUTES.MAIN.path);
     } else {
       toast.error(t('pswdNotMach'));
