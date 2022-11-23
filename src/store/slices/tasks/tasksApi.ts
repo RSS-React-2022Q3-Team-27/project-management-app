@@ -46,7 +46,7 @@ export type UpdateSetOfTaskType = {
 
 interface IQuerySearchParams {
   search: string;
-  id: string;
+  userId: string;
 }
 
 export const tasksApi = createApi({
@@ -101,10 +101,10 @@ export const tasksApi = createApi({
     }),
 
     getTasksByQuery: build.query<TaskType[], IQuerySearchParams>({
-      query: ({ search, id }) => ({
+      query: ({ search, userId }) => ({
         url: API_PATH.tasksSet,
         params: {
-          id,
+          userId,
           search,
         },
       }),

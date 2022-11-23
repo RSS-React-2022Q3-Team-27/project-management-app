@@ -4,7 +4,7 @@ import Button from '@mui/joy/Button';
 
 import TextField from '@mui/joy/TextField';
 import Typography from '@mui/joy/Typography';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
@@ -37,7 +37,8 @@ export const SignInForm = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [logInUser, { error: logInError }] = useLogInUserMutation();
-  const { data: usersData, refetch, isError } = useGetUsersQuery(undefined);
+  const [skip, setSkip] = useState(true);
+  const { data: usersData, isError } = useGetUsersQuery(undefined, { skip });
 
   const onSubmit: SubmitHandler<IFormInput> = async (data: IFormInput) => {
     const token = await logInUser({ login: data.login, password: data.password })
@@ -50,7 +51,7 @@ export const SignInForm = () => {
     dispatch(setIsUserLogIn(true));
     dispatch(setLogin(data.login));
     toast.success(t('youveSuccessfullySignedIn'));
-    refetch();
+    setSkip(false);
   };
 
   useEffect(() => {

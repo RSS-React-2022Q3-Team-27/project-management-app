@@ -18,26 +18,26 @@ type FormType = {
 
 export const MainSearch = () => {
   const dispatch = useAppDispatch();
+  const [skip, setSkip] = useState(true);
   const { searchQuery } = useAppSelector((state) => state.tasks);
   const { id } = useAppSelector((state) => state.user);
   const { t } = useTranslation();
   const { control, handleSubmit, reset } = useForm<FormType>();
   const [query, setQuery] = useState('');
-  const { data, refetch } = useGetTasksByQueryQuery({ search: query, id });
+  const { data } = useGetTasksByQueryQuery({ search: query, userId: id }, { skip });
 
   const onSubmit: SubmitHandler<FormType> = ({ search }) => {
     if (search.trim()) {
-      console.log('work');
-
       setQuery(search);
       dispatch(setSearchQuery(search));
-      refetch();
+      setSkip(false);
     }
   };
 
   const resetSearch = () => {
-    clearSearchInput();
+    setSkip(true);
     setQuery('');
+    clearSearchInput();
     reset();
   };
 
