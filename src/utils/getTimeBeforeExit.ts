@@ -14,5 +14,6 @@ export interface IToken {
 export const getTimeBeforeExit = () => {
   const token = getValueLocalStorage(LocalStorageKeys.token);
   const decryptedToken = token && (jwtDecode(token) as IToken);
-  return decryptedToken && Math.ceil(+((decryptedToken.exp - Date.now() / 1000) * 1000).toFixed(2));
+
+  return decryptedToken ? Math.ceil(Number(((decryptedToken.exp - Date.now() / 1000) * 1000).toFixed(2))) : 0;
 };

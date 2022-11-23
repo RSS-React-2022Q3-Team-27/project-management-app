@@ -12,6 +12,8 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
+import { errorHandler } from './errorHandler';
+
 import { ROUTES } from '../../constants/routes';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { useCreateUserMutation, useLogInUserMutation } from '../../store/slices/user/authApi';
@@ -35,13 +37,10 @@ export interface IRegError {
 export const SignUpForm = () => {
   const navigate = useNavigate();
   const { isUserLogIn } = useAppSelector((state) => state.user);
-  if (isUserLogIn) {
-    navigate(ROUTES.MAIN.path);
-  }
 
   const { t } = useTranslation();
-  const [createUser, { error: regError }] = useCreateUserMutation();
-  const [logInUser, { error: logInError }] = useLogInUserMutation();
+  const [createUser] = useCreateUserMutation();
+  const [logInUser] = useLogInUserMutation();
   const {
     control,
     handleSubmit,
@@ -55,9 +54,17 @@ export const SignUpForm = () => {
   const onSubmit: SubmitHandler<IFormInput> = async (data: IFormInput) => {
     const { passwordConfirm, ...restData } = data;
     if (passwordConfirm === restData.password) {
-      const userData = await createUser(restData).unwrap();
+      const userData = await createUser(restData)
+        .unwrap()
+        .catch((error) => {
+          errorHandler(error);
+        });
       dispatch(setUserInfo(userData));
-      const token = await logInUser({ login: data.login, password: data.password }).unwrap();
+      const token = await logInUser({ login: data.login, password: data.password })
+        .unwrap()
+        .catch((error) => {
+          errorHandler(error);
+        });
       dispatch(setToken(token));
       dispatch(setIsUserLogIn(true));
       navigate(ROUTES.MAIN.path);
@@ -67,19 +74,10 @@ export const SignUpForm = () => {
   };
 
   useEffect(() => {
-    const er = regError as IRegError;
-    if (er && er.status === 409) {
-      toast.error(t('loginAlreadyExist'));
-    } else if (er) {
-      toast.error(t('serverError'));
+    if (isUserLogIn) {
+      navigate(ROUTES.MAIN.path);
     }
-  }, [regError, t]);
-
-  useEffect(() => {
-    if (logInError) {
-      toast.error(t('serverError'));
-    }
-  }, [logInError, t]);
+  }, [isUserLogIn, navigate]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} autoComplete="false">

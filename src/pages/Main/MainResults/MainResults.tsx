@@ -1,39 +1,20 @@
-import { Box } from '@mui/joy';
-
-import { useEffect } from 'react';
-
-import { useTranslation } from 'react-i18next';
-
-import { toast } from 'react-toastify';
+import Box from '@mui/joy/Box';
+import CircularProgress from '@mui/joy/CircularProgress';
 
 import { SearchResults } from './SearchResults/SearchResults';
 
 import { DialogEditBoard } from '../../../components/DialogEditBoard/DialogEditBoard';
-import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-import { isDeletedFalse, isEditedFalse } from '../../../store/slices/boards/boardsSlice';
+import { useAppSelector } from '../../../store/hooks';
+import { useGetBoardsByUserIdQuery } from '../../../store/slices/boards/boardsApi';
 import { BoardCard } from '../BoardCard/BoardCard';
 
 export const MainResults = () => {
-  const { boards, isDeleted, isEdited, isOpenedDialogEditBoard } = useAppSelector((state) => state.boards);
-  const dispatch = useAppDispatch();
+  const { isOpenedDialogEditBoard } = useAppSelector((state) => state.boards);
+  const { id: userId } = useAppSelector((state) => state.user);
   const { searchQuery } = useAppSelector((state) => state.tasks);
-  const { t } = useTranslation();
+  const { data: boards, isLoading } = useGetBoardsByUserIdQuery(userId);
 
-  useEffect(() => {
-    if (isDeleted) {
-      toast.success(t('boardDeleted'));
-      dispatch(isDeletedFalse());
-    }
-  }, [isDeleted, dispatch, t]);
-
-  useEffect(() => {
-    if (isEdited) {
-      toast.success(t('boardEdited'));
-      dispatch(isEditedFalse());
-    }
-  }, [isEdited, dispatch, t]);
-
-  const cards = boards.map((board) => <BoardCard key={board._id} board={board} />);
+  const cards = boards?.map((board) => <BoardCard key={board._id} board={board} />);
 
   return (
     <>
@@ -41,7 +22,7 @@ export const MainResults = () => {
         <SearchResults />
       ) : (
         <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', gap: 2 }}>
-          {cards}
+          {isLoading ? <CircularProgress color="primary" size="lg" value={25} variant="soft" /> : cards}
         </Box>
       )}
 

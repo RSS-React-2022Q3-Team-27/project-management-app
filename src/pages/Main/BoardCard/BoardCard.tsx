@@ -1,28 +1,36 @@
 import DeleteIcon from '@mui/icons-material/DeleteOutline';
 import EditIcon from '@mui/icons-material/EditOutlined';
 import { Box, Card, IconButton, Typography, Tooltip, CardContent } from '@mui/joy';
-import React, { useContext } from 'react';
+import { useContext, useEffect, FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 import { ROUTES } from '../../../constants/routes';
 import { Context } from '../../../Context/Context';
 import { ReducerTypes } from '../../../Context/contextReducer/ReducerTypes';
 
 import { useAppDispatch } from '../../../store/hooks';
+import { useDeleteBoardMutation } from '../../../store/slices/boards/boardsApi';
 import { BoardType, setCurrentBoard, setIsOpenedDialogEditBoard } from '../../../store/slices/boards/boardsSlice';
-import { deleteBoard } from '../../../store/slices/boards/boardsThunks';
 import { useGetTasksByBoardIdQuery } from '../../../store/slices/tasks/tasksApi';
 
 type BoardCardPropsType = {
   board: BoardType;
 };
 
-export const BoardCard: React.FC<BoardCardPropsType> = ({ board }) => {
+export const BoardCard: FC<BoardCardPropsType> = ({ board }) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { contextDispatch } = useContext(Context);
   const { data: tasksByBoard } = useGetTasksByBoardIdQuery(board['_id']);
+  const [deleteBoard, { isSuccess }] = useDeleteBoardMutation();
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success(t('boardDeleted'));
+    }
+  }, [isSuccess, t]);
 
   const taskCount = {
     count: tasksByBoard?.length || 0,
@@ -32,7 +40,7 @@ export const BoardCard: React.FC<BoardCardPropsType> = ({ board }) => {
 
   const onClickDelete = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
-    contextDispatch({ type: ReducerTypes.cb, payload: () => dispatch(deleteBoard(board._id)) });
+    contextDispatch({ type: ReducerTypes.cb, payload: () => deleteBoard(board._id) });
   };
 
   const onClickEdit = (e: React.MouseEvent<HTMLAnchorElement>) => {

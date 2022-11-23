@@ -25,15 +25,8 @@ export const AddTaskModal = () => {
   const { control, handleSubmit, reset } = useForm<FormType>();
   const [createTask, { isError, isSuccess }] = useCreateTaskMutation();
 
-  const { isAddModalOpened, dataForAddTask } = useAppSelector((state) => state.tasks);
+  const { isAddModalOpened, dataForAddTask, newTaskOrder } = useAppSelector((state) => state.tasks);
   const { id: userId } = useAppSelector((state) => state.user);
-  const columnLength = useAppSelector((state) => {
-    if (dataForAddTask) {
-      const { columnId } = dataForAddTask;
-      return state.board.columnsData[columnId]?.length || 0;
-    }
-    return 0;
-  });
 
   const onClose = () => {
     dispatch(setDataForAddTask(null));
@@ -44,7 +37,7 @@ export const AddTaskModal = () => {
   const onSubmit: SubmitHandler<FormType> = async (data) => {
     if (dataForAddTask !== null) {
       const task: CreateTaskType = {
-        body: { ...data, users: [], order: columnLength, userId },
+        body: { ...data, users: [], order: newTaskOrder, userId },
         ...dataForAddTask,
       };
 
