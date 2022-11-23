@@ -56,15 +56,17 @@ export const SignUpForm = () => {
     if (passwordConfirm === restData.password) {
       const userData = await createUser(restData)
         .unwrap()
-        .catch((error) => {
-          errorHandler(error);
-        });
+        .catch((error) => errorHandler(error));
+      if (!userData) {
+        return;
+      }
       dispatch(setUserInfo(userData));
       const token = await logInUser({ login: data.login, password: data.password })
         .unwrap()
-        .catch((error) => {
-          errorHandler(error);
-        });
+        .catch((error) => errorHandler(error));
+      if (!token) {
+        return;
+      }
       dispatch(setToken(token));
       dispatch(setIsUserLogIn(true));
       navigate(ROUTES.MAIN.path);

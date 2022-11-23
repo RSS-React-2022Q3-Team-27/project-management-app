@@ -9,5 +9,9 @@ export const errorHandler = (error: IRegError) => {
     toast.error(i18n.t('loginAlreadyExist'));
     return;
   }
+  if (error.status === 401) {
+    toast.error(i18n.t('wrongLoginOrPassword'));
+    return;
+  }
   toast.error(i18n.t('serverError'));
 };

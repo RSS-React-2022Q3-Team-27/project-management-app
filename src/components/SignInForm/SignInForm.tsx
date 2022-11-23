@@ -17,6 +17,7 @@ import { useLogInUserMutation } from '../../store/slices/user/authApi';
 import { setIsUserLogIn, setLogin, setToken, setUserInfo } from '../../store/slices/user/userSlice';
 import { useGetUsersQuery } from '../../store/slices/users/usersApi';
 import { getUserDataByLogin } from '../../store/slices/users/usersThunks';
+import { errorHandler } from '../SignUpForm/errorHandler';
 import { IRegError } from '../SignUpForm/SignUpForm';
 
 interface IFormInput {
@@ -40,7 +41,12 @@ export const SignInForm = () => {
   const { data: usersData, refetch, isError } = useGetUsersQuery(undefined);
 
   const onSubmit: SubmitHandler<IFormInput> = async (data: IFormInput) => {
-    const token = await logInUser({ login: data.login, password: data.password }).unwrap();
+    const token = await logInUser({ login: data.login, password: data.password })
+      .unwrap()
+      .catch((error) => errorHandler(error));
+    if (!token) {
+      return;
+    }
     dispatch(setToken(token));
     dispatch(setIsUserLogIn(true));
     dispatch(setLogin(data.login));
@@ -56,17 +62,11 @@ export const SignInForm = () => {
   }, [dispatch, login, navigate, usersData]);
 
   useEffect(() => {
-    const error = logInError as IRegError;
-    if (error) {
-      toast.error(t(error.status === 401 ? 'wrongLoginOrPassword' : 'serverError'));
-    }
-  }, [logInError, t]);
-
-  useEffect(() => {
     if (isError && token) {
       toast.error(t('serverError'));
     }
   }, [isError, logInError, t, token]);
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} autoComplete="false">
       <Controller
