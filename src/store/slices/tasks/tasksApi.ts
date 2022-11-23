@@ -44,6 +44,11 @@ export type UpdateSetOfTaskType = {
   columnId: string;
 }[];
 
+interface IQuerySearchParams {
+  search: string;
+  id: string;
+}
+
 export const tasksApi = createApi({
   reducerPath: 'tasksApi',
   baseQuery: fetchBaseQuery({
@@ -95,10 +100,11 @@ export const tasksApi = createApi({
       providesTags: ['Tasks'],
     }),
 
-    getTasksByQuery: build.query<TaskType[], string>({
-      query: (search) => ({
+    getTasksByQuery: build.query<TaskType[], IQuerySearchParams>({
+      query: ({ search, id }) => ({
         url: API_PATH.tasksSet,
         params: {
+          id,
           search,
         },
       }),

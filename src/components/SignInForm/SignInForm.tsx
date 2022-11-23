@@ -18,7 +18,6 @@ import { setIsUserLogIn, setLogin, setToken, setUserInfo } from '../../store/sli
 import { useGetUsersQuery } from '../../store/slices/users/usersApi';
 import { getUserDataByLogin } from '../../store/slices/users/usersThunks';
 import { errorHandler } from '../SignUpForm/errorHandler';
-import { IRegError } from '../SignUpForm/SignUpForm';
 
 interface IFormInput {
   login: string;
@@ -34,7 +33,7 @@ export const SignInForm = () => {
   } = useForm<IFormInput>({
     mode: 'onChange',
   });
-  const { login, token } = useAppSelector((state) => state.user);
+  const { login, token, isUserLogIn } = useAppSelector((state) => state.user);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const [logInUser, { error: logInError }] = useLogInUserMutation();
@@ -55,11 +54,11 @@ export const SignInForm = () => {
   };
 
   useEffect(() => {
-    if (usersData) {
+    if (usersData && isUserLogIn) {
       dispatch(setUserInfo(getUserDataByLogin(usersData, login)));
       navigate(ROUTES.MAIN.path);
     }
-  }, [dispatch, login, navigate, usersData]);
+  }, [dispatch, isUserLogIn, login, navigate, usersData]);
 
   useEffect(() => {
     if (isError && token) {
