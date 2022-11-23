@@ -4,13 +4,17 @@ import { useTranslation } from 'react-i18next';
 
 import { ProfileTask } from './ProfileTask/ProfileTask';
 
+import styles from './UserTasks.module.css';
+
 import { useAppSelector } from '../../../store/hooks';
+import { useGetBoardsByUserIdQuery } from '../../../store/slices/boards/boardsApi';
 import { useGetTasksByUserIdQuery } from '../../../store/slices/tasks/tasksApi';
 
 export const UserTasks = () => {
   const { t } = useTranslation();
   const { id } = useAppSelector((state) => state.user);
   const { data } = useGetTasksByUserIdQuery(id);
+  const { data: userBoards } = useGetBoardsByUserIdQuery(id);
 
   const queryBoards = [...new Set(data?.map((task) => task.boardId))];
 
@@ -24,6 +28,8 @@ export const UserTasks = () => {
                 key={board}
                 sx={{
                   width: 300,
+                  height: 350,
+                  overflow: 'auto',
                   my: 4,
                   py: 3,
                   px: 2,
@@ -34,9 +40,10 @@ export const UserTasks = () => {
                   borderRadius: 'sm',
                   boxShadow: 'md',
                 }}
+                className={styles.list}
                 variant="outlined"
               >
-                <Typography level="h4">{`${t('board')} ${i + 1}`}</Typography>
+                <Typography level="h4">{userBoards?.find((el) => el._id === board)?.title}</Typography>
                 {data
                   .filter((task) => task.boardId === board)
                   .map((task) => (
