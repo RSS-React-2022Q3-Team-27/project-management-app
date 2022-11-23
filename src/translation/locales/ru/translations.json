@@ -76,5 +76,6 @@
   "taskDeleted": "Задача удалена",
   "taskCount": "Задач: {{count}}",
   "noResults": "Нет результатов",
-  "board": "Доска"
+  "board": "Доска",
+  "taskAdded": "Задача добавлена"
 }
