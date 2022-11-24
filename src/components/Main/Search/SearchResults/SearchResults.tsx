@@ -1,64 +1,66 @@
-import { Box, Sheet, Typography } from '@mui/joy';
+import Box from '@mui/joy/Box';
+import CircularProgress from '@mui/joy/CircularProgress';
+import Typography from '@mui/joy/Typography';
 
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
-<<<<<<<< HEAD:src/components/Main/Search/SearchResults/SearchResults.tsx
+import { AccordionBoard } from './AccordionBoard';
+
 import { useAppSelector } from '../../../../store/hooks';
-import { ProfileTask } from '../../../Profile/UserTasks/ProfileTask/ProfileTask';
-========
-import styles from './SearchResults.module.css';
 
-import { ProfileTask } from '../../../components/Profile/UserTasks/ProfileTask/ProfileTask';
-
-import { useAppSelector } from '../../../store/hooks';
-import { useGetBoardsByUserIdQuery } from '../../../store/slices/boards/boardsApi';
->>>>>>>> dev:src/pages/Main/SearchResults/SearchResults.tsx
+import { TaskType, useGetTasksByQueryQuery } from '../../../../store/slices/tasks/tasksApi';
 
 export const SearchResults = () => {
-  const { searchQueryResults } = useAppSelector((state) => state.tasks);
   const { id } = useAppSelector((state) => state.user);
-  const { data } = useGetBoardsByUserIdQuery(id);
   const { t } = useTranslation();
-  const [queryBoards, setQueryBoards] = useState<string[]>([]);
+  const { searchQuery } = useAppSelector((state) => state.tasks);
+
+  const { data, isSuccess, isFetching } = useGetTasksByQueryQuery({
+    search: searchQuery,
+    userId: id,
+  });
+
+  const [results, setResults] = useState<JSX.Element[] | JSX.Element>();
 
   useEffect(() => {
-    if (searchQueryResults) {
-      setQueryBoards([...new Set(searchQueryResults.filter((task) => task.userId === id).map((task) => task.boardId))]);
+    if (isSuccess) {
+      if (data.length > 0) {
+        const myTasks = data.filter((task) => task.userId === id);
+        const myBoards = myTasks.reduce((acc: { [key: string]: TaskType[] }, task) => {
+          const boardId = task.boardId;
+          const board = acc[boardId] ? acc[boardId].concat(task) : [task];
+          acc[boardId] = board;
+          return acc;
+        }, {});
+
+        const result = Object.keys(myBoards).map((boardId) => {
+          const board = myBoards[boardId];
+          return <AccordionBoard key={boardId} boardId={boardId} board={board} />;
+        });
+
+        setResults(result);
+      } else {
+        const noResults = <Typography>{t('noResults')}</Typography>;
+        setResults(noResults);
+      }
     }
-  }, [id, searchQueryResults]);
+  }, [isSuccess, data, id, t]);
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', gap: 2 }}>
-      {searchQueryResults.length
-        ? queryBoards.map((board) => (
-            <Sheet
-              key={board}
-              sx={{
-                width: 300,
-                height: 350,
-                overflow: 'auto',
-                py: 3,
-                px: 2,
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                gap: 1,
-                borderRadius: 'sm',
-                boxShadow: 'md',
-              }}
-              className={styles.list}
-              variant="outlined"
-            >
-              <Typography level="h4">{data?.find((el) => el._id === board)?.title}</Typography>
-              {searchQueryResults
-                .filter((task) => task.boardId === board)
-                .map((task) => (
-                  <ProfileTask task={task} key={task._id} />
-                ))}
-            </Sheet>
-          ))
-        : t('noResults')}
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        m: '0 auto',
+        width: {
+          md: '80%',
+        },
+      }}
+    >
+      {isFetching ? <CircularProgress color="primary" size="lg" value={25} variant="soft" /> : results}
     </Box>
   );
 };
