@@ -6,6 +6,7 @@ import ModalDialog from '@mui/joy/ModalDialog';
 import Stack from '@mui/joy/Stack';
 import TextField from '@mui/joy/TextField';
 import Typography from '@mui/joy/Typography';
+import { useCallback, useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
@@ -23,16 +24,23 @@ export const AddTaskModal = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { control, handleSubmit, reset } = useForm<FormType>();
-  const [createTask, { isError, isSuccess }] = useCreateTaskMutation();
+  const [createTask, { isSuccess }] = useCreateTaskMutation();
 
   const { isAddModalOpened, dataForAddTask, newTaskOrder } = useAppSelector((state) => state.tasks);
   const { id: userId } = useAppSelector((state) => state.user);
 
-  const onClose = () => {
+  const onClose = useCallback(() => {
     dispatch(setDataForAddTask(null));
     dispatch(closeAddTaskModal());
     reset();
-  };
+  }, [dispatch, reset]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success(t('taskAdded'));
+      onClose();
+    }
+  }, [isSuccess, onClose, t]);
 
   const onSubmit: SubmitHandler<FormType> = async (data) => {
     if (dataForAddTask !== null) {
@@ -42,15 +50,7 @@ export const AddTaskModal = () => {
       };
 
       await createTask(task).unwrap();
-
-      if (isError) {
-        toast.error('Error');
-      }
-      if (isSuccess) {
-        toast.success('taskAdded');
-      }
     }
-    onClose();
   };
 
   return (

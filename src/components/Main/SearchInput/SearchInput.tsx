@@ -17,24 +17,27 @@ type FormType = {
 
 export const SearchInput = () => {
   const dispatch = useAppDispatch();
+  const [skip, setSkip] = useState(true);
   const { searchQuery } = useAppSelector((state) => state.tasks);
+  const { id } = useAppSelector((state) => state.user);
   const { t } = useTranslation();
   const { control, handleSubmit, reset } = useForm<FormType>();
   const [query, setQuery] = useState('');
-  const { data, refetch } = useGetTasksByQueryQuery(query);
+  const { data } = useGetTasksByQueryQuery({ search: query, userId: id }, { skip });
   const [isFocus, setIsFocus] = useState(true);
 
   const onSubmit: SubmitHandler<FormType> = ({ search }) => {
     if (search.trim()) {
       setQuery(search);
       dispatch(setSearchQuery(search));
-      refetch();
+      setSkip(false);
     }
   };
 
   const resetSearch = () => {
-    clearSearchInput();
+    setSkip(true);
     setQuery('');
+    clearSearchInput();
     reset();
   };
 
@@ -44,7 +47,7 @@ export const SearchInput = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (data?.length) {
+    if (data) {
       dispatch(setSearchQueryResults(data));
     }
   }, [data, dispatch, query]);

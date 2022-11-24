@@ -4,7 +4,7 @@ import Button from '@mui/joy/Button';
 
 import TextField from '@mui/joy/TextField';
 import Typography from '@mui/joy/Typography';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
@@ -17,7 +17,7 @@ import { useLogInUserMutation } from '../../store/slices/user/authApi';
 import { setIsUserLogIn, setLogin, setToken, setUserInfo } from '../../store/slices/user/userSlice';
 import { useGetUsersQuery } from '../../store/slices/users/usersApi';
 import { getUserDataByLogin } from '../../store/slices/users/usersThunks';
-import { IRegError } from '../SignUpForm/SignUpForm';
+import { errorHandler } from '../SignUpForm/errorHandler';
 
 interface IFormInput {
   login: string;
@@ -33,40 +33,40 @@ export const SignInForm = () => {
   } = useForm<IFormInput>({
     mode: 'onChange',
   });
-  const { login, token } = useAppSelector((state) => state.user);
+  const { login, token, isUserLogIn } = useAppSelector((state) => state.user);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const [logInUser, { error: logInError }] = useLogInUserMutation();
-  const { data: usersData, refetch, isError } = useGetUsersQuery(undefined);
+  const [logInUser, { error: logInError, isLoading: logInUserLoading }] = useLogInUserMutation();
+  const [skip, setSkip] = useState(true);
+  const { data: usersData, isError, isLoading: getUsersLoading } = useGetUsersQuery(undefined, { skip });
 
   const onSubmit: SubmitHandler<IFormInput> = async (data: IFormInput) => {
-    const token = await logInUser({ login: data.login, password: data.password }).unwrap();
+    const token = await logInUser({ login: data.login, password: data.password })
+      .unwrap()
+      .catch((error) => errorHandler(error));
+    if (!token) {
+      return;
+    }
     dispatch(setToken(token));
     dispatch(setIsUserLogIn(true));
     dispatch(setLogin(data.login));
     toast.success(t('youveSuccessfullySignedIn'));
-    refetch();
+    setSkip(false);
   };
 
   useEffect(() => {
-    if (usersData) {
+    if (usersData && isUserLogIn) {
       dispatch(setUserInfo(getUserDataByLogin(usersData, login)));
       navigate(ROUTES.MAIN.path);
     }
-  }, [dispatch, login, navigate, usersData]);
-
-  useEffect(() => {
-    const error = logInError as IRegError;
-    if (error) {
-      toast.error(t(error.status === 401 ? 'wrongLoginOrPassword' : 'serverError'));
-    }
-  }, [logInError, t]);
+  }, [dispatch, isUserLogIn, login, navigate, usersData]);
 
   useEffect(() => {
     if (isError && token) {
       toast.error(t('serverError'));
     }
   }, [isError, logInError, t, token]);
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} autoComplete="false">
       <Controller
@@ -125,7 +125,7 @@ export const SignInForm = () => {
         </Typography>
       )}
 
-      <Button type="submit" sx={{ mt: 1 }}>
+      <Button type="submit" sx={{ mt: 1, width: '100%' }} loading={logInUserLoading || getUsersLoading}>
         {t('signIn')}
       </Button>
     </form>
