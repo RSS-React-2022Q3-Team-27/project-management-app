@@ -1,4 +1,3 @@
-import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import SearchIcon from '@mui/icons-material/Search';
 import { IconButton } from '@mui/joy';
 import Box from '@mui/joy/Box';
@@ -16,18 +15,17 @@ type FormType = {
   search: string;
 };
 
-export const MainSearch = () => {
+export const SearchInput = () => {
   const dispatch = useAppDispatch();
   const { searchQuery } = useAppSelector((state) => state.tasks);
   const { t } = useTranslation();
   const { control, handleSubmit, reset } = useForm<FormType>();
   const [query, setQuery] = useState('');
   const { data, refetch } = useGetTasksByQueryQuery(query);
+  const [isFocus, setIsFocus] = useState(true);
 
   const onSubmit: SubmitHandler<FormType> = ({ search }) => {
     if (search.trim()) {
-      console.log('work');
-
       setQuery(search);
       dispatch(setSearchQuery(search));
       refetch();
@@ -50,6 +48,7 @@ export const MainSearch = () => {
       dispatch(setSearchQueryResults(data));
     }
   }, [data, dispatch, query]);
+
   return (
     <Box sx={{ maxWidth: 350, minWidth: 280 }}>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -61,18 +60,23 @@ export const MainSearch = () => {
           render={({ field }) => (
             <TextField
               {...field}
-              type="text"
+              type="search"
               placeholder={t('search')}
               autoFocus
               variant="outlined"
-              startDecorator={<SearchIcon />}
               endDecorator={
-                <Box sx={{ display: 'flex', gap: 2 }}>
-                  <IconButton variant="soft" color="neutral" type="button" onClick={resetSearch}>
-                    <CloseRoundedIcon />
-                  </IconButton>
-                </Box>
+                <IconButton
+                  color={isFocus ? 'primary' : 'neutral'}
+                  size="lg"
+                  variant={isFocus ? 'solid' : 'soft'}
+                  type="button"
+                  onClick={resetSearch}
+                >
+                  <SearchIcon />
+                </IconButton>
               }
+              onBlur={() => setIsFocus(false)}
+              onFocus={() => setIsFocus(true)}
             />
           )}
         />
