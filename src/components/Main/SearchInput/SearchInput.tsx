@@ -1,15 +1,13 @@
 import SearchIcon from '@mui/icons-material/Search';
-import { IconButton } from '@mui/joy';
 import Box from '@mui/joy/Box';
+import IconButton from '@mui/joy/IconButton';
 import TextField from '@mui/joy/TextField';
-import { useCallback, useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Controller, useForm, SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-
-import { useGetTasksByQueryQuery } from '../../../store/slices/tasks/tasksApi';
-import { setSearchQuery, setSearchQueryResults } from '../../../store/slices/tasks/tasksSlice';
+import { setSearchQuery } from '../../../store/slices/tasks/tasksSlice';
 
 type FormType = {
   search: string;
@@ -17,40 +15,17 @@ type FormType = {
 
 export const SearchInput = () => {
   const dispatch = useAppDispatch();
-  const [skip, setSkip] = useState(true);
   const { searchQuery } = useAppSelector((state) => state.tasks);
-  const { id } = useAppSelector((state) => state.user);
   const { t } = useTranslation();
-  const { control, handleSubmit, reset } = useForm<FormType>();
-  const [query, setQuery] = useState('');
-  const { data } = useGetTasksByQueryQuery({ search: query, userId: id }, { skip });
+  const { control, handleSubmit } = useForm<FormType>();
+
   const [isFocus, setIsFocus] = useState(true);
 
   const onSubmit: SubmitHandler<FormType> = ({ search }) => {
     if (search.trim()) {
-      setQuery(search);
       dispatch(setSearchQuery(search));
-      setSkip(false);
     }
   };
-
-  const resetSearch = () => {
-    setSkip(true);
-    setQuery('');
-    clearSearchInput();
-    reset();
-  };
-
-  const clearSearchInput = useCallback(() => {
-    dispatch(setSearchQuery(''));
-    dispatch(setSearchQueryResults([]));
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (data) {
-      dispatch(setSearchQueryResults(data));
-    }
-  }, [data, dispatch, query]);
 
   return (
     <Box sx={{ maxWidth: 350, minWidth: 280 }}>
@@ -72,8 +47,7 @@ export const SearchInput = () => {
                   color={isFocus ? 'primary' : 'neutral'}
                   size="lg"
                   variant={isFocus ? 'solid' : 'soft'}
-                  type="button"
-                  onClick={resetSearch}
+                  type="submit"
                 >
                   <SearchIcon />
                 </IconButton>
