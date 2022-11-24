@@ -39,8 +39,8 @@ export const SignUpForm = () => {
   const { isUserLogIn } = useAppSelector((state) => state.user);
 
   const { t } = useTranslation();
-  const [createUser] = useCreateUserMutation();
-  const [logInUser] = useLogInUserMutation();
+  const [createUser, { isLoading: createUserLoading }] = useCreateUserMutation();
+  const [logInUser, { isLoading: ligInUserLoading }] = useLogInUserMutation();
   const {
     control,
     handleSubmit,
@@ -209,7 +209,7 @@ export const SignUpForm = () => {
           {errors.passwordConfirm.message}
         </Typography>
       )}
-      <Button type="submit" sx={{ mt: 1 }}>
+      <Button type="submit" loading={createUserLoading || ligInUserLoading} sx={{ mt: 1, width: '100%' }}>
         {t('signUp')}
       </Button>
     </form>
