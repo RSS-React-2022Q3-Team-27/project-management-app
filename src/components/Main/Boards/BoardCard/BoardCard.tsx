@@ -6,14 +6,14 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { ROUTES } from '../../../constants/routes';
-import { Context } from '../../../Context/Context';
-import { ReducerTypes } from '../../../Context/contextReducer/ReducerTypes';
+import { ROUTES } from '../../../../constants/routes';
+import { Context } from '../../../../Context/Context';
+import { ReducerTypes } from '../../../../Context/contextReducer/ReducerTypes';
 
-import { useAppDispatch } from '../../../store/hooks';
-import { useDeleteBoardMutation } from '../../../store/slices/boards/boardsApi';
-import { BoardType, setCurrentBoard, setIsOpenedDialogEditBoard } from '../../../store/slices/boards/boardsSlice';
-import { useGetTasksByBoardIdQuery } from '../../../store/slices/tasks/tasksApi';
+import { useAppDispatch } from '../../../../store/hooks';
+import { useDeleteBoardMutation } from '../../../../store/slices/boards/boardsApi';
+import { BoardType, setCurrentBoard, setIsOpenedDialogEditBoard } from '../../../../store/slices/boards/boardsSlice';
+import { useGetTasksByBoardIdQuery } from '../../../../store/slices/tasks/tasksApi';
 
 type BoardCardPropsType = {
   board: BoardType;
