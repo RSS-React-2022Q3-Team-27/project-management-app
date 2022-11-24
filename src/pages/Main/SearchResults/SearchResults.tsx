@@ -1,5 +1,6 @@
 import { Box, Sheet, Typography } from '@mui/joy';
 
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import styles from './SearchResults.module.css';
@@ -8,14 +9,20 @@ import { ProfileTask } from '../../../components/Profile/UserTasks/ProfileTask/P
 
 import { useAppSelector } from '../../../store/hooks';
 import { useGetBoardsByUserIdQuery } from '../../../store/slices/boards/boardsApi';
+import { TaskType } from '../../../store/slices/tasks/tasksApi';
 
 export const SearchResults = () => {
   const { searchQueryResults } = useAppSelector((state) => state.tasks);
   const { id } = useAppSelector((state) => state.user);
   const { data } = useGetBoardsByUserIdQuery(id);
   const { t } = useTranslation();
+  const [queryBoards, setQueryBoards] = useState<string[]>([]);
 
-  const queryBoards = [...new Set(searchQueryResults.filter((task) => task.userId === id).map((task) => task.boardId))];
+  useEffect(() => {
+    if (searchQueryResults) {
+      setQueryBoards([...new Set(searchQueryResults.filter((task) => task.userId === id).map((task) => task.boardId))]);
+    }
+  }, [id, searchQueryResults]);
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', gap: 2 }}>

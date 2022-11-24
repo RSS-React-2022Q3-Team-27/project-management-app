@@ -47,10 +47,11 @@ export const MainSearch = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (data?.length) {
+    if (data) {
       dispatch(setSearchQueryResults(data));
     }
   }, [data, dispatch, query]);
+
   return (
     <Box sx={{ maxWidth: 350, minWidth: 280 }}>
       <form onSubmit={handleSubmit(onSubmit)}>

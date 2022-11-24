@@ -50,8 +50,6 @@ const userSlice = createSlice({
     },
 
     setUserInfo(state, { payload }) {
-      console.log(payload);
-
       setValueLocalStorage(LocalStorageKeys.userId, payload._id);
       state.login = payload.login;
       state.id = payload._id;
