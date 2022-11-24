@@ -9,7 +9,6 @@ import { ProfileTask } from '../../../components/Profile/UserTasks/ProfileTask/P
 
 import { useAppSelector } from '../../../store/hooks';
 import { useGetBoardsByUserIdQuery } from '../../../store/slices/boards/boardsApi';
-import { TaskType } from '../../../store/slices/tasks/tasksApi';
 
 export const SearchResults = () => {
   const { searchQueryResults } = useAppSelector((state) => state.tasks);
