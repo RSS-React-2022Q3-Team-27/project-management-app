@@ -2,9 +2,8 @@ import { Box, Sheet, Typography } from '@mui/joy';
 
 import { useTranslation } from 'react-i18next';
 
-import { ProfileTask } from '../../../../components/Profile/UserTasks/ProfileTask/ProfileTask';
-
 import { useAppSelector } from '../../../../store/hooks';
+import { ProfileTask } from '../../../Profile/UserTasks/ProfileTask/ProfileTask';
 
 export const SearchResults = () => {
   const { searchQueryResults } = useAppSelector((state) => state.tasks);
