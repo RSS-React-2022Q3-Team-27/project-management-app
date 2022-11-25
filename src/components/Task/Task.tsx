@@ -2,9 +2,12 @@ import { Draggable } from '@hello-pangea/dnd';
 import MoreIcon from '@mui/icons-material/MoreHoriz';
 import { Card, CardContent, Typography, IconButton, Menu, MenuItem } from '@mui/joy';
 import Box from '@mui/joy/Box';
+import List from '@mui/material/List';
 import { FC, useContext, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+
+import { FileAttachment } from './FileAttachment';
 
 import { Context } from '../../Context/Context';
 
@@ -12,6 +15,7 @@ import { ReducerTypes } from '../../Context/contextReducer/ReducerTypes';
 
 import { useAppDispatch } from '../../store/hooks';
 import { ColumnType } from '../../store/slices/board/boardApi';
+import { openAddFileModal } from '../../store/slices/files/filesSlice';
 
 import {
   TaskType,
@@ -20,6 +24,7 @@ import {
   useUpdateSetOfTasksMutation,
 } from '../../store/slices/tasks/tasksApi';
 import { openUpdateTaskModal, setDataForUpdateTask } from '../../store/slices/tasks/tasksSlice';
+import { fileType } from '../Board/Columns/Columns';
 
 type TaskPropsType = {
   task: TaskType;
@@ -28,9 +33,10 @@ type TaskPropsType = {
     columnData: ColumnType;
     tasksData: TaskType[];
   };
+  files: fileType[];
 };
 
-export const Task: FC<TaskPropsType> = ({ task, index, column }) => {
+export const Task: FC<TaskPropsType> = ({ task, index, column, files }) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -43,7 +49,8 @@ export const Task: FC<TaskPropsType> = ({ task, index, column }) => {
     if (isSuccess) {
       toast.success(t('taskDeleted'));
     }
-  }, [isSuccess, t]);
+    console.log(files);
+  }, [files, isSuccess, t]);
 
   const deleteTaskCb = async () => {
     const { boardId, columnId, _id: taskId, order } = task;
@@ -77,6 +84,10 @@ export const Task: FC<TaskPropsType> = ({ task, index, column }) => {
   const closeMenu = () => {
     setAnchorEl(null);
   };
+  const onClickAddFile = () => {
+    dispatch(openAddFileModal({ taskId: task._id, boardId: task.boardId }));
+    closeMenu();
+  };
 
   return (
     <Draggable key={task._id} draggableId={task._id} index={index}>
@@ -106,11 +117,20 @@ export const Task: FC<TaskPropsType> = ({ task, index, column }) => {
                 <Menu id="task-menu" anchorEl={anchorEl} open={isOpen} onClose={closeMenu}>
                   <MenuItem onClick={onClickEdit}>{t('edit')}</MenuItem>
                   <MenuItem onClick={onClickDelete}>{t('delete')}</MenuItem>
+                  <MenuItem onClick={onClickAddFile}>{t('addFile')}</MenuItem>
                 </Menu>
               </Box>
               <Box>
                 <Typography>{task.description}</Typography>
               </Box>
+
+              {files.length && (
+                <List>
+                  {files.map((file) => (
+                    <FileAttachment key={file._id} name={file.name} path={file.path} />
+                  ))}
+                </List>
+              )}
             </CardContent>
           </Card>
         </Box>

@@ -77,5 +77,6 @@
   "taskCount": "Tasks: {{count}}",
   "noResults": "No results",
   "board": "Board",
-  "taskAdded": "Task added"
+  "taskAdded": "Task added",
+  "addFile": "Add file"
 }

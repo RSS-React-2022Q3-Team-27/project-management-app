@@ -16,6 +16,7 @@ import {
   useUpdateSetOfColumnsMutation,
 } from '../../../store/slices/board/boardApi';
 import { openAddColumnModal, setColumnsLength } from '../../../store/slices/board/boardSlice';
+import { useGetFilesByBoardIdQuery } from '../../../store/slices/files/filesApi';
 import {
   TaskType,
   UpdateSetOfTaskType,
@@ -32,10 +33,23 @@ type columnToRenderType = {
   };
 };
 
+export type fileType = {
+  boardId: string;
+  name: string;
+  path: string;
+  taskId: string;
+  _id: string;
+};
+
+export type fileToRenderType = {
+  [key: string]: fileType[];
+};
+
 export const Columns = () => {
   const { t } = useTranslation();
   const { id } = useParams<{ id?: string }>();
   const { data: columns, isError: isColumnsError, isLoading: isColumnsLoading } = useGetColumnsInBoardQuery(id || '');
+  const { data: files, isError: isFilesError, isLoading: isFilesLoading } = useGetFilesByBoardIdQuery(id || '');
   const {
     data: tasks,
     isError: isTasksError,
@@ -46,13 +60,15 @@ export const Columns = () => {
   const [updateSetOfTasks] = useUpdateSetOfTasksMutation();
   const dispatch = useAppDispatch();
   const [columnsToRender, setColumnsToRender] = useState<columnToRenderType>({});
+  const [filesToRender, setFilesToRender] = useState<fileToRenderType>({});
 
   useEffect(() => {
-    if (isColumnsError || isTasksError) {
+    if (isColumnsError || isTasksError || isFilesError) {
       toast.error('Error');
     } else if (columns) {
       const sortedColumns = [...columns].sort((a, b) => a.order - b.order);
       const dataToRender: columnToRenderType = {};
+      const sortedFiles: fileToRenderType = {};
 
       sortedColumns.forEach((column) => {
         dataToRender[column._id] = { columnData: column, tasksData: [] };
@@ -68,9 +84,25 @@ export const Columns = () => {
         });
       }
 
+      if (files && files.length) {
+        files.forEach((file) => {
+          const task = sortedFiles[file.taskId];
+          if (task) {
+            sortedFiles[file.taskId].push(file);
+          } else {
+            sortedFiles[file.taskId] = [];
+            sortedFiles[file.taskId].push(file);
+          }
+        });
+      }
+
+      console.log(files);
+      console.log(sortedFiles);
+
+      setFilesToRender(sortedFiles);
       setColumnsToRender(dataToRender);
     }
-  }, [columns, isColumnsError, isTasksError, tasks]);
+  }, [columns, files, isColumnsError, isFilesError, isTasksError, tasks]);
 
   const handleClick = () => {
     dispatch(openAddColumnModal());
@@ -150,12 +182,13 @@ export const Columns = () => {
       columns={[...Object.values(columnsToRender)]}
       boardIndex={i}
       tasksRefetch={tasksRefetch}
+      files={filesToRender}
     />
   ));
 
   return (
     <>
-      {isColumnsLoading || isTasksLoading ? (
+      {isColumnsLoading || isTasksLoading || isFilesLoading ? (
         <CircularProgress sx={{ mx: 'auto', mt: 10 }} />
       ) : (
         <Box sx={{ flexGrow: 1, position: 'relative' }}>
