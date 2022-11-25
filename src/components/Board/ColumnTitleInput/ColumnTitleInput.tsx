@@ -4,23 +4,27 @@ import Box from '@mui/joy/Box';
 
 import IconButton from '@mui/joy/IconButton';
 import TextField from '@mui/joy/TextField';
+import React, { FC } from 'react';
 
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 
+import { useAppDispatch } from '../../../store/hooks';
+
 import { ColumnType, useUpdateColumnMutation } from '../../../store/slices/board/boardApi';
+import { setTitleEditId } from '../../../store/slices/board/boardSlice';
 import { AddColumnFormType } from '../AddColumnModal/AddColumnModal';
 
 type ColumnTitleProps = {
   column: ColumnType;
-  setInputActive: (isInputActive: boolean) => void;
 };
 
-export const ColumnTitleInput = ({ column, setInputActive }: ColumnTitleProps) => {
+export const ColumnTitleInput: FC<ColumnTitleProps> = ({ column }) => {
   const { control, handleSubmit } = useForm<AddColumnFormType>();
   const [updateColumn] = useUpdateColumnMutation();
+  const dispatch = useAppDispatch();
 
   const onSubmit: SubmitHandler<AddColumnFormType> = async (formData: AddColumnFormType) => {
-    setInputActive(false);
+    dispatch(setTitleEditId(null));
 
     if (formData.title === column.title) return;
 
@@ -47,15 +51,20 @@ export const ColumnTitleInput = ({ column, setInputActive }: ColumnTitleProps) =
               sx={{ width: 260 }}
               endDecorator={
                 <Box sx={{ display: 'flex', gap: 2 }}>
-                  <IconButton variant="soft" color="success" type="submit">
+                  <IconButton
+                    variant="soft"
+                    color="success"
+                    type="submit"
+                    onMouseDown={(e: React.SyntheticEvent) => e.stopPropagation()}
+                  >
                     <CheckRoundedIcon />
                   </IconButton>
-                  <IconButton variant="soft" color="danger" onClick={() => setInputActive(false)}>
+                  <IconButton variant="soft" color="danger">
                     <CloseRoundedIcon />
                   </IconButton>
                 </Box>
               }
-              onBlur={() => setInputActive(false)}
+              onBlur={() => dispatch(setTitleEditId(null))}
             />
           )}
         />
