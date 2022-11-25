@@ -7,4 +7,5 @@ export const API_PATH = {
   columns: 'columns',
   columnsSet: 'columnsSet',
   tasksSet: 'tasksSet',
+  points: 'points',
 };

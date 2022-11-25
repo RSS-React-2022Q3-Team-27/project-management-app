@@ -22,6 +22,7 @@ import {
   useUpdateSetOfTasksMutation,
 } from '../../store/slices/tasks/tasksApi';
 import { openUpdateTaskModal, setDataForUpdateTask } from '../../store/slices/tasks/tasksSlice';
+import { Points } from '../Points/Points';
 
 type TaskPropsType = {
   task: TaskType;
@@ -123,6 +124,7 @@ export const Task: FC<TaskPropsType> = ({ task, index, column }) => {
               <Box>
                 <Typography>{task.description}</Typography>
               </Box>
+              <Points />
             </CardContent>
           </Card>
         </Box>
