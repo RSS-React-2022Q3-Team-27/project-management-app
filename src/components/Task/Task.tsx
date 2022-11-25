@@ -1,4 +1,6 @@
 import { Draggable } from '@hello-pangea/dnd';
+import AddRoundedIcon from '@mui/icons-material/AddRounded';
+import AttachFileRoundedIcon from '@mui/icons-material/AttachFileRounded';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import MoreIcon from '@mui/icons-material/MoreVert';
@@ -123,20 +125,25 @@ export const Task: FC<TaskPropsType> = ({ task, index, column, files }) => {
                     </ListItemDecorator>
                     {t('edit')}
                   </MenuItem>
+                  <MenuItem onClick={onClickAddFile}>
+                    <ListItemDecorator sx={{ color: 'inherit' }}>
+                      <AttachFileRoundedIcon />
+                    </ListItemDecorator>
+                    {t('addFile')}
+                  </MenuItem>
                   <MenuItem onClick={onClickDelete} color="danger">
                     <ListItemDecorator sx={{ color: 'inherit' }}>
                       <DeleteIcon />
                     </ListItemDecorator>
                     {t('delete')}
                   </MenuItem>
-                  <MenuItem onClick={onClickAddFile}>{t('addFile')}</MenuItem>
                 </Menu>
               </Box>
               <Box>
                 <Typography>{task.description}</Typography>
               </Box>
 
-              {files.length && (
+              {Boolean(files.length) && (
                 <List>
                   {files.map((file) => (
                     <FileAttachment key={file._id} name={file.name} path={file.path} />
