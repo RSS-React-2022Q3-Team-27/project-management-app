@@ -8,6 +8,7 @@ import { useParams, Link as RouterLink } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { AddColumnModal } from '../../components/Board/AddColumnModal';
+import { AddFileModal } from '../../components/Board/AddFileModal';
 import { AddTaskModal } from '../../components/Board/AddTaskModal';
 import { Columns } from '../../components/Board/Columns';
 import { UpdateTaskModal } from '../../components/Board/UpdateTaskModal';
@@ -56,6 +57,7 @@ export const Board = () => {
       <AddColumnModal />
       <AddTaskModal />
       <UpdateTaskModal />
+      <AddFileModal />
     </Box>
   );
 };

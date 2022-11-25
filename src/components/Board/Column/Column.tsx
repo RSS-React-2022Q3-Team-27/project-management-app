@@ -6,13 +6,13 @@ import Button from '@mui/joy/Button';
 import IconButton from '@mui/joy/IconButton';
 import List from '@mui/joy/List';
 import Typography from '@mui/joy/Typography';
-import { FC, useContext, useState } from 'react';
+import React, { FC, useContext, useState, useEffect } from 'react';
 
 import styles from './column.module.css';
 
 import { Context } from '../../../Context/Context';
 import { ReducerTypes } from '../../../Context/contextReducer/ReducerTypes';
-import { useAppDispatch } from '../../../store/hooks';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 
 import {
   ColumnType,
@@ -20,9 +20,11 @@ import {
   useDeleteColumnMutation,
   useUpdateSetOfColumnsMutation,
 } from '../../../store/slices/board/boardApi';
+import { setTitleEditId } from '../../../store/slices/board/boardSlice';
 import { TaskType } from '../../../store/slices/tasks/tasksApi';
 import { openAddTaskModal, setDataForAddTask, setNewTaskOrder } from '../../../store/slices/tasks/tasksSlice';
 import { Task } from '../../Task/Task';
+import { fileToRenderType } from '../Columns/Columns';
 import { ColumnTitleInput } from '../ColumnTitleInput';
 
 type ColumnPropsType = {
@@ -36,16 +38,26 @@ type ColumnPropsType = {
   }[];
   boardIndex: number;
   tasksRefetch: () => void;
+  files: fileToRenderType;
 };
 
-export const Column: FC<ColumnPropsType> = ({ column, columns, boardIndex, tasksRefetch }) => {
+export const Column: FC<ColumnPropsType> = ({ column, columns, boardIndex, tasksRefetch, files }) => {
   const { title, boardId, _id: columnId, order } = column.columnData;
   const dispatch = useAppDispatch();
   const { contextDispatch } = useContext(Context);
   const [deleteColumn] = useDeleteColumnMutation();
   const [updateSetOfColumns] = useUpdateSetOfColumnsMutation();
+  const { titleEditId } = useAppSelector((state) => state.board);
 
   const [isInputActive, setInputActive] = useState(false);
+
+  useEffect(() => {
+    if (titleEditId === columnId) {
+      setInputActive(true);
+    } else {
+      setInputActive(false);
+    }
+  }, [titleEditId, columnId]);
 
   const handleDelete = async () => {
     await deleteColumn({ boardId, columnId }).unwrap();
@@ -77,7 +89,7 @@ export const Column: FC<ColumnPropsType> = ({ column, columns, boardIndex, tasks
   };
 
   const tasks = column.tasksData.map((task, index) => (
-    <Task key={task._id} task={task} index={index} column={column} />
+    <Task key={task._id} task={task} index={index} column={column} files={files[task._id] ? files[task._id] : []} />
   ));
 
   return (
@@ -87,16 +99,25 @@ export const Column: FC<ColumnPropsType> = ({ column, columns, boardIndex, tasks
           {...provided.draggableProps}
           ref={provided.innerRef}
           sx={{ display: 'flex', flexDirection: 'column', gap: 1, width: 280, flexShrink: 0, height: '100%', mx: 1 }}
+          onMouseDown={() => dispatch(setTitleEditId(null))}
         >
           <Box
             {...provided.dragHandleProps}
             sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 1 }}
           >
             {isInputActive ? (
-              <ColumnTitleInput column={column.columnData} setInputActive={setInputActive} />
+              <ColumnTitleInput column={column.columnData} />
             ) : (
               <>
-                <Typography component="h3" level="h6" sx={{ width: '100%' }} onClick={() => setInputActive(true)}>
+                <Typography
+                  component="h3"
+                  level="h6"
+                  sx={{ width: '100%' }}
+                  onClick={(e: React.SyntheticEvent) => {
+                    e.stopPropagation();
+                    dispatch(setTitleEditId(columnId));
+                  }}
+                >
                   {title}
                 </Typography>
                 <IconButton variant="outlined" color="neutral" onClick={onClickDelete}>

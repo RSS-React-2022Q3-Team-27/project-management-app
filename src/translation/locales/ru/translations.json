@@ -80,5 +80,13 @@
   "taskAdded": "Задача добавлена",
   "addPoint": "Добавить пункт",
   "addCheckList": "Список",
-  "addItem": "Добавить пункт"
+  "addItem": "Добавить пункт",
+  "searchResults": "Результаты поиска",
+  "addFile": "Добавить файл",
+  "upload": "Загрузить",
+  "dragDrop": "Перетащите изображение сюда",
+  "or": "или",
+  "chooseFile": "Выбрать файл",
+  "fileExtension": "Расширение файла: .jpeg /.jpg /.png",
+  "wrongFileType": "Неверный тип файла"
 }

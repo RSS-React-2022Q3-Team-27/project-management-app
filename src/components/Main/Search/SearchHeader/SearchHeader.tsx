@@ -17,9 +17,9 @@ export const SearchHeader = () => {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, justifyContent: 'space-between' }}>
-      <Typography level="h2">{t('Search')}</Typography>
+      <Typography level="h2">{t('searchResults')}</Typography>
       <ButtonRoot color="neutral" variant="plain" startDecorator={<ArrowBackIcon />} onClick={onClick}>
-        {t('toBoards')}
+        {t('toMainPage')}
       </ButtonRoot>
     </Box>
   );
