@@ -51,7 +51,7 @@ export const Nav = ({ placedInHeader }: { placedInHeader: boolean }) => {
       nav = (
         <>
           <CreateNewBoard />
-          <NavButton route={ROUTES.MAIN.path} variant={'solid'} text={t('goToMainPage')} isHeader={placedInHeader}>
+          <NavButton route={ROUTES.MAIN.path} variant={'solid'} text={t('toMainPage')} isHeader={placedInHeader}>
             <HomeRoundedIcon />
           </NavButton>
           <SignOutButton isHeader={placedInHeader} />
@@ -59,7 +59,7 @@ export const Nav = ({ placedInHeader }: { placedInHeader: boolean }) => {
       );
       break;
     case HeaderState.loggedWelcome:
-      nav = <NavButton route={ROUTES.MAIN.path} variant={'plain'} text={t('goToMainPage')} isHeader={placedInHeader} />;
+      nav = <NavButton route={ROUTES.MAIN.path} variant={'plain'} text={t('toMainPage')} isHeader={placedInHeader} />;
       break;
     default:
       nav = (
