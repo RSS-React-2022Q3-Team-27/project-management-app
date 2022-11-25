@@ -24,7 +24,7 @@ export const AddFileModal = () => {
   const fileInput = useRef<HTMLInputElement>(null);
   const dispatch = useAppDispatch();
   const { isAddFileModalOpened, fileData } = useAppSelector((state) => state.files);
-  const [uploadFile, { isError }] = useUploadFileMutation();
+  const [uploadFile, { isError, isLoading }] = useUploadFileMutation();
   const [fileForUpload, setFileToUpload] = useState<File | null>(null);
   const [isFormatWrong, setIsFormatWrong] = useState(false);
 
@@ -48,8 +48,6 @@ export const AddFileModal = () => {
   };
 
   const handleUpload = async () => {
-    handleClose();
-
     if (fileForUpload) {
       const formData = new FormData();
 
@@ -63,6 +61,8 @@ export const AddFileModal = () => {
         toast.error('Error');
       }
     }
+
+    handleClose();
   };
 
   const handleChooseFile = () => {
@@ -105,6 +105,7 @@ export const AddFileModal = () => {
             type="file"
             accept=".jpg,.jpeg,.png"
             onChange={handleChange}
+            disabled={isLoading}
           />
           <BackupRoundedIcon sx={{ fontSize: 40, color: 'var(--joy-palette-primary-200)' }} />
           <Typography sx={{ textAlign: 'center' }}>{t('dragDrop')}</Typography>
@@ -113,7 +114,7 @@ export const AddFileModal = () => {
             {t('chooseFile')}
           </Button>
         </Box>
-        <Typography color="primary" sx={{ fontSize: 12, textAlign: 'center', mt: 1, mb: 2 }}>
+        <Typography color="primary" sx={{ fontSize: 14, textAlign: 'center', mt: 1, mb: 2 }}>
           {t('fileExtension')}
         </Typography>
         {fileForUpload && (
@@ -128,7 +129,7 @@ export const AddFileModal = () => {
             {t('wrongFileType')}
           </Typography>
         )}
-        <Button sx={{ width: '100%' }} disabled={!fileForUpload} onClick={handleUpload}>
+        <Button loading={isLoading} sx={{ width: '100%' }} disabled={!fileForUpload} onClick={handleUpload}>
           {t('upload')}
         </Button>
       </ModalDialog>

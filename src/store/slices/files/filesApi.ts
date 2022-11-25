@@ -13,12 +13,6 @@ export type FileType = {
   path: string;
 };
 
-// export type uploadFileType = {
-//   taskId: string;
-//   boardId: string;
-//   file: File;
-// };
-
 export const filesApi = createApi({
   reducerPath: 'filesApi',
   baseQuery: fetchBaseQuery({

@@ -1,12 +1,13 @@
 import { Draggable } from '@hello-pangea/dnd';
-import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import AttachFileRoundedIcon from '@mui/icons-material/AttachFileRounded';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import { Card, CardContent, Typography, IconButton, Menu, MenuItem, ListItemDecorator } from '@mui/joy';
 import Box from '@mui/joy/Box';
-import List from '@mui/material/List';
+import Divider from '@mui/joy/Divider';
+import List from '@mui/joy/List';
+import ListItem from '@mui/joy/ListItem';
 import { FC, useContext, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
@@ -144,11 +145,16 @@ export const Task: FC<TaskPropsType> = ({ task, index, column, files }) => {
               </Box>
 
               {Boolean(files.length) && (
-                <List>
-                  {files.map((file) => (
-                    <FileAttachment key={file._id} name={file.name} path={file.path} />
-                  ))}
-                </List>
+                <>
+                  <Divider sx={{ my: 1 }} />
+                  <List sx={{ p: 0 }}>
+                    {files.map((file) => (
+                      <ListItem key={file._id} sx={{ px: 0 }}>
+                        <FileAttachment name={file.name} path={file.path} fileId={file._id} />
+                      </ListItem>
+                    ))}
+                  </List>
+                </>
               )}
             </CardContent>
           </Card>
