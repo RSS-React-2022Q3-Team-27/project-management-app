@@ -51,19 +51,15 @@ export const ColumnTitleInput: FC<ColumnTitleProps> = ({ column }) => {
               sx={{ width: 260 }}
               endDecorator={
                 <Box sx={{ display: 'flex', gap: 2 }}>
-                  <IconButton
-                    variant="soft"
-                    color="success"
-                    type="submit"
-                    onMouseDown={(e: React.SyntheticEvent) => e.stopPropagation()}
-                  >
+                  <IconButton variant="soft" color="success" type="submit">
                     <CheckRoundedIcon />
                   </IconButton>
-                  <IconButton variant="soft" color="danger">
+                  <IconButton variant="soft" color="danger" onClick={() => dispatch(setTitleEditId(null))}>
                     <CloseRoundedIcon />
                   </IconButton>
                 </Box>
               }
+              onMouseDown={(e: React.SyntheticEvent) => e.stopPropagation()}
               onBlur={() => dispatch(setTitleEditId(null))}
             />
           )}
