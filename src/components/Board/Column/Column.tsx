@@ -111,7 +111,7 @@ export const Column: FC<ColumnPropsType> = ({ column, columns, boardIndex, tasks
                   component="h3"
                   level="h6"
                   sx={{ width: '100%' }}
-                  onMouseDown={(e: React.SyntheticEvent) => {
+                  onClick={(e: React.SyntheticEvent) => {
                     e.stopPropagation();
                     dispatch(setTitleEditId(columnId));
                   }}
