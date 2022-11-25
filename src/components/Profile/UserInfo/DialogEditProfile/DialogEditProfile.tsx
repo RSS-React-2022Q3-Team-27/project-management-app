@@ -10,6 +10,8 @@ import Typography from '@mui/joy/Typography';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { toast } from 'react-toastify';
+
 import { loginValidate } from './loginValidate';
 
 import { nameValidate } from './nameValidate';
@@ -31,26 +33,38 @@ export const DialogEditProfile = ({ openDialog, isDialogOpen }: IProps) => {
   const [newName, setNewName] = useState(userName);
   const [newLogin, setNewLogin] = useState(login);
   const [password, setPassword] = useState('');
-  const [logInUser, { error: logInError }] = useLogInUserMutation();
-  const [updateUser, { error: updateError }] = useUpdateUserMutation();
+  const [logInUser, { error: logInError, isLoading: logInUserLoading }] = useLogInUserMutation();
+  const [updateUser, { error: updateError, isLoading: updateUserLoading }] = useUpdateUserMutation();
 
   const onClose = () => {
     openDialog(false);
   };
 
-  const confirmHandler = async () => {
+  const confirmHandler = () => {
     if (loginValidate(newLogin) && nameValidate(newName)) {
-      await logInUser({ login, password }).unwrap();
-      const newUserData = await updateUser({
-        id,
-        body: {
-          login: newLogin,
-          name: newName,
-          password,
-        },
-      }).unwrap();
-      dispatch(setUserInfo(newUserData));
-      openDialog(false);
+      logInUser({ login, password })
+        .unwrap()
+        .then(async () => {
+          const newUserData = await updateUser({
+            id,
+            body: {
+              login: newLogin,
+              name: newName,
+              password,
+            },
+          })
+            .unwrap()
+            .catch(() => toast.error(t('serverError')));
+
+          if (!newUserData) {
+            return;
+          }
+
+          dispatch(setUserInfo(newUserData));
+
+          openDialog(false);
+        })
+        .catch(() => {});
     }
   };
 
@@ -115,7 +129,13 @@ export const DialogEditProfile = ({ openDialog, isDialogOpen }: IProps) => {
           )}
 
           <Box sx={{ display: 'flex', gap: 1, justifyContent: 'space-between' }}>
-            <Button type="submit" sx={{ mt: 1 }} color="danger" onClick={confirmHandler}>
+            <Button
+              type="submit"
+              sx={{ mt: 1 }}
+              color="danger"
+              onClick={confirmHandler}
+              loading={logInUserLoading || updateUserLoading}
+            >
               {t('change')}
             </Button>
             <Button variant="plain" sx={{ mt: 1 }} color="neutral" onClick={onClose}>

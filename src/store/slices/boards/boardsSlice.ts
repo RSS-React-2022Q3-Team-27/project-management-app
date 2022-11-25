@@ -35,8 +35,12 @@ const boardsSlice = createSlice({
     setCurrentBoard(state, { payload }) {
       state.currentBoard = payload;
     },
+    setBoards(state, { payload }) {
+      state.boards = payload;
+    },
   },
 });
 
-export const { setIsOpenedDialogAddBoard, setIsOpenedDialogEditBoard, setCurrentBoard } = boardsSlice.actions;
+export const { setIsOpenedDialogAddBoard, setIsOpenedDialogEditBoard, setCurrentBoard, setBoards } =
+  boardsSlice.actions;
 export default boardsSlice.reducer;

@@ -33,7 +33,6 @@ const usersSlice = createSlice({
         state.users = payload;
       })
       .addCase(getUsers.rejected, (state, { payload }) => {
-        console.log('getUsers rejected');
         if (payload) {
           state.getUsersErrorCode = payload.statusCode ? payload.statusCode : errorPlug;
         }
@@ -41,5 +40,4 @@ const usersSlice = createSlice({
   },
 });
 
-// export const {  } = usersSlice.actions;
 export default usersSlice.reducer;

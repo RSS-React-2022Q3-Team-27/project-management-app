@@ -1,6 +1,8 @@
 import { Draggable } from '@hello-pangea/dnd';
-import MoreIcon from '@mui/icons-material/MoreHoriz';
-import { Card, CardContent, Typography, IconButton, Menu, MenuItem } from '@mui/joy';
+import DeleteIcon from '@mui/icons-material/DeleteForever';
+import EditIcon from '@mui/icons-material/Edit';
+import MoreIcon from '@mui/icons-material/MoreVert';
+import { Card, CardContent, Typography, IconButton, Menu, MenuItem, ListItemDecorator } from '@mui/joy';
 import Box from '@mui/joy/Box';
 import List from '@mui/material/List';
 import { FC, useContext, useState, useEffect } from 'react';
@@ -115,8 +117,18 @@ export const Task: FC<TaskPropsType> = ({ task, index, column, files }) => {
                 </IconButton>
 
                 <Menu id="task-menu" anchorEl={anchorEl} open={isOpen} onClose={closeMenu}>
-                  <MenuItem onClick={onClickEdit}>{t('edit')}</MenuItem>
-                  <MenuItem onClick={onClickDelete}>{t('delete')}</MenuItem>
+                  <MenuItem onClick={onClickEdit}>
+                    <ListItemDecorator>
+                      <EditIcon />
+                    </ListItemDecorator>
+                    {t('edit')}
+                  </MenuItem>
+                  <MenuItem onClick={onClickDelete} color="danger">
+                    <ListItemDecorator sx={{ color: 'inherit' }}>
+                      <DeleteIcon />
+                    </ListItemDecorator>
+                    {t('delete')}
+                  </MenuItem>
                   <MenuItem onClick={onClickAddFile}>{t('addFile')}</MenuItem>
                 </Menu>
               </Box>

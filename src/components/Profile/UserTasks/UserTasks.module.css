@@ -12,3 +12,8 @@
   background-color: var(--joy-palette-grey-200);
   border-radius: 5px;
 }
+
+.list {
+  scrollbar-width: thin;
+  scrollbar-color: var(--joy-palette-grey-200);
+}

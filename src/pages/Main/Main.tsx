@@ -1,10 +1,11 @@
 import Sheet from '@mui/joy/Sheet';
 
-import { MainHeader } from './MainHeader/MainHeader';
-import { MainResults } from './MainResults/MainResults';
-import { MainSearch } from './MainSearch/MainSearch';
+import { MainHeader, MainResults, SearchHeader, SearchResults, SearchInput } from '../../components/Main';
+import { useAppSelector } from '../../store/hooks';
 
 export const Main = () => {
+  const { searchQuery: isSearch } = useAppSelector((state) => state.tasks);
+
   return (
     <Sheet
       sx={{
@@ -18,9 +19,19 @@ export const Main = () => {
       }}
       variant="soft"
     >
-      <MainSearch />
-      <MainHeader />
-      <MainResults />
+      <SearchInput />
+
+      {isSearch ? (
+        <>
+          <SearchHeader />
+          <SearchResults />
+        </>
+      ) : (
+        <>
+          <MainHeader />
+          <MainResults />
+        </>
+      )}
     </Sheet>
   );
 };

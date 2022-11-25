@@ -4,12 +4,21 @@ import { API_PATH } from '../../../constants/API_PATH';
 import { URL } from '../../../constants/URL';
 
 import { RootState } from '../../store';
-import { ICreateUser } from '../user/userThunks';
 import { IUserInfo } from '../users/usersSlice';
 
 interface IUpdateUserBody {
   id: string;
   body: ICreateUser;
+}
+
+export interface ICreateUser {
+  name: string;
+  login: string;
+  password: string;
+}
+
+export interface ITokenData {
+  token: string;
 }
 
 export const usersApi = createApi({

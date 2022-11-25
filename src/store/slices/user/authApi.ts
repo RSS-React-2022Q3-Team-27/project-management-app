@@ -1,11 +1,14 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-import { ICreateUser, ITokenData } from './userThunks';
-
 import { API_PATH } from '../../../constants/API_PATH';
 import { URL } from '../../../constants/URL';
+import { ICreateUser } from '../users/usersApi';
 
 import { IUserInfo } from '../users/usersSlice';
+
+export interface ITokenData {
+  token: string;
+}
 
 export const authApi = createApi({
   reducerPath: 'authApi',

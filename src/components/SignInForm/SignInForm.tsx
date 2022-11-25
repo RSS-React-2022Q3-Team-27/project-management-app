@@ -36,9 +36,9 @@ export const SignInForm = () => {
   const { login, token, isUserLogIn } = useAppSelector((state) => state.user);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const [logInUser, { error: logInError }] = useLogInUserMutation();
+  const [logInUser, { error: logInError, isLoading: logInUserLoading }] = useLogInUserMutation();
   const [skip, setSkip] = useState(true);
-  const { data: usersData, isError } = useGetUsersQuery(undefined, { skip });
+  const { data: usersData, isError, isLoading: getUsersLoading } = useGetUsersQuery(undefined, { skip });
 
   const onSubmit: SubmitHandler<IFormInput> = async (data: IFormInput) => {
     const token = await logInUser({ login: data.login, password: data.password })
@@ -125,7 +125,7 @@ export const SignInForm = () => {
         </Typography>
       )}
 
-      <Button type="submit" sx={{ mt: 1 }}>
+      <Button type="submit" sx={{ mt: 1, width: '100%' }} loading={logInUserLoading || getUsersLoading}>
         {t('signIn')}
       </Button>
     </form>

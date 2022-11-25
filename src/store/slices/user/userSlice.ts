@@ -1,7 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { authUser, registerUser, updateUser } from './userThunks';
-
 import { LocalStorageKeys } from '../../../types/LocalStorageKeys';
 import { getLoginState } from '../../../utils/getLoginState';
 import { getValueLocalStorage } from '../../../utils/getValueLocalStorage';
@@ -52,8 +50,6 @@ const userSlice = createSlice({
     },
 
     setUserInfo(state, { payload }) {
-      console.log(payload);
-
       setValueLocalStorage(LocalStorageKeys.userId, payload._id);
       state.login = payload.login;
       state.id = payload._id;
@@ -81,64 +77,6 @@ const userSlice = createSlice({
     setLogInErrorCode(state) {
       state.logInErrorCode = 0;
     },
-  },
-  extraReducers: (builder) => {
-    builder
-
-      .addCase(registerUser.pending, (state) => {
-        state.registrationErrorCode = 0;
-      })
-
-      .addCase(registerUser.fulfilled, (state, { payload }) => {
-        setValueLocalStorage(LocalStorageKeys.userId, payload._id);
-        state.id = payload._id;
-        state.login = payload.login;
-        state.userName = payload.name;
-      })
-
-      .addCase(registerUser.rejected, (state, { payload }) => {
-        console.log('authUser rejected');
-        state.isUserLogIn = false;
-        if (payload) {
-          state.registrationErrorCode = payload.statusCode ? payload.statusCode : errorPlug;
-        }
-      });
-
-    builder
-      .addCase(authUser.pending, (state) => {
-        console.log('authUser pending');
-        state.logInErrorCode = 0;
-      })
-
-      .addCase(authUser.fulfilled, (state, { payload }) => {
-        setValueLocalStorage(LocalStorageKeys.token, payload.token);
-        state.token = payload.token;
-        state.logInErrorCode = 200;
-      })
-
-      .addCase(authUser.rejected, (state, { payload }) => {
-        if (payload) {
-          state.logInErrorCode = payload.statusCode ? payload.statusCode : errorPlug;
-        }
-      });
-
-    builder
-      .addCase(updateUser.pending, (state) => {
-        state.updateError = 0;
-      })
-
-      .addCase(updateUser.fulfilled, (state, { payload }) => {
-        state.login = payload.login;
-        state.userName = payload.name;
-        state.id = payload._id;
-        setValueLocalStorage(LocalStorageKeys.userId, payload._id);
-      })
-
-      .addCase(updateUser.rejected, (state, { payload }) => {
-        if (payload) {
-          state.updateError = payload.statusCode ? payload.statusCode : errorPlug;
-        }
-      });
   },
 });
 

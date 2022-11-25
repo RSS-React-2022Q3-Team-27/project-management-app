@@ -3,6 +3,8 @@ import Avatar from '@mui/joy/Avatar';
 import React, { useState, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { toast } from 'react-toastify';
+
 import { Counter } from './Counter/Counter';
 
 import { DialogEditProfile } from './DialogEditProfile/DialogEditProfile';
@@ -24,9 +26,12 @@ export const UserInfo = () => {
   const [deleteUser] = useDeleteUserMutation();
 
   const delUser = async () => {
-    await deleteUser(id).unwrap();
-    dispatch(userLogOut());
+    deleteUser(id)
+      .unwrap()
+      .then(() => dispatch(userLogOut()))
+      .catch(() => toast.error(t('serverError')));
   };
+
   return (
     <Sheet
       sx={{

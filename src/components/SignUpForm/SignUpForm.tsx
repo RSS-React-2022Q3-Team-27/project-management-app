@@ -39,8 +39,8 @@ export const SignUpForm = () => {
   const { isUserLogIn } = useAppSelector((state) => state.user);
 
   const { t } = useTranslation();
-  const [createUser] = useCreateUserMutation();
-  const [logInUser] = useLogInUserMutation();
+  const [createUser, { isLoading: createUserLoading }] = useCreateUserMutation();
+  const [logInUser, { isLoading: ligInUserLoading }] = useLogInUserMutation();
   const {
     control,
     handleSubmit,
@@ -53,22 +53,29 @@ export const SignUpForm = () => {
 
   const onSubmit: SubmitHandler<IFormInput> = async (data: IFormInput) => {
     const { passwordConfirm, ...restData } = data;
+
     if (passwordConfirm === restData.password) {
       const userData = await createUser(restData)
         .unwrap()
         .catch((error) => errorHandler(error));
+
       if (!userData) {
         return;
       }
+
       dispatch(setUserInfo(userData));
+
       const token = await logInUser({ login: data.login, password: data.password })
         .unwrap()
         .catch((error) => errorHandler(error));
+
       if (!token) {
         return;
       }
+
       dispatch(setToken(token));
       dispatch(setIsUserLogIn(true));
+
       navigate(ROUTES.MAIN.path);
     } else {
       toast.error(t('pswdNotMach'));
@@ -202,7 +209,7 @@ export const SignUpForm = () => {
           {errors.passwordConfirm.message}
         </Typography>
       )}
-      <Button type="submit" sx={{ mt: 1 }}>
+      <Button type="submit" loading={createUserLoading || ligInUserLoading} sx={{ mt: 1, width: '100%' }}>
         {t('signUp')}
       </Button>
     </form>
