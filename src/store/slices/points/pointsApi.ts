@@ -48,6 +48,16 @@ export const pointsApi = createApi({
           : [{ type: 'Points', id: 'LIST' }],
     }),
 
+    getPointsByTaskId: build.query<IPointsResponse[], string>({
+      query: (taskId) => ({
+        url: `${API_PATH.points}/${taskId}`,
+      }),
+      providesTags: (result) =>
+        result
+          ? [...result.map(({ _id }) => ({ type: 'Points' as const, _id })), { type: 'Points', id: 'LIST' }]
+          : [{ type: 'Points', id: 'LIST' }],
+    }),
+
     setPoint: build.mutation<IPointsResponse, IPointsRequestBody>({
       query: (body) => ({
         url: API_PATH.points,
@@ -76,4 +86,10 @@ export const pointsApi = createApi({
   }),
 });
 
-export const { useGetPointsQuery, useSetPointMutation, useUpdatePointMutation, useDeletePointMutation } = pointsApi;
+export const {
+  useGetPointsQuery,
+  useGetPointsByTaskIdQuery,
+  useSetPointMutation,
+  useUpdatePointMutation,
+  useDeletePointMutation,
+} = pointsApi;

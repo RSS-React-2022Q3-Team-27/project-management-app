@@ -40,9 +40,6 @@ export const usersApi = createApi({
         result
           ? [...result.map(({ _id }) => ({ type: 'Users' as const, _id })), { type: 'Users', _id: 'LIST' }]
           : [{ type: 'Users', id: 'LIST' }],
-      // forceRefetch({ currentArg, previousArg }) {
-      //   return currentArg !== previousArg;
-      // },
     }),
     deleteUser: build.mutation<IUserInfo, string>({
       query: (id) => ({ url: `${API_PATH.users}/${id}`, method: 'DELETE' }),

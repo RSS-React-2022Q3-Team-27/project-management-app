@@ -1,6 +1,7 @@
 import { Draggable } from '@hello-pangea/dnd';
 import DeleteIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
+import FormatListBulletedRoundedIcon from '@mui/icons-material/FormatListBulletedRounded';
 import MoreIcon from '@mui/icons-material/MoreVert';
 import { Card, CardContent, Typography, IconButton, Menu, MenuItem, ListItemDecorator } from '@mui/joy';
 import Box from '@mui/joy/Box';
@@ -37,6 +38,7 @@ export const Task: FC<TaskPropsType> = ({ task, index, column }) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [isPoints, setIsPoints] = useState(false);
   const isOpen = Boolean(anchorEl);
   const [deleteTask, { isSuccess }] = useDeleteTaskMutation();
   const [updateSetOfTasks] = useUpdateSetOfTasksMutation();
@@ -80,6 +82,10 @@ export const Task: FC<TaskPropsType> = ({ task, index, column }) => {
   const closeMenu = () => {
     setAnchorEl(null);
   };
+  const onClickEditAddPoints = () => {
+    setIsPoints(true);
+    closeMenu();
+  };
 
   return (
     <Draggable key={task._id} draggableId={task._id} index={index}>
@@ -113,6 +119,12 @@ export const Task: FC<TaskPropsType> = ({ task, index, column }) => {
                     </ListItemDecorator>
                     {t('edit')}
                   </MenuItem>
+                  <MenuItem onClick={onClickEditAddPoints}>
+                    <ListItemDecorator sx={{ color: 'inherit' }}>
+                      <FormatListBulletedRoundedIcon />
+                    </ListItemDecorator>
+                    {t('addCheckList')}
+                  </MenuItem>
                   <MenuItem onClick={onClickDelete} color="danger">
                     <ListItemDecorator sx={{ color: 'inherit' }}>
                       <DeleteIcon />
@@ -124,7 +136,7 @@ export const Task: FC<TaskPropsType> = ({ task, index, column }) => {
               <Box>
                 <Typography>{task.description}</Typography>
               </Box>
-              <Points />
+              <Points taskId={task._id} boardId={task.boardId} show={isPoints} isShow={setIsPoints} />
             </CardContent>
           </Card>
         </Box>

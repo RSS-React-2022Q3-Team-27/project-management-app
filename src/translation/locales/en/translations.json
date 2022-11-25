@@ -78,5 +78,7 @@
   "noResults": "No results",
   "board": "Board",
   "taskAdded": "Task added",
-  "addPoint": "Add new point"
+  "addPoint": "Add new point",
+  "addCheckList": "Check list",
+  "addItem": "Add item"
 }
