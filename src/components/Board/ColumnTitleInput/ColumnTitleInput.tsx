@@ -55,6 +55,7 @@ export const ColumnTitleInput = ({ column, setInputActive }: ColumnTitleProps) =
                   </IconButton>
                 </Box>
               }
+              onBlur={() => setInputActive(false)}
             />
           )}
         />
