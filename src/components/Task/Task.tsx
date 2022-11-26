@@ -40,6 +40,7 @@ import { ColumnType } from '../../store/slices/board/boardApi';
 import { useDeleteFileMutation } from '../../store/slices/files/filesApi';
 import { openAddFileModal } from '../../store/slices/files/filesSlice';
 
+import { useGetPointsByTaskIdQuery } from '../../store/slices/points/pointsApi';
 import {
   TaskType,
   UpdateSetOfTaskType,
@@ -73,6 +74,7 @@ export const Task: FC<TaskPropsType> = ({ task, index, column, files }) => {
   const [expanded, setExpanded] = useState(false);
   const [deleteFile] = useDeleteFileMutation();
   const { covers } = useAppSelector((state) => state.files);
+  const { data } = useGetPointsByTaskIdQuery(task._id);
 
   useEffect(() => {
     if (isSuccess) {
@@ -82,7 +84,6 @@ export const Task: FC<TaskPropsType> = ({ task, index, column, files }) => {
 
   const deleteTaskCb = async () => {
     const { boardId, columnId, _id: taskId, order } = task;
-
     await deleteTask({ boardId, columnId, taskId }).unwrap();
 
     const tasks = Array.from(column.tasksData);
@@ -242,7 +243,7 @@ export const Task: FC<TaskPropsType> = ({ task, index, column, files }) => {
                 <Typography>{task.description}</Typography>
               </Box>
 
-              {(Boolean(files.length) || isPoints) && (
+              {(Boolean(files.length) || Boolean(data?.length)) && (
                 <>
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 1 }}>
                     {Boolean(files.length) && (
@@ -254,7 +255,7 @@ export const Task: FC<TaskPropsType> = ({ task, index, column, files }) => {
                         {files.length}
                       </Typography>
                     )}
-                    {isPoints && (
+                    {Boolean(data?.length) && (
                       <Typography
                         variant="soft"
                         sx={{ pr: 1, m: 0, height: 24 }}
@@ -273,7 +274,7 @@ export const Task: FC<TaskPropsType> = ({ task, index, column, files }) => {
                     </IconButton>
                   </Box>
                   <Collapse in={expanded} timeout="auto" unmountOnExit>
-                    <Points taskId={task._id} boardId={task.boardId} show={isPoints} isShow={setIsPoints} />
+                    <Points taskId={task._id} boardId={task.boardId} show={isPoints} isShow={setIsPoints} data={data} />
                     {Boolean(files.length) && (
                       <>
                         <Divider sx={{ mb: 1 }} />

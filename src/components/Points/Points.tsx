@@ -14,27 +14,22 @@ import { AddPointModal } from './AddPointModal/AddPointModal';
 
 import { Point } from './Point/Point';
 
-import {
-  IPointsResponse,
-  useDeletePointMutation,
-  useGetPointsByTaskIdQuery,
-  useSetPointMutation,
-} from '../../store/slices/points/pointsApi';
+import { IPointsResponse, useDeletePointMutation, useSetPointMutation } from '../../store/slices/points/pointsApi';
 
 interface IProps {
   taskId: string;
   boardId: string;
   isShow: (val: boolean) => void;
   show: boolean;
+  data?: IPointsResponse[];
 }
 
-export const Points = ({ taskId, boardId, isShow, show }: IProps) => {
+export const Points = ({ taskId, boardId, isShow, show, data }: IProps) => {
   const { t } = useTranslation();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [points, setPoints] = useState<IPointsResponse[]>([]);
   const [addNewPoint] = useSetPointMutation();
   const [deletePoints] = useDeletePointMutation();
-  const { data } = useGetPointsByTaskIdQuery(taskId);
   const [isPoints, setIsPoints] = useState(false);
 
   const openModal = () => {
