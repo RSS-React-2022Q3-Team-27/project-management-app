@@ -132,7 +132,7 @@ export const Column: FC<ColumnPropsType> = ({ column, columns, boardIndex, tasks
                 <List
                   ref={provided.innerRef}
                   {...provided.droppableProps}
-                  sx={{ display: 'flex', flexDirection: 'column', p: 0 }}
+                  sx={{ display: 'flex', flexDirection: 'column', minHeight: 20, p: 0 }}
                 >
                   {tasks}
                   {provided.placeholder}

@@ -1,9 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+import { FileType } from './filesApi';
+
 export type CoversType = {
   [key: string]: {
     path: string;
     coverId: string;
+    name: string;
   };
 };
 
@@ -12,6 +15,8 @@ type FileStateType = {
   fileData: {
     boardId: string;
     taskId: string;
+    files: FileType[];
+    cover: string | null;
   };
   covers: CoversType;
 };
@@ -21,6 +26,8 @@ const initialState: FileStateType = {
   fileData: {
     boardId: '',
     taskId: '',
+    files: [],
+    cover: null,
   },
   covers: {},
 };

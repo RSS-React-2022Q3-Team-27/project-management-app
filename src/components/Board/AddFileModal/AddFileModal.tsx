@@ -18,6 +18,7 @@ import styles from './FileInput.module.css';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { useUploadFileMutation } from '../../../store/slices/files/filesApi';
 import { closeAddFileModal } from '../../../store/slices/files/filesSlice';
+import { getNewFileName } from '../../../utils/getNewFileName';
 
 export const AddFileModal = () => {
   const { t } = useTranslation();
@@ -50,10 +51,11 @@ export const AddFileModal = () => {
   const handleUpload = async () => {
     if (fileForUpload) {
       const formData = new FormData();
+      const newName = getNewFileName(fileForUpload.name, fileData.cover, fileData.files);
 
       formData.append('boardId', fileData.boardId);
       formData.append('taskId', fileData.taskId);
-      formData.append('file', fileForUpload);
+      formData.append('file', fileForUpload, newName);
 
       await uploadFile(formData).unwrap();
 

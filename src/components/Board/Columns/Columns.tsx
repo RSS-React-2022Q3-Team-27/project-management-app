@@ -106,7 +106,7 @@ export const Columns = () => {
 
       if (covers && covers.length) {
         covers.forEach((cover) => {
-          sortedCovers[cover.taskId] = { path: cover.path, coverId: cover._id };
+          sortedCovers[cover.taskId] = { path: cover.path, coverId: cover._id, name: cover.name };
         });
       }
 

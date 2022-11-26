@@ -95,7 +95,9 @@ export const Task: FC<TaskPropsType> = ({ task, index, column, files }) => {
       setOfTasks.push({ _id: taskData._id, columnId: taskData.columnId, order: i });
     });
 
-    await updateSetOfTasks(setOfTasks).unwrap();
+    if (setOfTasks.length) {
+      await updateSetOfTasks(setOfTasks).unwrap();
+    }
   };
 
   const onClickOpenMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -119,7 +121,14 @@ export const Task: FC<TaskPropsType> = ({ task, index, column, files }) => {
   };
 
   const onClickAddFile = () => {
-    dispatch(openAddFileModal({ taskId: task._id, boardId: task.boardId }));
+    dispatch(
+      openAddFileModal({
+        taskId: task._id,
+        boardId: task.boardId,
+        files: files,
+        cover: covers[task._id] ? covers[task._id].name : null,
+      })
+    );
     closeMenu();
   };
   const handleDeleteFile = async () => {
@@ -130,7 +139,14 @@ export const Task: FC<TaskPropsType> = ({ task, index, column, files }) => {
       handleDeleteFile();
     }
 
-    dispatch(openAddFileModal({ taskId: task._id, boardId: FileFakeId.cover }));
+    dispatch(
+      openAddFileModal({
+        taskId: task._id,
+        boardId: FileFakeId.cover,
+        files: files,
+        cover: covers[task._id] ? covers[task._id].name : null,
+      })
+    );
     closeMenu();
   };
   const onClickDeleteCover = () => {
