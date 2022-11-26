@@ -7,7 +7,7 @@ import Stack from '@mui/joy/Stack';
 import Textarea from '@mui/joy/Textarea';
 import TextField from '@mui/joy/TextField';
 import Typography from '@mui/joy/Typography';
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -33,18 +33,19 @@ export default function DialogAddBoard() {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const { control, handleSubmit, reset } = useForm<FormType>();
-  const [createBoard, { isSuccess }] = useCreateBoardMutation();
+  const [createBoard, { isSuccess, isLoading }] = useCreateBoardMutation();
+
+  const onClose = useCallback(() => {
+    reset(clearForm);
+    dispatch(setIsOpenedDialogAddBoard(false));
+  }, [dispatch, reset]);
 
   useEffect(() => {
     if (isSuccess) {
       toast.success(t('boardAdded'));
+      onClose();
     }
-  }, [isSuccess, t]);
-
-  const onClose = () => {
-    reset(clearForm);
-    dispatch(setIsOpenedDialogAddBoard(false));
-  };
+  }, [isSuccess, t, onClose]);
 
   const onSubmit: SubmitHandler<FormType> = (data) => {
     const body: CreateBoardType = {
@@ -53,7 +54,6 @@ export default function DialogAddBoard() {
       owner: userId,
     };
     createBoard(body);
-    onClose();
   };
 
   return (
@@ -97,7 +97,9 @@ export default function DialogAddBoard() {
               }}
             />
 
-            <Button type="submit">{t('createNewBoard')}</Button>
+            <Button type="submit" loading={isLoading}>
+              {t('createNewBoard')}
+            </Button>
           </Stack>
         </form>
       </ModalDialog>

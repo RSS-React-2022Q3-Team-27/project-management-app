@@ -8,6 +8,9 @@ import List from '@mui/joy/List';
 import Typography from '@mui/joy/Typography';
 import React, { FC, useContext, useState, useEffect } from 'react';
 
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
+
 import styles from './column.module.css';
 
 import { Context } from '../../../Context/Context';
@@ -45,9 +48,10 @@ export const Column: FC<ColumnPropsType> = ({ column, columns, boardIndex, tasks
   const { title, boardId, _id: columnId, order } = column.columnData;
   const dispatch = useAppDispatch();
   const { contextDispatch } = useContext(Context);
-  const [deleteColumn] = useDeleteColumnMutation();
+  const [deleteColumn, { isSuccess }] = useDeleteColumnMutation();
   const [updateSetOfColumns] = useUpdateSetOfColumnsMutation();
   const { titleEditId } = useAppSelector((state) => state.board);
+  const { t } = useTranslation();
 
   const [isInputActive, setInputActive] = useState(false);
 
@@ -58,6 +62,12 @@ export const Column: FC<ColumnPropsType> = ({ column, columns, boardIndex, tasks
       setInputActive(false);
     }
   }, [titleEditId, columnId]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success(t('columnDeleted'));
+    }
+  }, [isSuccess, t]);
 
   const handleDelete = async () => {
     await deleteColumn({ boardId, columnId }).unwrap();

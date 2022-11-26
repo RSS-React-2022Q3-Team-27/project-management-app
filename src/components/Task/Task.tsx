@@ -80,7 +80,7 @@ export const Task: FC<TaskPropsType> = ({ task, index, column, files }) => {
     if (isSuccess) {
       toast.success(t('taskDeleted'));
     }
-  }, [files, isSuccess, t]);
+  }, [isSuccess, t]);
 
   const deleteTaskCb = async () => {
     const { boardId, columnId, _id: taskId, order } = task;

@@ -90,5 +90,8 @@
   "wrongFileType": "Неверный тип файла",
   "addCover": "Добавить обложку",
   "changeCover": "Поменять обложку",
-  "deleteCover": "Удалить обложку"
+  "deleteCover": "Удалить обложку",
+  "columnCreated": "Колонка создана",
+  "columnUpdated": "Колонка изменена",
+  "columnDeleted": "Колонка удалена"
 }

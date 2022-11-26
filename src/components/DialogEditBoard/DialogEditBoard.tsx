@@ -33,7 +33,7 @@ export const DialogEditBoard = () => {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const { control, handleSubmit, reset } = useForm<FormType>();
-  const [editBoard, { isSuccess }] = useEditBoardMutation();
+  const [editBoard, { isSuccess, isLoading }] = useEditBoardMutation();
 
   const onClose = useCallback(() => {
     reset(clearForm);
@@ -97,7 +97,9 @@ export const DialogEditBoard = () => {
               }}
             />
 
-            <Button type="submit">{t('editBoard')}</Button>
+            <Button type="submit" loading={isLoading}>
+              {t('editBoard')}
+            </Button>
           </Stack>
         </form>
       </ModalDialog>

@@ -90,5 +90,8 @@
   "wrongFileType": "Wrong file type",
   "addCover": "Add cover",
   "changeCover": "Change cover",
-  "deleteCover": "Delete cover"
+  "deleteCover": "Delete cover",
+  "columnCreated": "Column created",
+  "columnUpdated": "Column updated",
+  "columnDeleted": "Column deleted"
 }

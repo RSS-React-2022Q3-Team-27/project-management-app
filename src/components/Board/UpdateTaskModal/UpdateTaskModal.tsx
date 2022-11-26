@@ -24,7 +24,7 @@ export const UpdateTaskModal = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { control, handleSubmit, reset } = useForm<FormType>();
-  const [updateTask, { isSuccess }] = useUpdateTaskMutation();
+  const [updateTask, { isSuccess, isLoading }] = useUpdateTaskMutation();
   const { isUpdateModalOpened: isModalOpened, dataForUpdateTask } = useAppSelector((state) => state.tasks);
 
   const onClose = useCallback(() => {
@@ -94,7 +94,9 @@ export const UpdateTaskModal = () => {
               }}
             />
 
-            <Button type="submit">{t('updateTask')}</Button>
+            <Button type="submit" loading={isLoading}>
+              {t('updateTask')}
+            </Button>
           </Stack>
         </form>
       </ModalDialog>

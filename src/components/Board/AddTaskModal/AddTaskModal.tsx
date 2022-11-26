@@ -24,7 +24,7 @@ export const AddTaskModal = () => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { control, handleSubmit, reset } = useForm<FormType>();
-  const [createTask, { isSuccess }] = useCreateTaskMutation();
+  const [createTask, { isSuccess, isLoading }] = useCreateTaskMutation();
 
   const { isAddModalOpened, dataForAddTask, newTaskOrder } = useAppSelector((state) => state.tasks);
   const { id: userId } = useAppSelector((state) => state.user);
@@ -92,7 +92,9 @@ export const AddTaskModal = () => {
               }}
             />
 
-            <Button type="submit">{t('createTask')}</Button>
+            <Button type="submit" loading={isLoading}>
+              {t('createTask')}
+            </Button>
           </Stack>
         </form>
       </ModalDialog>

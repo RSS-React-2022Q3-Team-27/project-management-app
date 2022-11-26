@@ -5,7 +5,7 @@ import Divider from '@mui/joy/Divider';
 import Modal from '@mui/joy/Modal';
 import ModalDialog from '@mui/joy/ModalDialog';
 import Typography from '@mui/joy/Typography';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Context } from '../../Context/Context';
@@ -14,14 +14,23 @@ import { ReducerTypes } from '../../Context/contextReducer/ReducerTypes';
 export const DialogConfirm = () => {
   const { contextState, contextDispatch } = useContext(Context);
   const { t } = useTranslation();
+  const [isLoading, setIsLoading] = useState(false);
 
   const onClose = () => {
     contextDispatch({ type: ReducerTypes.null, payload: null });
   };
 
-  const onClick = () => {
+  const onClick = async () => {
     if (contextState.cb) {
-      contextState.cb();
+      setIsLoading(true);
+
+      try {
+        await contextState.cb();
+        setIsLoading(false);
+      } catch (error) {
+        setIsLoading(false);
+      }
+
       contextDispatch({ type: ReducerTypes.null, payload: null });
     }
   };
@@ -53,7 +62,7 @@ export const DialogConfirm = () => {
             <Button variant="plain" color="neutral" onClick={onClose}>
               {t('confirmCancel')}
             </Button>
-            <Button variant="solid" color="danger" onClick={onClick}>
+            <Button variant="solid" color="danger" onClick={onClick} loading={isLoading}>
               {t('confirmSure')}
             </Button>
           </Box>

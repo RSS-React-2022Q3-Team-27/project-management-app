@@ -1,12 +1,14 @@
 import CheckRoundedIcon from '@mui/icons-material/CheckRounded';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import { CircularProgress } from '@mui/joy';
 import Box from '@mui/joy/Box';
 
 import IconButton from '@mui/joy/IconButton';
 import TextField from '@mui/joy/TextField';
-import React, { FC } from 'react';
-
+import React, { FC, useEffect } from 'react';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 import { useAppDispatch } from '../../../store/hooks';
 
@@ -20,12 +22,18 @@ type ColumnTitleProps = {
 
 export const ColumnTitleInput: FC<ColumnTitleProps> = ({ column }) => {
   const { control, handleSubmit } = useForm<AddColumnFormType>();
-  const [updateColumn] = useUpdateColumnMutation();
+  const [updateColumn, { isLoading, isSuccess }] = useUpdateColumnMutation();
   const dispatch = useAppDispatch();
+  const { t } = useTranslation();
+
+  useEffect(() => {
+    if (isSuccess) {
+      toast.success(t('columnUpdated'));
+      dispatch(setTitleEditId(null));
+    }
+  }, [isSuccess, dispatch, t]);
 
   const onSubmit: SubmitHandler<AddColumnFormType> = async (formData: AddColumnFormType) => {
-    dispatch(setTitleEditId(null));
-
     if (formData.title === column.title) return;
 
     const body = {
@@ -52,7 +60,7 @@ export const ColumnTitleInput: FC<ColumnTitleProps> = ({ column }) => {
               endDecorator={
                 <Box sx={{ display: 'flex', gap: 2 }}>
                   <IconButton variant="soft" color="success" type="submit">
-                    <CheckRoundedIcon />
+                    {isLoading ? <CircularProgress size="sm" /> : <CheckRoundedIcon />}
                   </IconButton>
                   <IconButton variant="soft" color="danger" onClick={() => dispatch(setTitleEditId(null))}>
                     <CloseRoundedIcon />
