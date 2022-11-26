@@ -115,7 +115,9 @@ export const Task: FC<TaskPropsType> = ({ task, index, column, files }) => {
   const closeMenu = () => {
     setAnchorEl(null);
   };
+
   const onClickAddPoints = () => {
+    console.log('task add');
     setIsPoints(true);
     closeMenu();
   };
@@ -212,12 +214,14 @@ export const Task: FC<TaskPropsType> = ({ task, index, column, files }) => {
                     </ListItemDecorator>
                     {t('edit')}
                   </MenuItem>
-                  <MenuItem onClick={onClickAddPoints}>
+
+                  <MenuItem onClick={onClickAddPoints} disabled={isPoints || Boolean(data?.length)}>
                     <ListItemDecorator sx={{ color: 'inherit' }}>
                       <FormatListBulletedRoundedIcon />
                     </ListItemDecorator>
                     {t('addCheckList')}
                   </MenuItem>
+
                   <MenuItem onClick={onClickAddFile}>
                     <ListItemDecorator sx={{ color: 'inherit' }}>
                       <AttachFileRoundedIcon />
@@ -259,7 +263,7 @@ export const Task: FC<TaskPropsType> = ({ task, index, column, files }) => {
                 <Typography>{task.description}</Typography>
               </Box>
 
-              {(Boolean(files.length) || Boolean(data?.length)) && (
+              {(Boolean(files.length) || Boolean(data?.length) || isPoints) && (
                 <>
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 1 }}>
                     {Boolean(files.length) && (
@@ -289,8 +293,16 @@ export const Task: FC<TaskPropsType> = ({ task, index, column, files }) => {
                       <ExpandMoreIcon />
                     </IconButton>
                   </Box>
-                  <Collapse in={expanded} timeout="auto" unmountOnExit>
-                    <Points taskId={task._id} boardId={task.boardId} show={isPoints} isShow={setIsPoints} data={data} />
+                  <Collapse in={expanded} timeout="auto">
+                    <Points
+                      taskId={task._id}
+                      boardId={task.boardId}
+                      isShow={isPoints}
+                      setIsShow={setIsPoints}
+                      data={data}
+                      setExpanded={setExpanded}
+                    />
+
                     {Boolean(files.length) && (
                       <>
                         <Divider sx={{ mb: 1 }} />

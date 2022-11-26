@@ -5,7 +5,7 @@ import Box from '@mui/joy/Box';
 import List from '@mui/joy/List';
 import Sheet from '@mui/joy/Sheet';
 import Typography from '@mui/joy/Typography';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { toast } from 'react-toastify';
@@ -14,36 +14,35 @@ import { AddPointModal } from './AddPointModal/AddPointModal';
 
 import { Point } from './Point/Point';
 
+import { Context } from '../../Context/Context';
+import { ReducerTypes } from '../../Context/contextReducer/ReducerTypes';
 import { IPointsResponse, useDeletePointMutation, useSetPointMutation } from '../../store/slices/points/pointsApi';
 
 interface IProps {
   taskId: string;
   boardId: string;
-  isShow: (val: boolean) => void;
-  show: boolean;
+  setIsShow: (val: boolean) => void;
+  isShow: boolean;
+  setExpanded: (val: boolean) => void;
   data?: IPointsResponse[];
 }
 
-export const Points = ({ taskId, boardId, isShow, show, data }: IProps) => {
+export const Points = ({ taskId, boardId, isShow, setIsShow, setExpanded, data }: IProps) => {
   const { t } = useTranslation();
+  const { contextDispatch } = useContext(Context);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [points, setPoints] = useState<IPointsResponse[]>([]);
   const [addNewPoint] = useSetPointMutation();
   const [deletePoints] = useDeletePointMutation();
-  const [isPoints, setIsPoints] = useState(false);
-
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
 
   const addPoint = async (title: string) => {
+    setExpanded(true);
     setPoints((prev) => [...prev, { title, taskId: '0', boardId: '0', done: false, _id: '0' }]);
     addNewPoint({ title, boardId, taskId, done: false }).catch(() => toast.error(t('serverError')));
   };
 
   const delPoints = async () => {
-    isShow(false);
-    setIsPoints(false);
+    setIsShow(false);
     setPoints([]);
     await Promise.all(points.map(({ _id }) => deletePoints(_id))).catch(() => toast.error(t('serverError')));
   };
@@ -51,13 +50,19 @@ export const Points = ({ taskId, boardId, isShow, show, data }: IProps) => {
   useEffect(() => {
     if (data) {
       setPoints(data);
-      setIsPoints(!!data.length);
     }
-  }, [data, isShow]);
+  }, [data]);
+
+  useEffect(() => {
+    console.log(isShow);
+    if (isShow) {
+      setIsModalOpen(true);
+    }
+  }, [isShow]);
 
   return (
     <>
-      {(isPoints || show) && (
+      {(isShow || !!points.length) && (
         <Sheet variant="outlined" sx={{ borderRadius: 'sm', width: '100%', bgcolor: 'background.body', my: 2 }}>
           <Box
             id="filter-status"
@@ -88,10 +93,24 @@ export const Points = ({ taskId, boardId, isShow, show, data }: IProps) => {
             </Typography>
 
             <Box sx={{ display: 'flex', gap: 1 }}>
-              <IconButton variant="soft" color="info" type="submit" title={t('addPoint')} size="sm" onClick={openModal}>
+              <IconButton
+                variant="soft"
+                color="primary"
+                type="submit"
+                title={t('addPoint')}
+                size="sm"
+                onClick={() => setIsModalOpen(true)}
+              >
                 <AddRoundedIcon />
               </IconButton>
-              <IconButton variant="soft" color="danger" type="submit" title={t('delete')} size="sm" onClick={delPoints}>
+              <IconButton
+                variant="soft"
+                color="danger"
+                type="submit"
+                title={t('delete')}
+                size="sm"
+                onClick={() => contextDispatch({ type: ReducerTypes.cb, payload: delPoints })}
+              >
                 <DeleteOutlineRoundedIcon />
               </IconButton>
             </Box>
@@ -103,9 +122,9 @@ export const Points = ({ taskId, boardId, isShow, show, data }: IProps) => {
               ))}
             </List>
           </Box>
-          <AddPointModal toggleModal={setIsModalOpen} isOpen={isModalOpen} setPointText={addPoint} />
         </Sheet>
       )}
+      <AddPointModal toggleModal={setIsModalOpen} isOpen={isModalOpen} setPointText={addPoint} />
     </>
   );
 };

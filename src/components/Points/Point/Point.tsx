@@ -46,7 +46,13 @@ export const Point = ({ point, setPoints, points }: IProps) => {
         py: 0,
       }}
     >
-      <Checkbox label={title} onChange={togglePoint} size="sm" checked={done} />
+      <Checkbox
+        label={title}
+        onChange={togglePoint}
+        size="sm"
+        checked={done}
+        sx={{ textDecoration: done ? 'line-through' : 'none' }}
+      />
 
       <IconButton
         className={styles.bar}
