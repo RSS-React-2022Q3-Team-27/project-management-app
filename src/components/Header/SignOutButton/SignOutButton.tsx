@@ -3,6 +3,9 @@ import Button from '@mui/joy/Button';
 import IconButton from '@mui/joy/IconButton';
 import Tooltip from '@mui/joy/Tooltip';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
+
+import { ROUTES } from '../../../constants/routes';
 
 import { useAppDispatch } from '../../../store/hooks';
 import { closeSideDrawer } from '../../../store/slices/header/headerSlice';
@@ -22,12 +25,12 @@ export const SignOutButton = ({ isHeader }: { isHeader: boolean }) => {
 
   return isHeader ? (
     <Tooltip title={t('signOut')} color="primary" size="sm" variant="plain" arrow>
-      <IconButton onClick={handleClick} variant="outlined">
+      <IconButton component={Link} to={ROUTES.WELCOME.path} onClick={handleClick} variant="outlined">
         <ExitToAppRoundedIcon />
       </IconButton>
     </Tooltip>
   ) : (
-    <Button onClick={handleClick} sx={{ width: isHeader ? '120px' : '100%' }}>
+    <Button component={Link} to={ROUTES.WELCOME.path} onClick={handleClick} sx={{ width: isHeader ? '120px' : '100%' }}>
       {t('signOut')}
     </Button>
   );
