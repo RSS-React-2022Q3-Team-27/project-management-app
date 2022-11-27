@@ -3,9 +3,8 @@
 }
 
 .avatar::before {
-  content: '';
+  content: "";
   opacity: 0;
-  transition: 0.3s;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
@@ -23,7 +22,7 @@
 }
 
 .avatar:hover::after {
-  content: '+';
+  content: "+";
   color: grey;
   position: absolute;
   font-size: 30px;
