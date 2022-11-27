@@ -54,7 +54,6 @@ export const Points = ({ taskId, boardId, isShow, setIsShow, setExpanded, data }
   }, [data]);
 
   useEffect(() => {
-    console.log(isShow);
     if (isShow) {
       setIsModalOpen(true);
     }

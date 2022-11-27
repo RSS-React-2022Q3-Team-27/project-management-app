@@ -10,7 +10,8 @@ import { URL } from '../../../constants/URL';
 import i18n from '../../../translation/i18n';
 
 import { RootState } from '../../store';
-import { setIsUserLogIn, setUserInfo, userLogOut } from '../user/userSlice';
+import { FileType } from '../files/filesApi';
+import { setAvatar, setAvatarId, setIsUserLogIn, setUserInfo, userLogOut } from '../user/userSlice';
 
 export interface IError {
   statusCode: number;
@@ -39,14 +40,51 @@ export const getUsers = createAsyncThunk<IUserInfo[], undefined, { rejectValue: 
       if (!isUserLogIn) {
         dispatch(setIsUserLogIn(true));
       }
-
-      dispatch(setUserInfo(id ? getUserDataById(data, id) : getUserDataByLogin(data, login)));
+      const userInfo = id ? getUserDataById(data, id) : getUserDataByLogin(data, login);
+      dispatch(setUserInfo(userInfo));
+      if (userInfo) {
+        dispatch(getFilesByUserId(userInfo.login));
+      }
       return data;
     } catch (error) {
       if (axios.isAxiosError(error)) {
         toast.error(i18n.t('serverError'));
 
         dispatch(userLogOut());
+        return rejectWithValue(error.response?.data);
+      }
+      throw error;
+    }
+  }
+);
+
+export const getFilesByUserId = createAsyncThunk<FileType[], string, { rejectValue: IError }>(
+  'users/getFilesByUserId',
+  async (login, { rejectWithValue, getState, dispatch }) => {
+    const state: RootState = <RootState>getState();
+    const { token } = state.user;
+    try {
+      const { data } = <{ data: FileType[] }>await axios.get(`${URL}${API_PATH.file}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        params: {
+          userId: login,
+          taskId: login,
+        },
+      });
+
+      if (data && data[0]) {
+        dispatch(setAvatarId(data[0]._id));
+        dispatch(setAvatar(`${URL}${data[0].path}`));
+      }
+
+      return data;
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        toast.error(i18n.t('serverError'));
         return rejectWithValue(error.response?.data);
       }
       throw error;

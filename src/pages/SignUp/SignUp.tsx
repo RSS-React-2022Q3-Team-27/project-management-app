@@ -1,5 +1,7 @@
+import { Avatar, Box } from '@mui/joy';
 import Sheet from '@mui/joy/Sheet';
 import Typography from '@mui/joy/Typography';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Link } from 'react-router-dom';
@@ -7,9 +9,13 @@ import { Link } from 'react-router-dom';
 import { SignUpForm } from '../../components/SignUpForm/SignUpForm';
 
 import { ROUTES } from '../../constants/routes';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { toggleAvatarModal } from '../../store/slices/user/userSlice';
 
 export const SignUp = () => {
   const { t } = useTranslation();
+  const dispatch = useAppDispatch();
+  const { avatar } = useAppSelector((state) => state.user);
 
   return (
     <Sheet
@@ -27,12 +33,21 @@ export const SignUp = () => {
       }}
       variant="outlined"
     >
-      <div>
-        <Typography level="h4" component="h1">
-          <b>{t('welcome')}</b>
-        </Typography>
-        <Typography level="body2">{t('signUp')}</Typography>
-      </div>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+        <div>
+          <Typography level="h4" component="h1">
+            <b>{t('welcome')}</b>
+          </Typography>
+          <Typography level="body2">{t('signUp')}</Typography>
+        </div>
+        <Avatar
+          alt="+"
+          src={avatar}
+          size="lg"
+          sx={{ width: 70, height: 70, cursor: 'pointer' }}
+          onClick={() => dispatch(toggleAvatarModal(true))}
+        />
+      </Box>
       <SignUpForm />
       <Typography
         endDecorator={<Link to={`${ROUTES.SIGN_IN.path}`}>{t('signIn')}</Link>}

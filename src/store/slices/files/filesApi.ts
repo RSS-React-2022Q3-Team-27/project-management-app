@@ -36,6 +36,17 @@ export const filesApi = createApi({
       providesTags: ['Files'],
     }),
 
+    getFilesByUserId: build.query<FileType[], string>({
+      query: (login) => ({
+        url: API_PATH.file,
+        params: {
+          userId: login,
+          taskId: login,
+        },
+      }),
+      providesTags: ['Files'],
+    }),
+
     uploadFile: build.mutation<FileType, FormData>({
       query: (formData) => ({
         url: `${API_PATH.file}`,
@@ -55,4 +66,5 @@ export const filesApi = createApi({
   }),
 });
 
-export const { useGetFilesByBoardIdQuery, useUploadFileMutation, useDeleteFileMutation } = filesApi;
+export const { useGetFilesByBoardIdQuery, useGetFilesByUserIdQuery, useUploadFileMutation, useDeleteFileMutation } =
+  filesApi;

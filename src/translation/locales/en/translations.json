@@ -93,5 +93,6 @@
   "deleteCover": "Delete cover",
   "columnCreated": "Column created",
   "columnUpdated": "Column updated",
-  "columnDeleted": "Column deleted"
+  "columnDeleted": "Column deleted",
+  "inputPswd": "Input password"
 }

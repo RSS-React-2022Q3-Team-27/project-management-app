@@ -117,7 +117,6 @@ export const Task: FC<TaskPropsType> = ({ task, index, column, files }) => {
   };
 
   const onClickAddPoints = () => {
-    console.log('task add');
     setIsPoints(true);
     closeMenu();
   };
@@ -275,7 +274,7 @@ export const Task: FC<TaskPropsType> = ({ task, index, column, files }) => {
                         {files.length}
                       </Typography>
                     )}
-                    {Boolean(data?.length) && (
+                    {(Boolean(data?.length) || isPoints) && (
                       <Typography
                         variant="soft"
                         sx={{ pr: 1, m: 0, height: 24 }}

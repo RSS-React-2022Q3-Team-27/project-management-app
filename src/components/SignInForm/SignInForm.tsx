@@ -16,7 +16,7 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { useLogInUserMutation } from '../../store/slices/user/authApi';
 import { setIsUserLogIn, setLogin, setToken, setUserInfo } from '../../store/slices/user/userSlice';
 import { useGetUsersQuery } from '../../store/slices/users/usersApi';
-import { getUserDataByLogin } from '../../store/slices/users/usersThunks';
+import { getFilesByUserId, getUserDataByLogin } from '../../store/slices/users/usersThunks';
 import { errorHandler } from '../SignUpForm/errorHandler';
 
 interface IFormInput {
@@ -50,16 +50,17 @@ export const SignInForm = () => {
     dispatch(setToken(token));
     dispatch(setIsUserLogIn(true));
     dispatch(setLogin(data.login));
-    toast.success(t('youveSuccessfullySignedIn'));
+    dispatch(getFilesByUserId(data.login));
     setSkip(false);
   };
 
   useEffect(() => {
     if (usersData && isUserLogIn) {
       dispatch(setUserInfo(getUserDataByLogin(usersData, login)));
+      toast.success(t('youveSuccessfullySignedIn'));
       navigate(ROUTES.MAIN.path);
     }
-  }, [dispatch, isUserLogIn, login, navigate, usersData]);
+  }, [dispatch, isUserLogIn, login, navigate, t, usersData]);
 
   useEffect(() => {
     if (isError && token) {

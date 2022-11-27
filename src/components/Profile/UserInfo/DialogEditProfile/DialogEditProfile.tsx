@@ -41,6 +41,9 @@ export const DialogEditProfile = ({ openDialog, isDialogOpen }: IProps) => {
   };
 
   const confirmHandler = () => {
+    if (!password.trim()) {
+      return;
+    }
     if (loginValidate(newLogin) && nameValidate(newName)) {
       logInUser({ login, password })
         .unwrap()
@@ -63,6 +66,9 @@ export const DialogEditProfile = ({ openDialog, isDialogOpen }: IProps) => {
           dispatch(setUserInfo(newUserData));
 
           openDialog(false);
+          setPassword('');
+          setNewLogin(login);
+          setNewName(userName);
         })
         .catch(() => {});
     }
@@ -90,6 +96,11 @@ export const DialogEditProfile = ({ openDialog, isDialogOpen }: IProps) => {
             error={!nameValidate(newName)}
             required
           />
+          {!nameValidate(newName) && (
+            <Typography level="body2" color="danger" sx={{ maxWidth: 273 }}>
+              {`${t('wrongFormat')} (${t('twoToTenLetters')})`}
+            </Typography>
+          )}
 
           <TextField
             name="login"
@@ -104,6 +115,11 @@ export const DialogEditProfile = ({ openDialog, isDialogOpen }: IProps) => {
             startDecorator={<PersonRoundedIcon />}
             required
           />
+          {!loginValidate(newLogin) && (
+            <Typography level="body2" color="danger" sx={{ maxWidth: 273 }}>
+              {`${t('wrongFormat')} (${t('twoToTenLettersLogin')})`}
+            </Typography>
+          )}
           {updateError && (
             <Typography level="body2" color="danger">
               {t('loginAlreadyExist')}
@@ -120,8 +136,15 @@ export const DialogEditProfile = ({ openDialog, isDialogOpen }: IProps) => {
             autoComplete="off"
             placeholder={t('password')}
             label={t('confirmByPassword')}
+            error={!password.trim()}
             startDecorator={<KeyRoundedIcon />}
+            required
           />
+          {!password.trim() && (
+            <Typography level="body2" color="danger" sx={{ maxWidth: 273 }}>
+              {t('inputPswd')}
+            </Typography>
+          )}
           {logInError && (
             <Typography level="body2" color="danger">
               {t('wrongPassword')}

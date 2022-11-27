@@ -42,7 +42,7 @@ export const AddPointModal = ({ toggleModal, isOpen, setPointText }: IProps) => 
               control={control}
               defaultValue=""
               rules={{ required: 'Field is require' }}
-              render={({ field }) => <TextField {...field} label={t('text')} autoFocus required />}
+              render={({ field }) => <TextField {...field} autoFocus required />}
             />
             <Button type="submit">{t('addItem')}</Button>
           </Stack>

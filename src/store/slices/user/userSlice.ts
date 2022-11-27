@@ -22,6 +22,9 @@ export interface IInitialState {
   logInErrorCode: number;
   registrationErrorCode: number;
   updateError: number;
+  avatar: string;
+  isAvatarModal: boolean;
+  avatarId: string;
 }
 
 const initialState: IInitialState = {
@@ -33,12 +36,24 @@ const initialState: IInitialState = {
   isUserLogIn: getLoginState(),
   registrationErrorCode: 0,
   updateError: 0,
+  avatar: '',
+  isAvatarModal: false,
+  avatarId: '',
 };
 
 const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
+    setAvatar(state, { payload }) {
+      state.avatar = payload;
+    },
+    setAvatarId(state, { payload }) {
+      state.avatarId = payload;
+    },
+    toggleAvatarModal(state, { payload }) {
+      state.isAvatarModal = payload;
+    },
     userLogOut(state) {
       removeValueLocalStorage(LocalStorageKeys.token);
       removeValueLocalStorage(LocalStorageKeys.userId);
@@ -47,6 +62,8 @@ const userSlice = createSlice({
       state.login = '';
       state.token = '';
       state.isUserLogIn = false;
+      state.avatar = '';
+      state.avatarId = '';
     },
 
     setUserInfo(state, { payload }) {
@@ -80,6 +97,16 @@ const userSlice = createSlice({
   },
 });
 
-export const { setId, setLogin, userLogOut, setIsUserLogIn, setUserInfo, setToken, setLogInErrorCode } =
-  userSlice.actions;
+export const {
+  setId,
+  setLogin,
+  userLogOut,
+  setIsUserLogIn,
+  setUserInfo,
+  setToken,
+  setLogInErrorCode,
+  setAvatar,
+  toggleAvatarModal,
+  setAvatarId,
+} = userSlice.actions;
 export default userSlice.reducer;

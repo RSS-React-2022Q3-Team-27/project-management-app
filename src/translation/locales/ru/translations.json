@@ -93,5 +93,6 @@
   "deleteCover": "Удалить обложку",
   "columnCreated": "Колонка создана",
   "columnUpdated": "Колонка изменена",
-  "columnDeleted": "Колонка удалена"
+  "columnDeleted": "Колонка удалена",
+  "inputPswd": "Введите пароль"
 }

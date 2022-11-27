@@ -1,6 +1,6 @@
 import { Box, Button, Divider, Sheet, Typography } from '@mui/joy';
 import Avatar from '@mui/joy/Avatar';
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { toast } from 'react-toastify';
@@ -8,29 +8,60 @@ import { toast } from 'react-toastify';
 import { Counter } from './Counter/Counter';
 
 import { DialogEditProfile } from './DialogEditProfile/DialogEditProfile';
+import styles from './UserInfo.module.css';
 import { UserInfoFields } from './UserInfoFields/UserInfoFields';
 
-import img from '../../../assets/images/avatar.jpg';
+import { URL } from '../../../constants/URL';
 import { Context } from '../../../Context/Context';
 import { ReducerTypes } from '../../../Context/contextReducer/ReducerTypes';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
-import { userLogOut } from '../../../store/slices/user/userSlice';
+import { useDeleteFileMutation, useUploadFileMutation } from '../../../store/slices/files/filesApi';
+import { setAvatar, setAvatarId, toggleAvatarModal, userLogOut } from '../../../store/slices/user/userSlice';
 import { useDeleteUserMutation } from '../../../store/slices/users/usersApi';
+import { AvatarModal } from '../../SignUpForm/Avatar/AvatarModal';
+import { getFormData } from '../../SignUpForm/getFormData';
 
 export const UserInfo = () => {
   const { contextDispatch } = useContext(Context);
   const dispatch = useAppDispatch();
   const [isEditOpen, setIsEditOpen] = useState(false);
-  const { login, id } = useAppSelector((state) => state.user);
+  const { login, id, avatar, avatarId } = useAppSelector((state) => state.user);
   const { t } = useTranslation();
   const [deleteUser] = useDeleteUserMutation();
+  const [delFile] = useDeleteFileMutation();
+  const [uploadFile] = useUploadFileMutation();
+  const [file, setFile] = useState<null | File>(null);
+  const prevFile = useRef<null | File>(null);
 
   const delUser = async () => {
     deleteUser(id)
       .unwrap()
       .then(() => dispatch(userLogOut()))
       .catch(() => toast.error(t('serverError')));
+    if (avatarId) {
+      delFile(avatarId).catch(() => {});
+    }
   };
+
+  const changeAvatar = useCallback(() => {
+    if (avatarId) {
+      delFile(avatarId).catch(() => {});
+    }
+    uploadFile(getFormData(login, file!))
+      .unwrap()
+      .then((data) => {
+        dispatch(setAvatarId(data._id));
+        dispatch(setAvatar(`${URL}${data.path}`));
+      })
+      .catch(() => toast.error(t('serverError')));
+  }, [avatarId, delFile, dispatch, file, login, t, uploadFile]);
+
+  useEffect(() => {
+    if (file && file !== prevFile.current) {
+      prevFile.current = file;
+      changeAvatar();
+    }
+  }, [changeAvatar, file]);
 
   return (
     <Sheet
@@ -73,12 +104,15 @@ export const UserInfo = () => {
           }}
         >
           <Avatar
+            className={styles.avatar}
             alt={login}
-            src={img}
+            src={avatar}
             sx={{
               height: '200px',
               width: '200px',
+              cursor: 'pointer',
             }}
+            onClick={() => dispatch(toggleAvatarModal(true))}
           />
         </Box>
         <Box
@@ -123,6 +157,7 @@ export const UserInfo = () => {
         <Counter />
       </Box>
       <DialogEditProfile openDialog={setIsEditOpen} isDialogOpen={isEditOpen} />
+      <AvatarModal setFile={setFile} />
     </Sheet>
   );
 };
