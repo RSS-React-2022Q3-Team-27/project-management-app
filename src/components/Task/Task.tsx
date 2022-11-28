@@ -40,7 +40,7 @@ import { ColumnType } from '../../store/slices/board/boardApi';
 import { useDeleteFileMutation } from '../../store/slices/files/filesApi';
 import { openAddFileModal } from '../../store/slices/files/filesSlice';
 
-import { useGetPointsByTaskIdQuery } from '../../store/slices/points/pointsApi';
+import { IPointsResponse } from '../../store/slices/points/pointsApi';
 import {
   TaskType,
   UpdateSetOfTaskType,
@@ -60,9 +60,10 @@ type TaskPropsType = {
     tasksData: TaskType[];
   };
   files: fileType[];
+  points: IPointsResponse[];
 };
 
-export const Task: FC<TaskPropsType> = ({ task, index, column, files }) => {
+export const Task: FC<TaskPropsType> = ({ task, index, column, files, points }) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -74,7 +75,6 @@ export const Task: FC<TaskPropsType> = ({ task, index, column, files }) => {
   const [expanded, setExpanded] = useState(false);
   const [deleteFile] = useDeleteFileMutation();
   const { covers } = useAppSelector((state) => state.files);
-  const { data } = useGetPointsByTaskIdQuery(task._id);
 
   useEffect(() => {
     if (isSuccess) {
@@ -215,7 +215,7 @@ export const Task: FC<TaskPropsType> = ({ task, index, column, files }) => {
                     {t('edit')}
                   </MenuItem>
 
-                  <MenuItem onClick={onClickAddPoints} disabled={isPoints || Boolean(data?.length)}>
+                  <MenuItem onClick={onClickAddPoints} disabled={isPoints || Boolean(points.length)}>
                     <ListItemDecorator sx={{ color: 'inherit' }}>
                       <FormatListBulletedRoundedIcon />
                     </ListItemDecorator>
@@ -263,7 +263,7 @@ export const Task: FC<TaskPropsType> = ({ task, index, column, files }) => {
                 <Typography>{task.description}</Typography>
               </Box>
 
-              {(Boolean(files.length) || Boolean(data?.length) || isPoints) && (
+              {(Boolean(files.length) || Boolean(points?.length) || isPoints) && (
                 <>
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 1 }}>
                     {Boolean(files.length) && (
@@ -275,7 +275,7 @@ export const Task: FC<TaskPropsType> = ({ task, index, column, files }) => {
                         {files.length}
                       </Typography>
                     )}
-                    {Boolean(data?.length) && (
+                    {Boolean(points.length) && (
                       <Typography
                         variant="soft"
                         sx={{ pr: 1, m: 0, height: 24 }}
@@ -299,7 +299,7 @@ export const Task: FC<TaskPropsType> = ({ task, index, column, files }) => {
                       boardId={task.boardId}
                       isShow={isPoints}
                       setIsShow={setIsPoints}
-                      data={data}
+                      data={points}
                       setExpanded={setExpanded}
                     />
 
