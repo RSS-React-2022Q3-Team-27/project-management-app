@@ -77,7 +77,7 @@ export const getFilesByUserId = createAsyncThunk<FileType[], string, { rejectVal
       });
 
       if (data && data[0]) {
-        dispatch(setAvatarInfo(data[0]._id));
+        dispatch(setAvatarInfo(data));
         dispatch(setAvatar(`${URL}${data[0].path}`));
       }
 

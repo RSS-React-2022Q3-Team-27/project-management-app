@@ -17,7 +17,7 @@ import {
 import { openAddColumnModal, setColumnsLength } from '../../../store/slices/board/boardSlice';
 import { useGetFilesByBoardIdQuery } from '../../../store/slices/files/filesApi';
 import { CoversType, setCovers } from '../../../store/slices/files/filesSlice';
-import { useGetPointsQuery } from '../../../store/slices/points/pointsApi';
+import { IPointsResponse, useGetPointsQuery } from '../../../store/slices/points/pointsApi';
 import {
   TaskType,
   UpdateSetOfTaskType,
@@ -71,6 +71,11 @@ export const Columns = () => {
   const [filesToRender, setFilesToRender] = useState<fileToRenderType>({});
   const { id: userId } = useAppSelector((state) => state.user);
   const { data: points, isError: isPointsError, isLoading: isPointsLoading } = useGetPointsQuery(userId);
+  const [pointsToRender, setPointsToRender] = useState<IPointsResponse[]>(points || []);
+
+  useEffect(() => {
+    if (points) setPointsToRender(points);
+  }, [points]);
 
   useEffect(() => {
     if (isColumnsError || isTasksError || isFilesError || isCoversError || isPointsError) {
@@ -210,7 +215,7 @@ export const Columns = () => {
       boardIndex={i}
       tasksRefetch={tasksRefetch}
       files={filesToRender}
-      points={points ?? []}
+      points={pointsToRender ?? []}
     />
   ));
 
