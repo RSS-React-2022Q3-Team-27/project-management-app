@@ -87,7 +87,7 @@ export const Column: FC<ColumnPropsType> = ({ column, columns, boardIndex, tasks
 
   const onClickDelete = async () => {
     contextDispatch({
-      type: ReducerTypes.cb,
+      type: ReducerTypes.onConfirmAction,
       payload: () => handleDelete(),
     });
   };

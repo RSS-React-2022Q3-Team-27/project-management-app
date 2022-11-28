@@ -17,7 +17,7 @@ export const DialogConfirm = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const onClose = () => {
-    contextDispatch({ type: ReducerTypes.null, payload: null });
+    contextDispatch({ type: ReducerTypes.null });
   };
 
   const onClick = async () => {
@@ -31,7 +31,7 @@ export const DialogConfirm = () => {
         setIsLoading(false);
       }
 
-      contextDispatch({ type: ReducerTypes.null, payload: null });
+      contextDispatch({ type: ReducerTypes.null });
     }
   };
 

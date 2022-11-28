@@ -1,11 +1,11 @@
-import { IAction } from './IAction';
+import { Action } from './IAction';
 import { initialReducerState } from './initialReducerState';
 import { IReducerState } from './IReducerState';
 import { ReducerTypes } from './ReducerTypes';
 
-export const contextReducer = (state: IReducerState, action: IAction) => {
+export const contextReducer = (state: IReducerState, action: Action) => {
   switch (action.type) {
-    case ReducerTypes.cb:
+    case ReducerTypes.onConfirmAction:
       return {
         cb: action.payload,
       };

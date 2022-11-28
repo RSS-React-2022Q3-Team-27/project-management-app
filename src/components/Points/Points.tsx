@@ -109,7 +109,7 @@ export const Points = ({ taskId, boardId, isShow, setIsShow, setExpanded, data }
                 type="submit"
                 title={t('delete')}
                 size="sm"
-                onClick={() => contextDispatch({ type: ReducerTypes.cb, payload: delPoints })}
+                onClick={() => contextDispatch({ type: ReducerTypes.onConfirmAction, payload: delPoints })}
               >
                 <DeleteOutlineRoundedIcon />
               </IconButton>
