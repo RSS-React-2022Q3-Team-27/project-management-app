@@ -69,9 +69,13 @@ export const Columns = () => {
   const dispatch = useAppDispatch();
   const [columnsToRender, setColumnsToRender] = useState<columnToRenderType>({});
   const [filesToRender, setFilesToRender] = useState<fileToRenderType>({});
-  const [pointsToRender, setPointsToRender] = useState<IPointsResponse[]>([]);
   const { id: userId } = useAppSelector((state) => state.user);
   const { data: points, isError: isPointsError, isLoading: isPointsLoading } = useGetPointsQuery(userId);
+  const [pointsToRender, setPointsToRender] = useState<IPointsResponse[]>(points || []);
+
+  useEffect(() => {
+    if (points) setPointsToRender(points);
+  }, [points]);
 
   useEffect(() => {
     if (isColumnsError || isTasksError || isFilesError || isCoversError || isPointsError) {
@@ -118,10 +122,6 @@ export const Columns = () => {
 
       setFilesToRender(sortedFiles);
       setColumnsToRender(dataToRender);
-
-      if (points) {
-        setPointsToRender(points);
-      }
     }
   }, [
     columns,
@@ -134,7 +134,6 @@ export const Columns = () => {
     isTasksError,
     isPointsError,
     tasks,
-    points,
   ]);
 
   const handleClick = () => {
@@ -217,7 +216,6 @@ export const Columns = () => {
       tasksRefetch={tasksRefetch}
       files={filesToRender}
       points={pointsToRender ?? []}
-      setPoints={setPointsToRender}
     />
   ));
 

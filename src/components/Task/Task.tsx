@@ -23,7 +23,7 @@ import List from '@mui/joy/List';
 import ListItem from '@mui/joy/ListItem';
 import Collapse from '@mui/material/Collapse';
 import IconButton from '@mui/material/IconButton';
-import { FC, useContext, useState, useEffect, Dispatch, SetStateAction } from 'react';
+import { FC, useContext, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
@@ -61,10 +61,9 @@ type TaskPropsType = {
   };
   files: fileType[];
   points: IPointsResponse[];
-  setPoints: Dispatch<SetStateAction<IPointsResponse[]>>;
 };
 
-export const Task: FC<TaskPropsType> = ({ task, index, column, files, points, setPoints }) => {
+export const Task: FC<TaskPropsType> = ({ task, index, column, files, points }) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -305,7 +304,6 @@ export const Task: FC<TaskPropsType> = ({ task, index, column, files, points, se
                       setIsShow={setIsPoints}
                       data={points}
                       setExpanded={setExpanded}
-                      setPoints={setPoints}
                     />
 
                     {Boolean(files.length) && (

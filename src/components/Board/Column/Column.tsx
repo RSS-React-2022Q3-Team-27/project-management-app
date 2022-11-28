@@ -6,7 +6,7 @@ import Button from '@mui/joy/Button';
 import IconButton from '@mui/joy/IconButton';
 import List from '@mui/joy/List';
 import Typography from '@mui/joy/Typography';
-import React, { FC, useContext, useState, useEffect, SetStateAction, Dispatch } from 'react';
+import React, { FC, useContext, useState, useEffect } from 'react';
 
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
@@ -44,18 +44,9 @@ type ColumnPropsType = {
   tasksRefetch: () => void;
   files: fileToRenderType;
   points: IPointsResponse[];
-  setPoints: Dispatch<SetStateAction<IPointsResponse[]>>;
 };
 
-export const Column: FC<ColumnPropsType> = ({
-  column,
-  columns,
-  boardIndex,
-  tasksRefetch,
-  files,
-  points,
-  setPoints,
-}) => {
+export const Column: FC<ColumnPropsType> = ({ column, columns, boardIndex, tasksRefetch, files, points }) => {
   const { title, boardId, _id: columnId, order } = column.columnData;
   const dispatch = useAppDispatch();
   const { contextDispatch } = useContext(Context);
@@ -117,7 +108,6 @@ export const Column: FC<ColumnPropsType> = ({
       column={column}
       files={files[task._id] ? files[task._id] : []}
       points={points ? points.filter((point) => point.taskId === task._id) : []}
-      setPoints={setPoints}
     />
   ));
 

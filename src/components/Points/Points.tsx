@@ -5,7 +5,7 @@ import Box from '@mui/joy/Box';
 import List from '@mui/joy/List';
 import Sheet from '@mui/joy/Sheet';
 import Typography from '@mui/joy/Typography';
-import React, { useState, useEffect, useContext, Dispatch, SetStateAction } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { toast } from 'react-toastify';
@@ -25,10 +25,9 @@ interface IProps {
   isShow: boolean;
   setExpanded: (val: boolean) => void;
   data?: IPointsResponse[];
-  setPoints: Dispatch<SetStateAction<IPointsResponse[]>>;
 }
 
-export const Points = ({ taskId, boardId, isShow, setIsShow, setExpanded, data, setPoints }: IProps) => {
+export const Points = ({ taskId, boardId, isShow, setIsShow, setExpanded, data }: IProps) => {
   const { t } = useTranslation();
   const { contextDispatch } = useContext(Context);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -37,14 +36,14 @@ export const Points = ({ taskId, boardId, isShow, setIsShow, setExpanded, data, 
 
   const addPoint = async (title: string) => {
     setExpanded(true);
-    setPoints((prev) => [...prev, { title, taskId: '0', boardId: '0', done: false, _id: '0' }]);
     addNewPoint({ title, boardId, taskId, done: false }).catch(() => toast.error(t('serverError')));
   };
 
   const delPoints = async () => {
     setIsShow(false);
-    setPoints([]);
-    if (data) await Promise.all(data.map(({ _id }) => deletePoints(_id))).catch(() => toast.error(t('serverError')));
+    if (data) {
+      await Promise.all(data.map(({ _id }) => deletePoints(_id))).catch(() => toast.error(t('serverError')));
+    }
   };
 
   useEffect(() => {
@@ -112,7 +111,7 @@ export const Points = ({ taskId, boardId, isShow, setIsShow, setExpanded, data, 
           <Box role="group" aria-labelledby="filter-status">
             <List>
               {data?.map((point) => (
-                <Point point={point} key={point._id} points={data} setPoints={setPoints} />
+                <Point point={point} key={point._id} />
               ))}
             </List>
           </Box>
