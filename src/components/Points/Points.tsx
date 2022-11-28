@@ -31,18 +31,27 @@ export const Points = ({ taskId, boardId, isShow, setIsShow, setExpanded, data }
   const { t } = useTranslation();
   const { contextDispatch } = useContext(Context);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [points, setPoints] = useState<IPointsResponse[]>([]);
   const [addNewPoint] = useSetPointMutation();
   const [deletePoints] = useDeletePointMutation();
 
   const addPoint = async (title: string) => {
     setExpanded(true);
+    setPoints((prev) => [...prev, { title, taskId: '0', boardId: '0', done: false, _id: '0' }]);
     addNewPoint({ title, boardId, taskId, done: false }).catch(() => toast.error(t('serverError')));
   };
 
   const delPoints = async () => {
     setIsShow(false);
-    if (data) await Promise.all(data.map(({ _id }) => deletePoints(_id))).catch(() => toast.error(t('serverError')));
+    setPoints([]);
+    await Promise.all(points.map(({ _id }) => deletePoints(_id))).catch(() => toast.error(t('serverError')));
   };
+
+  useEffect(() => {
+    if (data) {
+      setPoints(data);
+    }
+  }, [data]);
 
   useEffect(() => {
     console.log(isShow);
@@ -53,7 +62,7 @@ export const Points = ({ taskId, boardId, isShow, setIsShow, setExpanded, data }
 
   return (
     <>
-      {(isShow || !!data?.length) && (
+      {(isShow || !!points.length) && (
         <Sheet variant="outlined" sx={{ borderRadius: 'sm', width: '100%', bgcolor: 'background.body', my: 2 }}>
           <Box
             id="filter-status"
@@ -108,8 +117,8 @@ export const Points = ({ taskId, boardId, isShow, setIsShow, setExpanded, data }
           </Box>
           <Box role="group" aria-labelledby="filter-status">
             <List>
-              {data?.map((point) => (
-                <Point point={point} key={point._id} />
+              {points.map((point) => (
+                <Point point={point} key={point._id} points={points} setPoints={setPoints} />
               ))}
             </List>
           </Box>

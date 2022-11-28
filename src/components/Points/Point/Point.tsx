@@ -15,19 +15,23 @@ import {
 
 interface IProps {
   point: IPointsResponse;
+  points: IPointsResponse[];
+  setPoints: (val: IPointsResponse[]) => void;
 }
 
-export const Point = ({ point }: IProps) => {
+export const Point = ({ point, setPoints, points }: IProps) => {
   const { _id: id, done, title } = point;
   const { t } = useTranslation();
   const [deletePoint] = useDeletePointMutation();
   const [updatePoint] = useUpdatePointMutation();
 
   const delTask = () => {
+    setPoints(points.filter((el) => id !== el._id));
     deletePoint(id);
   };
 
   const togglePoint = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPoints(points.map((el) => (el._id === id ? { ...el, done: e.target.checked } : el)));
     const body = { title, done: e.target.checked };
     updatePoint({ id, body });
   };
