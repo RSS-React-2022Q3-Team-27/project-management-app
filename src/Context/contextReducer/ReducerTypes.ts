@@ -1,4 +1,4 @@
 export enum ReducerTypes {
-  cb = 'cb',
+  onConfirmAction = 'onConfirmAction',
   null = 'null',
 }

@@ -33,7 +33,7 @@ export const FileAttachment = ({ name, path, fileId }: FileAttachmentProps) => {
     event.stopPropagation();
 
     contextDispatch({
-      type: ReducerTypes.cb,
+      type: ReducerTypes.onConfirmAction,
       payload: () => handleDeleteFile(),
     });
   };

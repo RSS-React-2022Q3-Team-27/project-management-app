@@ -8,8 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { useAppDispatch } from '../../../store/hooks';
-
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import {
   ColumnType,
   useGetColumnsInBoardQuery,
@@ -18,6 +17,7 @@ import {
 import { openAddColumnModal, setColumnsLength } from '../../../store/slices/board/boardSlice';
 import { useGetFilesByBoardIdQuery } from '../../../store/slices/files/filesApi';
 import { CoversType, setCovers } from '../../../store/slices/files/filesSlice';
+import { useGetPointsQuery } from '../../../store/slices/points/pointsApi';
 import {
   TaskType,
   UpdateSetOfTaskType,
@@ -26,6 +26,7 @@ import {
 } from '../../../store/slices/tasks/tasksApi';
 import { FileFakeId } from '../../../types/FileFakeId';
 import { changeColumnsOrder, changeColumnsTasksOrder, changeTasksOrder } from '../../../utils/changeDataOrder';
+
 import { Column } from '../Column';
 
 type columnToRenderType = {
@@ -68,9 +69,11 @@ export const Columns = () => {
   const dispatch = useAppDispatch();
   const [columnsToRender, setColumnsToRender] = useState<columnToRenderType>({});
   const [filesToRender, setFilesToRender] = useState<fileToRenderType>({});
+  const { id: userId } = useAppSelector((state) => state.user);
+  const { data: points, isError: isPointsError, isLoading: isPointsLoading } = useGetPointsQuery(userId);
 
   useEffect(() => {
-    if (isColumnsError || isTasksError || isFilesError || isCoversError) {
+    if (isColumnsError || isTasksError || isFilesError || isCoversError || isPointsError) {
       toast.error('Error');
     } else if (columns) {
       const sortedColumns = [...columns].sort((a, b) => a.order - b.order);
@@ -115,7 +118,18 @@ export const Columns = () => {
       setFilesToRender(sortedFiles);
       setColumnsToRender(dataToRender);
     }
-  }, [columns, covers, dispatch, files, isColumnsError, isCoversError, isFilesError, isTasksError, tasks]);
+  }, [
+    columns,
+    covers,
+    dispatch,
+    files,
+    isColumnsError,
+    isCoversError,
+    isFilesError,
+    isTasksError,
+    isPointsError,
+    tasks,
+  ]);
 
   const handleClick = () => {
     dispatch(openAddColumnModal());
@@ -196,12 +210,13 @@ export const Columns = () => {
       boardIndex={i}
       tasksRefetch={tasksRefetch}
       files={filesToRender}
+      points={points ?? []}
     />
   ));
 
   return (
     <>
-      {isColumnsLoading || isTasksLoading || isFilesLoading || isCoversLoading ? (
+      {isColumnsLoading || isTasksLoading || isFilesLoading || isCoversLoading || isPointsLoading ? (
         <CircularProgress sx={{ mx: 'auto', mt: 10 }} />
       ) : (
         <Box sx={{ flexGrow: 1, position: 'relative' }}>

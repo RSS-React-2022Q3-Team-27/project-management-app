@@ -154,7 +154,7 @@ export const UserInfo = () => {
               variant="solid"
               color="danger"
               sx={{ width: 130 }}
-              onClick={() => contextDispatch({ type: ReducerTypes.cb, payload: delUser })}
+              onClick={() => contextDispatch({ type: ReducerTypes.onConfirmAction, payload: delUser })}
             >
               {t('deleteUser')}
             </Button>
