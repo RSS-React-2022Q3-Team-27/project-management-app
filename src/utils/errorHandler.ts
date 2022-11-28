@@ -1,8 +1,8 @@
 import { toast } from 'react-toastify';
 
-import { IRegError } from './SignUpForm';
+import { IRegError } from '../components/SignUpForm/SignUpForm';
 
-import i18n from '../../translation/i18n';
+import i18n from '../translation/i18n';
 
 export const errorHandler = (error: IRegError) => {
   if (error.status === 409) {

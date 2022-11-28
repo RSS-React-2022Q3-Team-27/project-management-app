@@ -1,4 +1,4 @@
-import { Box, Button, Divider, Sheet, Typography } from '@mui/joy';
+import { Box, Button, CircularProgress, Divider, Sheet, Typography } from '@mui/joy';
 import Avatar from '@mui/joy/Avatar';
 import React, { useState, useContext, useEffect, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -20,8 +20,8 @@ import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { useDeleteFileMutation, useUploadFileMutation } from '../../../store/slices/files/filesApi';
 import { setAvatar, setAvatarInfo, toggleAvatarModal, userLogOut } from '../../../store/slices/user/userSlice';
 import { useDeleteUserMutation } from '../../../store/slices/users/usersApi';
+import { getFormData } from '../../../utils/getFormData';
 import { AvatarModal } from '../../SignUpForm/Avatar/AvatarModal';
-import { getFormData } from '../../SignUpForm/getFormData';
 
 export const UserInfo = () => {
   const navigate = useNavigate();
@@ -32,7 +32,7 @@ export const UserInfo = () => {
   const { t } = useTranslation();
   const [deleteUser] = useDeleteUserMutation();
   const [delFile] = useDeleteFileMutation();
-  const [uploadFile] = useUploadFileMutation();
+  const [uploadFile, { isLoading }] = useUploadFileMutation();
   const [file, setFile] = useState<null | File>(null);
   const prevFile = useRef<null | File>(null);
 
@@ -108,19 +108,32 @@ export const UserInfo = () => {
             alignItems: 'center',
             width: '100%',
             flex: 1,
+            position: 'relativ',
           }}
         >
-          <Avatar
-            className={styles.avatar}
-            alt={login}
-            src={avatar}
+          <Box
             sx={{
-              height: '200px',
-              width: '200px',
-              cursor: 'pointer',
+              position: 'relative',
             }}
-            onClick={() => dispatch(toggleAvatarModal(true))}
-          />
+          >
+            <Avatar
+              className={styles.avatar}
+              alt={login}
+              src={avatar}
+              sx={{
+                height: '200px',
+                width: '200px',
+                cursor: 'pointer',
+                pointerEvents: isLoading ? 'none' : 'inherit',
+              }}
+              onClick={() => dispatch(toggleAvatarModal(true))}
+            />
+            {isLoading && (
+              <CircularProgress
+                sx={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)' }}
+              />
+            )}
+          </Box>
         </Box>
         <Box
           sx={{

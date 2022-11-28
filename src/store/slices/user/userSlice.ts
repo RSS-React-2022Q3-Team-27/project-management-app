@@ -50,8 +50,12 @@ const userSlice = createSlice({
       state.avatar = payload;
     },
     setAvatarInfo(state, { payload }) {
-      state.avatarInfo = payload;
-      state.avatar = `${URL}${payload.path}`;
+      console.log('avatar info', payload);
+
+      if (payload) {
+        state.avatarInfo = payload;
+        state.avatar = `${URL}${payload.path}`;
+      }
     },
     toggleAvatarModal(state, { payload }) {
       state.isAvatarModal = payload;

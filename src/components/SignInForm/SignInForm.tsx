@@ -17,7 +17,7 @@ import { useLogInUserMutation } from '../../store/slices/user/authApi';
 import { setIsUserLogIn, setLogin, setToken, setUserInfo } from '../../store/slices/user/userSlice';
 import { useGetUsersQuery } from '../../store/slices/users/usersApi';
 import { getFilesByUserId, getUserDataByLogin } from '../../store/slices/users/usersThunks';
-import { errorHandler } from '../SignUpForm/errorHandler';
+import { errorHandler } from '../../utils/errorHandler';
 
 interface IFormInput {
   login: string;

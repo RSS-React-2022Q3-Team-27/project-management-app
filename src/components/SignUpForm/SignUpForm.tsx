@@ -13,9 +13,6 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { AvatarModal } from './Avatar/AvatarModal';
-import { errorHandler } from './errorHandler';
-
-import { getFormData } from './getFormData';
 
 import { ROUTES } from '../../constants/routes';
 import { URL as serverURL } from '../../constants/URL';
@@ -23,6 +20,8 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { useUploadFileMutation } from '../../store/slices/files/filesApi';
 import { useCreateUserMutation, useLogInUserMutation } from '../../store/slices/user/authApi';
 import { setAvatar, setAvatarInfo, setIsUserLogIn, setToken, setUserInfo } from '../../store/slices/user/userSlice';
+import { errorHandler } from '../../utils/errorHandler';
+import { getFormData } from '../../utils/getFormData';
 
 export interface IFormInput {
   name: string;
