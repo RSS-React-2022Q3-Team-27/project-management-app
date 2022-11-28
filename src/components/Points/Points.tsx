@@ -5,7 +5,7 @@ import Box from '@mui/joy/Box';
 import List from '@mui/joy/List';
 import Sheet from '@mui/joy/Sheet';
 import Typography from '@mui/joy/Typography';
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext, Dispatch, SetStateAction } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { toast } from 'react-toastify';
@@ -25,13 +25,13 @@ interface IProps {
   isShow: boolean;
   setExpanded: (val: boolean) => void;
   data?: IPointsResponse[];
+  setPoints: Dispatch<SetStateAction<IPointsResponse[]>>;
 }
 
-export const Points = ({ taskId, boardId, isShow, setIsShow, setExpanded, data }: IProps) => {
+export const Points = ({ taskId, boardId, isShow, setIsShow, setExpanded, data, setPoints }: IProps) => {
   const { t } = useTranslation();
   const { contextDispatch } = useContext(Context);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [points, setPoints] = useState<IPointsResponse[]>([]);
   const [addNewPoint] = useSetPointMutation();
   const [deletePoints] = useDeletePointMutation();
 
@@ -44,14 +44,8 @@ export const Points = ({ taskId, boardId, isShow, setIsShow, setExpanded, data }
   const delPoints = async () => {
     setIsShow(false);
     setPoints([]);
-    await Promise.all(points.map(({ _id }) => deletePoints(_id))).catch(() => toast.error(t('serverError')));
+    if (data) await Promise.all(data.map(({ _id }) => deletePoints(_id))).catch(() => toast.error(t('serverError')));
   };
-
-  useEffect(() => {
-    if (data) {
-      setPoints(data);
-    }
-  }, [data]);
 
   useEffect(() => {
     console.log(isShow);
@@ -62,7 +56,7 @@ export const Points = ({ taskId, boardId, isShow, setIsShow, setExpanded, data }
 
   return (
     <>
-      {(isShow || !!points.length) && (
+      {(isShow || !!data?.length) && (
         <Sheet variant="outlined" sx={{ borderRadius: 'sm', width: '100%', bgcolor: 'background.body', my: 2 }}>
           <Box
             id="filter-status"
@@ -117,8 +111,8 @@ export const Points = ({ taskId, boardId, isShow, setIsShow, setExpanded, data }
           </Box>
           <Box role="group" aria-labelledby="filter-status">
             <List>
-              {points.map((point) => (
-                <Point point={point} key={point._id} points={points} setPoints={setPoints} />
+              {data?.map((point) => (
+                <Point point={point} key={point._id} points={data} setPoints={setPoints} />
               ))}
             </List>
           </Box>

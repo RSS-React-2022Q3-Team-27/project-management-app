@@ -17,7 +17,7 @@ import {
 import { openAddColumnModal, setColumnsLength } from '../../../store/slices/board/boardSlice';
 import { useGetFilesByBoardIdQuery } from '../../../store/slices/files/filesApi';
 import { CoversType, setCovers } from '../../../store/slices/files/filesSlice';
-import { useGetPointsQuery } from '../../../store/slices/points/pointsApi';
+import { IPointsResponse, useGetPointsQuery } from '../../../store/slices/points/pointsApi';
 import {
   TaskType,
   UpdateSetOfTaskType,
@@ -69,6 +69,7 @@ export const Columns = () => {
   const dispatch = useAppDispatch();
   const [columnsToRender, setColumnsToRender] = useState<columnToRenderType>({});
   const [filesToRender, setFilesToRender] = useState<fileToRenderType>({});
+  const [pointsToRender, setPointsToRender] = useState<IPointsResponse[]>([]);
   const { id: userId } = useAppSelector((state) => state.user);
   const { data: points, isError: isPointsError, isLoading: isPointsLoading } = useGetPointsQuery(userId);
 
@@ -117,6 +118,10 @@ export const Columns = () => {
 
       setFilesToRender(sortedFiles);
       setColumnsToRender(dataToRender);
+
+      if (points) {
+        setPointsToRender(points);
+      }
     }
   }, [
     columns,
@@ -129,6 +134,7 @@ export const Columns = () => {
     isTasksError,
     isPointsError,
     tasks,
+    points,
   ]);
 
   const handleClick = () => {
@@ -210,7 +216,8 @@ export const Columns = () => {
       boardIndex={i}
       tasksRefetch={tasksRefetch}
       files={filesToRender}
-      points={points ?? []}
+      points={pointsToRender ?? []}
+      setPoints={setPointsToRender}
     />
   ));
 
