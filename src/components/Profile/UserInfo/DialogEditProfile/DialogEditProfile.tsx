@@ -7,19 +7,22 @@ import Modal from '@mui/joy/Modal';
 import ModalDialog from '@mui/joy/ModalDialog';
 import TextField from '@mui/joy/TextField';
 import Typography from '@mui/joy/Typography';
-import React, { useState } from 'react';
+import React from 'react';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
 import { toast } from 'react-toastify';
-
-import { loginValidate } from './loginValidate';
-
-import { nameValidate } from './nameValidate';
 
 import { useAppDispatch, useAppSelector } from '../../../../store/hooks';
 import { useLogInUserMutation } from '../../../../store/slices/user/authApi';
 import { setUserInfo } from '../../../../store/slices/user/userSlice';
 import { useUpdateUserMutation } from '../../../../store/slices/users/usersApi';
+
+interface IFormInput {
+  name: string;
+  login: string;
+  password: string;
+}
 
 interface IProps {
   openDialog: (value: boolean) => void;
@@ -30,48 +33,49 @@ export const DialogEditProfile = ({ openDialog, isDialogOpen }: IProps) => {
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { userName, login, id } = useAppSelector((state) => state.user);
-  const [newName, setNewName] = useState(userName);
-  const [newLogin, setNewLogin] = useState(login);
-  const [password, setPassword] = useState('');
   const [logInUser, { error: logInError, isLoading: logInUserLoading }] = useLogInUserMutation();
   const [updateUser, { error: updateError, isLoading: updateUserLoading }] = useUpdateUserMutation();
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<IFormInput>({
+    mode: 'onChange',
+  });
 
   const onClose = () => {
     openDialog(false);
   };
 
-  const confirmHandler = () => {
-    if (!password.trim()) {
-      return;
-    }
-    if (loginValidate(newLogin) && nameValidate(newName)) {
-      logInUser({ login, password })
-        .unwrap()
-        .then(async () => {
-          const newUserData = await updateUser({
-            id,
-            body: {
-              login: newLogin,
-              name: newName,
-              password,
-            },
-          })
-            .unwrap()
-            .catch(() => toast.error(t('serverError')));
-
-          if (!newUserData) {
-            return;
-          }
-
-          dispatch(setUserInfo(newUserData));
-
-          openDialog(false);
-          setPassword('');
-          setNewLogin(login);
-          setNewName(userName);
+  const confirmHandler: SubmitHandler<IFormInput> = (data) => {
+    logInUser({ login, password: data.password })
+      .unwrap()
+      .then(async () => {
+        const newUserData = await updateUser({
+          id,
+          body: {
+            login: data.login,
+            name: data.name,
+            password: data.password,
+          },
         })
-        .catch(() => {});
-    }
+          .unwrap()
+          .catch(() => toast.error(t('serverError')));
+
+        if (!newUserData) {
+          return;
+        }
+
+        dispatch(setUserInfo(newUserData));
+        openDialog(false);
+        reset({
+          name: userName,
+          login,
+          password: '',
+        });
+      })
+      .catch(() => {});
   };
 
   return (
@@ -83,88 +87,122 @@ export const DialogEditProfile = ({ openDialog, isDialogOpen }: IProps) => {
         onClose={onClose}
       >
         <ModalDialog variant="outlined" role="alertdialog">
-          <TextField
-            name="name"
-            title={t('twoToTenLetters')}
-            value={newName}
-            onChange={(e) => setNewName(e.target.value)}
-            type="text"
-            label={t('name')}
-            placeholder={t('name')}
-            autoComplete="off"
-            startDecorator={<AccessibilityNewRoundedIcon />}
-            error={!nameValidate(newName)}
-            required
-          />
-          {!nameValidate(newName) && (
-            <Typography level="body2" color="danger" sx={{ maxWidth: 273 }}>
-              {`${t('wrongFormat')} (${t('twoToTenLetters')})`}
-            </Typography>
-          )}
+          <form onSubmit={handleSubmit(confirmHandler)} autoComplete="false">
+            <Controller
+              name="name"
+              control={control}
+              defaultValue={userName}
+              rules={{
+                required: {
+                  value: true,
+                  message: t('fieldIsRequire'),
+                },
+                pattern: {
+                  value: /[a-zA-Zа-яА-Я]{2,10}$/,
+                  message: `${t('wrongFormat')} (${t('twoToTenLetters')})`,
+                },
+              }}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  required
+                  type="text"
+                  label={t('name')}
+                  placeholder={t('name')}
+                  autoComplete="off"
+                  title={t('twoToTenLetters')}
+                  startDecorator={<AccessibilityNewRoundedIcon />}
+                />
+              )}
+            />
+            {errors.name && (
+              <Typography level="body2" color="danger">
+                {errors.name.message}
+              </Typography>
+            )}
 
-          <TextField
-            name="login"
-            title={t('twoToTenLettersLogin')}
-            value={newLogin}
-            onChange={(e) => setNewLogin(e.target.value)}
-            error={!loginValidate(newLogin)}
-            type="text"
-            label={t('login')}
-            autoComplete="off"
-            placeholder={t('login')}
-            startDecorator={<PersonRoundedIcon />}
-            required
-          />
-          {!loginValidate(newLogin) && (
-            <Typography level="body2" color="danger" sx={{ maxWidth: 273 }}>
-              {`${t('wrongFormat')} (${t('twoToTenLettersLogin')})`}
-            </Typography>
-          )}
-          {updateError && (
-            <Typography level="body2" color="danger">
-              {t('loginAlreadyExist')}
-            </Typography>
-          )}
+            <Controller
+              name="login"
+              control={control}
+              defaultValue={login}
+              rules={{
+                required: {
+                  value: true,
+                  message: t('fieldIsRequire'),
+                },
+                pattern: {
+                  value: /[a-zA-Z0-9]{2,10}$/,
+                  message: `${t('wrongFormat')} (${t('twoToTenLettersLogin')})`,
+                },
+              }}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  required
+                  type="text"
+                  label={t('login')}
+                  autoComplete="off"
+                  title={t('twoToTenLettersLogin')}
+                  placeholder={t('login')}
+                  startDecorator={<PersonRoundedIcon />}
+                />
+              )}
+            />
+            {errors.login && (
+              <Typography level="body2" color="danger">
+                {errors.login.message}
+              </Typography>
+            )}
+            {updateError && (
+              <Typography level="body2" color="danger">
+                {t('loginAlreadyExist')}
+              </Typography>
+            )}
 
-          <Divider sx={{ margin: 2 }} />
+            <Divider sx={{ margin: 2 }} />
 
-          <TextField
-            name="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            type="password"
-            autoComplete="off"
-            placeholder={t('password')}
-            label={t('confirmByPassword')}
-            error={!password.trim()}
-            startDecorator={<KeyRoundedIcon />}
-            required
-          />
-          {!password.trim() && (
-            <Typography level="body2" color="danger" sx={{ maxWidth: 273 }}>
-              {t('inputPswd')}
-            </Typography>
-          )}
-          {logInError && (
-            <Typography level="body2" color="danger">
-              {t('wrongPassword')}
-            </Typography>
-          )}
+            <Controller
+              name="password"
+              defaultValue=""
+              control={control}
+              rules={{
+                required: {
+                  value: true,
+                  message: t('fieldIsRequire'),
+                },
+              }}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  required
+                  type="password"
+                  autoComplete="off"
+                  placeholder={t('password')}
+                  label={t('confirmByPassword')}
+                  startDecorator={<KeyRoundedIcon />}
+                />
+              )}
+            />
+            {errors.password && (
+              <Typography level="body2" color="danger">
+                {errors.password.message}
+              </Typography>
+            )}
+            {logInError && (
+              <Typography level="body2" color="danger">
+                {t('wrongPassword')}
+              </Typography>
+            )}
 
-          <Box sx={{ display: 'flex', gap: 1, justifyContent: 'space-between' }}>
-            <Button
-              type="submit"
-              sx={{ mt: 1 }}
-              color="danger"
-              onClick={confirmHandler}
-              loading={logInUserLoading || updateUserLoading}
-            >
-              {t('change')}
-            </Button>
-            <Button variant="plain" sx={{ mt: 1 }} color="neutral" onClick={onClose}>
-              {t('cancel')}
-            </Button>
-          </Box>
+            <Box sx={{ display: 'flex', gap: 1, justifyContent: 'space-between' }}>
+              <Button type="submit" sx={{ mt: 1 }} color="danger" loading={logInUserLoading || updateUserLoading}>
+                {t('change')}
+              </Button>
+              <Button type="button" variant="plain" sx={{ mt: 1 }} color="neutral" onClick={onClose}>
+                {t('cancel')}
+              </Button>
+            </Box>
+          </form>
         </ModalDialog>
       </Modal>
     </>
