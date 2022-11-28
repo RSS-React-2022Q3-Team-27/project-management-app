@@ -129,28 +129,31 @@ export const Task: FC<TaskPropsType> = ({ task, index, column, files, points }) 
         boardId: task.boardId,
         files: files,
         cover: covers[task._id] ? covers[task._id].name : null,
+        isCover: false,
+        coverId: '',
       })
     );
     closeMenu();
   };
+
   const handleDeleteFile = async () => {
     await deleteFile(covers[task._id].coverId).unwrap();
   };
-  const onClickAddCover = () => {
-    if (covers[task._id]) {
-      handleDeleteFile();
-    }
 
+  const onClickAddCover = () => {
     dispatch(
       openAddFileModal({
         taskId: task._id,
         boardId: FileFakeId.cover,
         files: files,
         cover: covers[task._id] ? covers[task._id].name : null,
+        isCover: true,
+        coverId: covers[task._id]?.coverId,
       })
     );
     closeMenu();
   };
+
   const onClickDeleteCover = () => {
     closeMenu();
     contextDispatch({

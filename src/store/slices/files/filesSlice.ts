@@ -17,6 +17,8 @@ type FileStateType = {
     taskId: string;
     files: FileType[];
     cover: string | null;
+    isCover: boolean;
+    coverId: string;
   };
   covers: CoversType;
 };
@@ -28,6 +30,8 @@ const initialState: FileStateType = {
     taskId: '',
     files: [],
     cover: null,
+    isCover: false,
+    coverId: '',
   },
   covers: {},
 };
