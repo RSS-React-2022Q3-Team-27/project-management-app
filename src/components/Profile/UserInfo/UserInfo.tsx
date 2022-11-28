@@ -3,6 +3,7 @@ import Avatar from '@mui/joy/Avatar';
 import React, { useState, useContext, useEffect, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { Counter } from './Counter/Counter';
@@ -11,21 +12,23 @@ import { DialogEditProfile } from './DialogEditProfile/DialogEditProfile';
 import styles from './UserInfo.module.css';
 import { UserInfoFields } from './UserInfoFields/UserInfoFields';
 
+import { ROUTES } from '../../../constants/routes';
 import { URL } from '../../../constants/URL';
 import { Context } from '../../../Context/Context';
 import { ReducerTypes } from '../../../Context/contextReducer/ReducerTypes';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { useDeleteFileMutation, useUploadFileMutation } from '../../../store/slices/files/filesApi';
-import { setAvatar, setAvatarId, toggleAvatarModal, userLogOut } from '../../../store/slices/user/userSlice';
+import { setAvatar, setAvatarInfo, toggleAvatarModal, userLogOut } from '../../../store/slices/user/userSlice';
 import { useDeleteUserMutation } from '../../../store/slices/users/usersApi';
 import { AvatarModal } from '../../SignUpForm/Avatar/AvatarModal';
 import { getFormData } from '../../SignUpForm/getFormData';
 
 export const UserInfo = () => {
+  const navigate = useNavigate();
   const { contextDispatch } = useContext(Context);
   const dispatch = useAppDispatch();
   const [isEditOpen, setIsEditOpen] = useState(false);
-  const { login, id, avatar, avatarId } = useAppSelector((state) => state.user);
+  const { login, id, avatar, avatarInfo } = useAppSelector((state) => state.user);
   const { t } = useTranslation();
   const [deleteUser] = useDeleteUserMutation();
   const [delFile] = useDeleteFileMutation();
@@ -36,25 +39,29 @@ export const UserInfo = () => {
   const delUser = async () => {
     deleteUser(id)
       .unwrap()
-      .then(() => dispatch(userLogOut()))
+      .then(async () => {
+        navigate(ROUTES.WELCOME.path);
+        setTimeout(() => dispatch(userLogOut()), 0);
+      })
       .catch(() => toast.error(t('serverError')));
-    if (avatarId) {
-      delFile(avatarId).catch(() => {});
+    if (avatarInfo) {
+      delFile(avatarInfo._id).catch(() => {});
     }
   };
 
   const changeAvatar = useCallback(() => {
-    if (avatarId) {
-      delFile(avatarId).catch(() => {});
+    if (avatarInfo) {
+      delFile(avatarInfo._id).catch(() => {});
     }
-    uploadFile(getFormData(login, file!))
+
+    uploadFile(getFormData(login, file!, avatarInfo))
       .unwrap()
       .then((data) => {
-        dispatch(setAvatarId(data._id));
+        dispatch(setAvatarInfo(data));
         dispatch(setAvatar(`${URL}${data.path}`));
       })
       .catch(() => toast.error(t('serverError')));
-  }, [avatarId, delFile, dispatch, file, login, t, uploadFile]);
+  }, [avatarInfo, delFile, dispatch, file, login, t, uploadFile]);
 
   useEffect(() => {
     if (file && file !== prevFile.current) {

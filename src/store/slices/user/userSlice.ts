@@ -5,6 +5,7 @@ import { getLoginState } from '../../../utils/getLoginState';
 import { getValueLocalStorage } from '../../../utils/getValueLocalStorage';
 import { removeValueLocalStorage } from '../../../utils/removeValueLocalStorage';
 import { setValueLocalStorage } from '../../../utils/setValueLocalStorage';
+import { FileType } from '../files/filesApi';
 
 export const errorPlug = 9999;
 export interface IUserInfo {
@@ -24,7 +25,7 @@ export interface IInitialState {
   updateError: number;
   avatar: string;
   isAvatarModal: boolean;
-  avatarId: string;
+  avatarInfo: FileType | null;
 }
 
 const initialState: IInitialState = {
@@ -38,7 +39,7 @@ const initialState: IInitialState = {
   updateError: 0,
   avatar: '',
   isAvatarModal: false,
-  avatarId: '',
+  avatarInfo: null,
 };
 
 const userSlice = createSlice({
@@ -48,8 +49,9 @@ const userSlice = createSlice({
     setAvatar(state, { payload }) {
       state.avatar = payload;
     },
-    setAvatarId(state, { payload }) {
-      state.avatarId = payload;
+    setAvatarInfo(state, { payload }) {
+      state.avatarInfo = payload;
+      state.avatar = `${URL}${payload.path}`;
     },
     toggleAvatarModal(state, { payload }) {
       state.isAvatarModal = payload;
@@ -63,7 +65,7 @@ const userSlice = createSlice({
       state.token = '';
       state.isUserLogIn = false;
       state.avatar = '';
-      state.avatarId = '';
+      state.avatarInfo = null;
     },
 
     setUserInfo(state, { payload }) {
@@ -107,6 +109,6 @@ export const {
   setLogInErrorCode,
   setAvatar,
   toggleAvatarModal,
-  setAvatarId,
+  setAvatarInfo,
 } = userSlice.actions;
 export default userSlice.reducer;

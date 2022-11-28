@@ -11,7 +11,7 @@ import i18n from '../../../translation/i18n';
 
 import { RootState } from '../../store';
 import { FileType } from '../files/filesApi';
-import { setAvatar, setAvatarId, setIsUserLogIn, setUserInfo, userLogOut } from '../user/userSlice';
+import { setAvatar, setAvatarInfo, setIsUserLogIn, setUserInfo, userLogOut } from '../user/userSlice';
 
 export interface IError {
   statusCode: number;
@@ -77,7 +77,7 @@ export const getFilesByUserId = createAsyncThunk<FileType[], string, { rejectVal
       });
 
       if (data && data[0]) {
-        dispatch(setAvatarId(data[0]._id));
+        dispatch(setAvatarInfo(data[0]._id));
         dispatch(setAvatar(`${URL}${data[0].path}`));
       }
 

@@ -22,7 +22,7 @@ import { URL as serverURL } from '../../constants/URL';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { useUploadFileMutation } from '../../store/slices/files/filesApi';
 import { useCreateUserMutation, useLogInUserMutation } from '../../store/slices/user/authApi';
-import { setAvatar, setAvatarId, setIsUserLogIn, setToken, setUserInfo } from '../../store/slices/user/userSlice';
+import { setAvatar, setAvatarInfo, setIsUserLogIn, setToken, setUserInfo } from '../../store/slices/user/userSlice';
 
 export interface IFormInput {
   name: string;
@@ -62,7 +62,7 @@ export const SignUpForm = () => {
       uploadFile(getFormData(login, file))
         .unwrap()
         .then((data) => {
-          dispatch(setAvatarId(data._id));
+          dispatch(setAvatarInfo(data));
           dispatch(setAvatar(`${serverURL}${data.path}`));
         })
         .catch(() => toast.error(t('serverError')));
