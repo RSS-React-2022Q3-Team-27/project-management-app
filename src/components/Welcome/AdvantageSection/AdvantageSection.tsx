@@ -1,5 +1,5 @@
 import Box from '@mui/joy/Box';
-import Card from '@mui/joy/Card';
+import Sheet from '@mui/joy/Sheet';
 import Typography from '@mui/joy/Typography';
 import { useTranslation } from 'react-i18next';
 
@@ -9,7 +9,17 @@ export const AdvantageSection = () => {
   const { t } = useTranslation();
 
   const cards = APP_ADVANTAGES.map(({ content, image, id }) => (
-    <Card sx={{ display: 'flex', justifyContent: 'space-between', borderRadius: 40, width: '100%', p: 4 }} key={id}>
+    <Sheet
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-between',
+        borderRadius: 40,
+        width: '100%',
+        p: 2,
+      }}
+      key={id}
+    >
       <Typography level="h5" component="h3" sx={{ textAlign: 'center', fontWeight: 'sm' }}>
         {t(content)}
       </Typography>
@@ -19,14 +29,21 @@ export const AdvantageSection = () => {
         alt="Promo advantage"
         sx={{
           width: '100%',
-          maxHeight: '200px',
+          maxHeight: '180px',
         }}
       />
-    </Card>
+    </Sheet>
   ));
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, justifyContent: 'space-between', gap: 2 }}>
+    <Box
+      sx={{
+        display: 'grid',
+        gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr 1fr' },
+        justifyContent: 'space-between',
+        gap: 2,
+      }}
+    >
       {cards}
     </Box>
   );
