@@ -4,6 +4,7 @@ import Typography from '@mui/joy/Typography';
 import { useTranslation } from 'react-i18next';
 
 import promo from '../../../assets/images/promo.svg';
+import { PromoButton } from '../PromoButton';
 
 export const PromoSection = () => {
   const { t } = useTranslation();
@@ -16,17 +17,25 @@ export const PromoSection = () => {
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 40,
-        p: 2,
+        py: 4,
+        px: 2,
       }}
     >
-      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: { sm: 'center', md: 'flex-start' }, gap: 2 }}>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: { xs: 'center', m: 'center', md: 'flex-start' },
+          gap: 2,
+        }}
+      >
         <Typography
           component="h1"
           level="display2"
           sx={{
             textAlign: { xs: 'center', sm: 'center', md: 'left' },
             mb: 2,
-            fontSize: { sm: 60, xs: 32 },
+            fontSize: { sm: 56, xs: 32 },
           }}
         >
           {t('promoTitle1')}{' '}
@@ -47,6 +56,7 @@ export const PromoSection = () => {
         >
           {t('promo')}
         </Typography>
+        <PromoButton />
       </Box>
       <Box sx={{ display: 'flex' }}>
         <Box
@@ -55,7 +65,7 @@ export const PromoSection = () => {
           alt="Astronaut promo image"
           sx={{
             width: '100%',
-            maxHeight: '500px',
+            maxHeight: '360px',
           }}
         />
       </Box>
