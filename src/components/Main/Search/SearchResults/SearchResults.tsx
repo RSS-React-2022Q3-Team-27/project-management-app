@@ -2,50 +2,67 @@ import Box from '@mui/joy/Box';
 import CircularProgress from '@mui/joy/CircularProgress';
 import Typography from '@mui/joy/Typography';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-
-import { AccordionBoard } from './AccordionBoard';
 
 import { useAppSelector } from '../../../../store/hooks';
 
-import { TaskType, useGetTasksByQueryQuery } from '../../../../store/slices/tasks/tasksApi';
+import { useGetBoardsByUserIdQuery } from '../../../../store/slices/boards/boardsApi';
+import { useGetColumnsByUserIdQuery } from '../../../../store/slices/columns/columnsApi';
+import { useGetTasksByQueryQuery } from '../../../../store/slices/tasks/tasksApi';
+import { ResultCard } from '../../../ResultCard';
 
 export const SearchResults = () => {
-  const { id } = useAppSelector((state) => state.user);
+  const { id: userId } = useAppSelector((state) => state.user);
   const { t } = useTranslation();
   const { searchQuery } = useAppSelector((state) => state.tasks);
 
-  const { data, isSuccess, isFetching } = useGetTasksByQueryQuery({
-    search: searchQuery,
-    userId: id,
-  });
+  const {
+    data: tasksData,
+    isSuccess: tasksSuccess,
+    isFetching: tasksFetching,
+  } = useGetTasksByQueryQuery({ search: searchQuery, userId });
+  const { data: boardsData, isSuccess: boardsSuccess, isFetching: boardsFetching } = useGetBoardsByUserIdQuery(userId);
+  const {
+    data: columnsData,
+    isSuccess: columnsSuccess,
+    isFetching: columnsFetching,
+  } = useGetColumnsByUserIdQuery(userId);
 
   const [results, setResults] = useState<JSX.Element[] | JSX.Element>();
 
+  const isFetching = useMemo(
+    () => tasksFetching || boardsFetching || columnsFetching,
+    [boardsFetching, columnsFetching, tasksFetching]
+  );
+
+  const isSuccess = useMemo(
+    () => tasksSuccess || boardsSuccess || columnsSuccess,
+    [boardsSuccess, columnsSuccess, tasksSuccess]
+  );
+
   useEffect(() => {
     if (isSuccess) {
-      if (data.length > 0) {
-        const myTasks = data.filter((task) => task.userId === id);
-        const myBoards = myTasks.reduce((acc: { [key: string]: TaskType[] }, task) => {
-          const boardId = task.boardId;
-          const board = acc[boardId] ? acc[boardId].concat(task) : [task];
-          acc[boardId] = board;
-          return acc;
-        }, {});
-
-        const result = Object.keys(myBoards).map((boardId) => {
-          const board = myBoards[boardId];
-          return <AccordionBoard key={boardId} boardId={boardId} board={board} />;
+      if (tasksData && tasksData.length > 0) {
+        const myTasks = tasksData.filter((task) => task.userId === userId);
+        const myBoards = boardsData;
+        const myColumns = columnsData;
+        const result = myTasks.map((task) => {
+          const boardTitle = myBoards?.find((board) => board._id === task.boardId)?.title ?? '';
+          const columnTitle = myColumns?.find((column) => column._id === task.columnId)?.title ?? '';
+          return <ResultCard key={task._id} task={task} boardTitle={boardTitle} columnTitle={columnTitle} />;
         });
-
         setResults(result);
       } else {
-        const noResults = <Typography>{t('noResults')}</Typography>;
+        const noResults = (
+          <Typography level="h2" fontSize="lg">
+            {t('noResults')}
+          </Typography>
+        );
         setResults(noResults);
       }
     }
-  }, [isSuccess, data, id, t]);
+  }, [isSuccess, tasksData, userId, t, boardsData, columnsData]);
 
   return (
     <Box
@@ -57,6 +74,7 @@ export const SearchResults = () => {
         m: '0 auto',
         width: {
           md: '80%',
+          xs: '95%',
         },
       }}
     >

@@ -101,5 +101,6 @@
   "columnCreated": "Колонка создана",
   "columnUpdated": "Колонка изменена",
   "columnDeleted": "Колонка удалена",
-  "inputPswd": "Введите пароль"
+  "inputPswd": "Введите пароль",
+  "column": "Колонка"
 }

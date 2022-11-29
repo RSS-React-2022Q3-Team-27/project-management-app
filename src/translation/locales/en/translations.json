@@ -101,5 +101,6 @@
   "columnCreated": "Column created",
   "columnUpdated": "Column updated",
   "columnDeleted": "Column deleted",
-  "inputPswd": "Input password"
+  "inputPswd": "Input password",
+  "column": "Column"
 }
