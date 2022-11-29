@@ -24,3 +24,5 @@ export const DEVELOPERS = [
 ];
 
 export const SCHOOL_LINK = 'https://rs.school/react/';
+export const SCHOOL_TASK =
+  'https://github.com/rolling-scopes-school/tasks/blob/master/tasks/react/project-management-system-EN.md';
