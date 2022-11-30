@@ -37,7 +37,7 @@ export const UserInfo = () => {
   const prevFile = useRef<null | File>(null);
 
   const delUser = async () => {
-    deleteUser(id)
+    await deleteUser(id)
       .unwrap()
       .then(async () => {
         navigate(ROUTES.WELCOME.path);
@@ -45,7 +45,7 @@ export const UserInfo = () => {
       })
       .catch(() => toast.error(t('serverError')));
     if (avatarInfo) {
-      delFile(avatarInfo._id).catch(() => {});
+      await delFile(avatarInfo._id).catch(() => {});
     }
   };
 
