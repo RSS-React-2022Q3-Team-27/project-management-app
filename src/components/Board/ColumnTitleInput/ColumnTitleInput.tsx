@@ -28,7 +28,6 @@ export const ColumnTitleInput: FC<ColumnTitleProps> = ({ column }) => {
 
   useEffect(() => {
     if (isSuccess) {
-      toast.success(t('columnUpdated'));
       dispatch(setTitleEditId(null));
     }
   }, [isSuccess, dispatch, t]);
@@ -41,7 +40,10 @@ export const ColumnTitleInput: FC<ColumnTitleProps> = ({ column }) => {
       order: column.order,
     };
 
-    await updateColumn({ boardId: column.boardId, columnId: column._id, body }).unwrap();
+    await updateColumn({ boardId: column.boardId, columnId: column._id, body })
+      .unwrap()
+      .then(() => toast.success(t('columnUpdated')))
+      .catch(() => toast.error(t('serverError')));
   };
 
   return (
