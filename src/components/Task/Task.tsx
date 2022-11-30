@@ -23,7 +23,7 @@ import List from '@mui/joy/List';
 import ListItem from '@mui/joy/ListItem';
 import Collapse from '@mui/material/Collapse';
 import IconButton from '@mui/material/IconButton';
-import { FC, useContext, useState, useEffect } from 'react';
+import { FC, useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
@@ -69,22 +69,19 @@ export const Task: FC<TaskPropsType> = ({ task, index, column, files, points }) 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const [isPoints, setIsPoints] = useState(false);
   const isOpen = Boolean(anchorEl);
-  const [deleteTask, { isSuccess }] = useDeleteTaskMutation();
+  const [deleteTask] = useDeleteTaskMutation();
   const [updateSetOfTasks] = useUpdateSetOfTasksMutation();
   const { contextDispatch } = useContext(Context);
   const [expanded, setExpanded] = useState(false);
   const [deleteFile] = useDeleteFileMutation();
   const { covers } = useAppSelector((state) => state.files);
 
-  useEffect(() => {
-    if (isSuccess) {
-      toast.success(t('taskDeleted'));
-    }
-  }, [isSuccess, t]);
-
   const deleteTaskCb = async () => {
     const { boardId, columnId, _id: taskId, order } = task;
-    await deleteTask({ boardId, columnId, taskId }).unwrap();
+    await deleteTask({ boardId, columnId, taskId })
+      .unwrap()
+      .then(() => toast.success(t('taskDeleted')))
+      .catch(() => toast.error(t('serverError')));
 
     const tasks = Array.from(column.tasksData);
 
@@ -96,7 +93,9 @@ export const Task: FC<TaskPropsType> = ({ task, index, column, files, points }) 
     });
 
     if (setOfTasks.length) {
-      await updateSetOfTasks(setOfTasks).unwrap();
+      await updateSetOfTasks(setOfTasks)
+        .unwrap()
+        .catch(() => toast.error(t('serverError')));
     }
   };
 
@@ -136,7 +135,9 @@ export const Task: FC<TaskPropsType> = ({ task, index, column, files, points }) 
   };
 
   const handleDeleteFile = async () => {
-    await deleteFile(covers[task._id].coverId).unwrap();
+    await deleteFile(covers[task._id].coverId)
+      .unwrap()
+      .catch(() => toast.error(t('serverError')));
   };
 
   const onClickAddCover = () => {
