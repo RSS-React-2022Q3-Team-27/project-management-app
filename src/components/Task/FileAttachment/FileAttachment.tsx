@@ -7,6 +7,8 @@ import Modal from '@mui/joy/Modal';
 import Sheet from '@mui/joy/Sheet';
 import Typography from '@mui/joy/Typography';
 import { useContext, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 import { URL } from '../../../constants/URL';
 import { Context } from '../../../Context/Context';
@@ -21,12 +23,15 @@ type FileAttachmentProps = {
 };
 
 export const FileAttachment = ({ name, path, fileId }: FileAttachmentProps) => {
+  const { t } = useTranslation();
   const [deleteFile] = useDeleteFileMutation();
   const [openImage, setOpenImage] = useState(false);
   const { contextDispatch } = useContext(Context);
 
   const handleDeleteFile = async () => {
-    await deleteFile(fileId).unwrap();
+    await deleteFile(fileId)
+      .unwrap()
+      .catch(() => toast.error(t('serverError')));
   };
 
   const handleDeleteClick = (event: React.MouseEvent<HTMLButtonElement>) => {
