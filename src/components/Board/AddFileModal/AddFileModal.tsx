@@ -25,7 +25,7 @@ export const AddFileModal = () => {
   const fileInput = useRef<HTMLInputElement>(null);
   const dispatch = useAppDispatch();
   const { isAddFileModalOpened, fileData } = useAppSelector((state) => state.files);
-  const [uploadFile, { isError, isLoading }] = useUploadFileMutation();
+  const [uploadFile, { isLoading }] = useUploadFileMutation();
   const [deleteFile] = useDeleteFileMutation();
   const [fileForUpload, setFileToUpload] = useState<File | null>(null);
   const [isFormatWrong, setIsFormatWrong] = useState(false);
@@ -50,7 +50,9 @@ export const AddFileModal = () => {
 
   const handleUpload = async () => {
     if (fileData.cover && fileData.isCover) {
-      await deleteFile(fileData.coverId).unwrap();
+      await deleteFile(fileData.coverId)
+        .unwrap()
+        .catch(() => toast.error(t('serverError')));
     }
 
     if (fileForUpload) {
@@ -61,11 +63,9 @@ export const AddFileModal = () => {
       formData.append('taskId', fileData.taskId);
       formData.append('file', fileForUpload, newName);
 
-      await uploadFile(formData).unwrap();
-
-      if (isError) {
-        toast.error('Error');
-      }
+      await uploadFile(formData)
+        .unwrap()
+        .catch(() => toast.error(t('serverError')));
     }
 
     handleClose();
