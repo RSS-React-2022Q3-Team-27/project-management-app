@@ -4,7 +4,6 @@ import DeleteIcon from '@mui/icons-material/DeleteOutline';
 import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
 import IconButton from '@mui/joy/IconButton';
-import List from '@mui/joy/List';
 import Typography from '@mui/joy/Typography';
 import React, { FC, useContext, useState, useEffect } from 'react';
 
@@ -99,16 +98,20 @@ export const Column: FC<ColumnPropsType> = ({ column, columns, boardIndex, tasks
     dispatch(openAddTaskModal());
   };
 
-  const tasks = column.tasksData.map((task, index) => (
-    <Task
-      key={task._id}
-      task={task}
-      index={index}
-      column={column}
-      files={files[task._id] ? files[task._id] : []}
-      points={points ? points.filter((point) => point.taskId === task._id) : []}
-    />
-  ));
+  const tasks = column.tasksData.map((task, index) =>
+    task ? (
+      <Task
+        key={task._id}
+        task={task}
+        index={index}
+        column={column}
+        files={files[task._id] ? files[task._id] : []}
+        points={points ? points.filter((point) => point.taskId === task._id) : []}
+      />
+    ) : (
+      ' '
+    )
+  );
 
   return (
     <Draggable draggableId={columnId} index={boardIndex}>
@@ -147,14 +150,14 @@ export const Column: FC<ColumnPropsType> = ({ column, columns, boardIndex, tasks
           <Box className={styles.list} sx={{ overflowY: 'auto' }}>
             <Droppable droppableId={columnId} type="tasks">
               {(provided) => (
-                <List
+                <Box
                   ref={provided.innerRef}
                   {...provided.droppableProps}
                   sx={{ display: 'flex', flexDirection: 'column', minHeight: 20, p: 0 }}
                 >
                   {tasks}
                   {provided.placeholder}
-                </List>
+                </Box>
               )}
             </Droppable>
           </Box>

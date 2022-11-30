@@ -79,7 +79,7 @@ export const Columns = () => {
 
   useEffect(() => {
     if (isColumnsError || isTasksError || isFilesError || isCoversError || isPointsError) {
-      toast.error('Error');
+      toast.error(t('serverError'));
     } else if (columns) {
       const sortedColumns = [...columns].sort((a, b) => a.order - b.order);
       const dataToRender: columnToRenderType = {};
@@ -134,6 +134,7 @@ export const Columns = () => {
     isTasksError,
     isPointsError,
     tasks,
+    t,
   ]);
 
   const handleClick = () => {
@@ -156,7 +157,9 @@ export const Columns = () => {
       const { columnsToUpdate, dataToRender } = changeColumnsOrder(columnsToRender, source.index, destination.index);
 
       setColumnsToRender(dataToRender);
-      await updateSetOfColumns(columnsToUpdate).unwrap();
+      await updateSetOfColumns(columnsToUpdate)
+        .unwrap()
+        .catch(() => toast.error(t('serverError')));
 
       return;
     }
@@ -178,7 +181,9 @@ export const Columns = () => {
         return data;
       });
 
-      await updateSetOfTasks(setOfTasks).unwrap();
+      await updateSetOfTasks(setOfTasks)
+        .unwrap()
+        .catch(() => toast.error(t('serverError')));
 
       return;
     }
@@ -201,7 +206,9 @@ export const Columns = () => {
 
       const setOfTasks: UpdateSetOfTaskType = [...startSetOfTasks, ...finishSetOfTasks];
 
-      await updateSetOfTasks(setOfTasks).unwrap();
+      await updateSetOfTasks(setOfTasks)
+        .unwrap()
+        .catch(() => toast.error(t('serverError')));
 
       return;
     }
