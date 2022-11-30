@@ -50,8 +50,6 @@ const userSlice = createSlice({
       state.avatar = payload;
     },
     setAvatarInfo(state, { payload }) {
-      console.log('avatar info', payload);
-
       if (payload) {
         state.avatarInfo = payload;
         state.avatar = `${URL}${payload.path}`;
