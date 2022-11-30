@@ -50,7 +50,7 @@ export const Column: FC<ColumnPropsType> = ({ column, columns, boardIndex, tasks
   const { title, boardId, _id: columnId, order } = column.columnData;
   const dispatch = useAppDispatch();
   const { contextDispatch } = useContext(Context);
-  const [deleteColumn, { isSuccess }] = useDeleteColumnMutation();
+  const [deleteColumn] = useDeleteColumnMutation();
   const [updateSetOfColumns] = useUpdateSetOfColumnsMutation();
   const { titleEditId } = useAppSelector((state) => state.board);
   const { t } = useTranslation();
@@ -65,18 +65,13 @@ export const Column: FC<ColumnPropsType> = ({ column, columns, boardIndex, tasks
     }
   }, [titleEditId, columnId]);
 
-  useEffect(() => {
-    if (isSuccess) {
-      toast.success(t('columnDeleted'));
-    }
-  }, [isSuccess, t]);
-
   const handleDelete = async () => {
-    await deleteColumn({ boardId, columnId }).unwrap();
+    await deleteColumn({ boardId, columnId })
+      .unwrap()
+      .then(() => toast.success(t('columnDeleted')))
+      .catch(() => toast.error(t('serverError')));
 
     tasksRefetch();
-
-    if (columns.length < 2) return;
 
     const newColumns = Array.from(columns);
     const columnsToUpdate: UpdateSetOfColumns[] = [];
@@ -84,7 +79,11 @@ export const Column: FC<ColumnPropsType> = ({ column, columns, boardIndex, tasks
     newColumns.splice(order, 1);
     newColumns.forEach((column, i) => columnsToUpdate.push({ _id: column.columnData._id, order: i }));
 
-    await updateSetOfColumns(columnsToUpdate).unwrap();
+    if (columnsToUpdate.length) {
+      await updateSetOfColumns(columnsToUpdate)
+        .unwrap()
+        .catch(() => toast.error(t('serverError')));
+    }
   };
 
   const onClickDelete = async () => {
