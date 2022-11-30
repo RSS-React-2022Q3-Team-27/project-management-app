@@ -36,7 +36,7 @@ export const changeTasksOrder = (
   startIndex: number,
   endIndex: number
 ) => {
-  const updatedTasks: TaskType[] = Array.from(columnList[columnId].tasksData);
+  const updatedTasks: TaskType[] = Array.from(columnList[columnId].tasksData).filter(Boolean);
   const movedTask = updatedTasks.splice(startIndex, 1);
   const setOfTasks: UpdateSetOfTaskType = [];
 
@@ -57,8 +57,8 @@ export const changeColumnsTasksOrder = (
   startIndex: number,
   endIndex: number
 ) => {
-  const startTasks: TaskType[] = Array.from(columnList[startColumnId].tasksData);
-  const finishTasks: TaskType[] = Array.from(columnList[endColumnId].tasksData);
+  const startTasks: TaskType[] = Array.from(columnList[startColumnId].tasksData).filter(Boolean);
+  const finishTasks: TaskType[] = Array.from(columnList[endColumnId].tasksData).filter(Boolean);
   const movedTask = startTasks.splice(startIndex, 1);
   const startSetOfTasks: UpdateSetOfTaskType = [];
   const finishSetOfTasks: UpdateSetOfTaskType = [];
