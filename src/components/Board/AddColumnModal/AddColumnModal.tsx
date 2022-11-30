@@ -40,7 +40,6 @@ export const AddColumnModal = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      toast.success(t('columnCreated'));
       handleClose();
     }
   }, [isSuccess, handleClose, t]);
@@ -52,7 +51,10 @@ export const AddColumnModal = () => {
     };
 
     if (id) {
-      await createColumn({ id, body }).unwrap();
+      await createColumn({ id, body })
+        .unwrap()
+        .then(() => toast.success(t('columnCreated')))
+        .catch(() => toast.error(t('serverError')));
     }
   };
 
