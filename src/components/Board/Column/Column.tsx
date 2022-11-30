@@ -168,7 +168,7 @@ export const Column: FC<ColumnPropsType> = ({ column, columns, boardIndex, tasks
             color="primary"
             onClick={onClickAddTask}
           >
-            Add task
+            {t('addTask')}
           </Button>
         </Box>
       )}
