@@ -33,7 +33,7 @@ export const Footer = () => {
         justifyContent: 'space-between',
         px: { xs: 1, sm: 2 },
         py: 2,
-        bgcolor: 'background.paper',
+        bgcolor: 'background.surface',
       }}
     >
       <Link href={SCHOOL_LINK} target="_blank" rel="noreferrer">

@@ -67,6 +67,66 @@ const muiTheme = extendMuiTheme({
   },
 });
 
-const joyTheme = extendJoyTheme();
+const githubTheme = extendJoyTheme({
+  colorSchemes: {
+    light: {
+      palette: {
+        primary: {
+          plainColor: '#007FFF',
+          solidBg: '#007FFF',
+          mainChannel: '0 127 255',
+          lightChannel: '77 182 172',
+          darkChannel: '0 89 178',
+          50: '#F0F7FF',
+          100: '#C2E0FF',
+          200: '#99CCF3',
+          300: '#66B2FF',
+          400: '#3399FF',
+          500: '#007FFF',
+          600: '#0072E5',
+          700: '#0059B2',
+          800: '#004C99',
+          900: '#003A75',
+        },
+        neutral: {
+          softBg: '#F6F6F6',
+        },
+        text: {
+          primary: '#1A2027',
+          secondary: '#3E5060',
+        },
+      },
+    },
+    dark: {
+      palette: {
+        primary: {
+          solidBg: '#2499ef',
+          mainChannel: '51 153 255',
+          lightChannel: '102 178 255',
+          darkChannel: '0 89 178',
+          50: '#F0F7FF',
+          100: '#C2E0FF',
+          200: '#99CCF3',
+          300: '#66B2FF',
+          400: '#3399FF',
+          500: '#007FFF',
+          600: '#0072E5',
+          700: '#0059B2',
+          800: '#004C99',
+          900: '#003A75',
+        },
+        neutral: {
+          softBg: '#20232a',
+        },
+        background: {
+          surface: '#282c34',
+        },
+        text: {
+          secondary: '#919eab',
+        },
+      },
+    },
+  },
+});
 
-export const theme = deepmerge(muiTheme, joyTheme);
+export const theme = deepmerge(muiTheme, githubTheme);

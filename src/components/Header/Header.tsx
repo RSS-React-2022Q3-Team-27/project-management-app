@@ -23,7 +23,7 @@ function ElevationScroll(props: Props) {
 
   return cloneElement(children, {
     boxShadow: trigger ? 'md' : 'none',
-    paddingY: trigger ? 1 : 2,
+    bgcolor: trigger ? 'neutral.softBg' : 'background.surface',
   });
 }
 
@@ -38,14 +38,13 @@ export const Header = (props: BoxProps) => {
         {...props}
         sx={[
           {
-            paddingX: 2,
             gap: 2,
-            bgcolor: 'background.paper',
             display: 'flex',
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems: 'center',
             gridColumn: '1 / -1',
+            p: 2,
             position: 'sticky',
             top: 0,
             zIndex: 1100,

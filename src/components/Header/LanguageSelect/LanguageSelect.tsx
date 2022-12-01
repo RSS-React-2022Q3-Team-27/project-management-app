@@ -32,7 +32,7 @@ export const LanguageSelect = () => {
         checked={langSwitch}
         onChange={handleSwitch}
         componentsProps={{
-          input: { 'aria-label': 'dark mode' },
+          input: { 'aria-label': 'lang en' },
           track: {
             children: (
               <Fragment>
@@ -47,7 +47,7 @@ export const LanguageSelect = () => {
           },
         }}
         sx={{
-          '--Switch-thumb-size': '28px',
+          '--Switch-thumb-size': '26px',
           '--Switch-track-width': '66px',
           '--Switch-track-height': '32px',
         }}
