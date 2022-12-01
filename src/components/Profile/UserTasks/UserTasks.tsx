@@ -8,9 +8,7 @@ import { useGetColumnsByUserIdQuery } from '../../../store/slices/columns/column
 import { useGetTasksByUserIdQuery } from '../../../store/slices/tasks/tasksApi';
 import { ResultCard } from '../../ResultCard';
 
-interface INames {
-  [key: string]: string;
-}
+type Names = Record<string, string>;
 
 export const UserTasks = () => {
   const { t } = useTranslation();
@@ -19,8 +17,8 @@ export const UserTasks = () => {
   const { data: userBoards } = useGetBoardsByUserIdQuery(id);
   const { data: userColumns } = useGetColumnsByUserIdQuery(id);
 
-  const [boards, setBoards] = useState<INames | null>(null);
-  const [columns, setColumns] = useState<INames | null>(null);
+  const [boards, setBoards] = useState<Names | null>(null);
+  const [columns, setColumns] = useState<Names | null>(null);
 
   useEffect(() => {
     if (userBoards) {
