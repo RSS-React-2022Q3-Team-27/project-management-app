@@ -50,7 +50,9 @@ export const UpdateTaskModal = () => {
         taskId,
       };
 
-      await updateTask(task).unwrap();
+      await updateTask(task)
+        .unwrap()
+        .catch(() => toast.error(t('serverError')));
     }
     onClose();
   };
