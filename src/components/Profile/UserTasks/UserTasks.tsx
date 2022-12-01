@@ -1,22 +1,35 @@
-import { Box, Sheet, Typography } from '@mui/joy';
-import React from 'react';
+import { Box, Typography } from '@mui/joy';
+import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-
-import { ProfileTask } from './ProfileTask/ProfileTask';
-
-import styles from './UserTasks.module.css';
 
 import { useAppSelector } from '../../../store/hooks';
 import { useGetBoardsByUserIdQuery } from '../../../store/slices/boards/boardsApi';
+import { useGetColumnsByUserIdQuery } from '../../../store/slices/columns/columnsApi';
 import { useGetTasksByUserIdQuery } from '../../../store/slices/tasks/tasksApi';
+import { ResultCard } from '../../ResultCard';
+
+interface INames {
+  [key: string]: string;
+}
 
 export const UserTasks = () => {
   const { t } = useTranslation();
   const { id } = useAppSelector((state) => state.user);
   const { data } = useGetTasksByUserIdQuery(id);
   const { data: userBoards } = useGetBoardsByUserIdQuery(id);
+  const { data: userColumns } = useGetColumnsByUserIdQuery(id);
 
-  const queryBoards = [...new Set(data?.map((task) => task.boardId))];
+  const [boards, setBoards] = useState<INames | null>(null);
+  const [columns, setColumns] = useState<INames | null>(null);
+
+  useEffect(() => {
+    if (userBoards) {
+      setBoards(userBoards.reduce((acc, el) => ({ ...acc, [el._id]: el.title }), {}));
+    }
+    if (userColumns) {
+      setColumns(userColumns.reduce((acc, el) => ({ ...acc, [el._id]: el.title }), {}));
+    }
+  }, [userBoards, userColumns]);
 
   return (
     <Box
@@ -33,34 +46,15 @@ export const UserTasks = () => {
       <Typography level="h2" sx={{ my: 2 }}>
         {t('yourTasks')}
       </Typography>
-      <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', gap: 2 }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', flexWrap: 'wrap', justifyContent: 'center', gap: 2 }}>
         {data?.length
-          ? queryBoards.map((board) => (
-              <Sheet
-                key={board}
-                sx={{
-                  width: 300,
-                  height: 350,
-                  overflow: 'auto',
-                  py: 3,
-                  px: 2,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  gap: 1,
-                  borderRadius: 'sm',
-                  boxShadow: 'md',
-                }}
-                className={styles.list}
-                variant="outlined"
-              >
-                <Typography level="h4">{userBoards?.find((el) => el._id === board)?.title}</Typography>
-                {data
-                  .filter((task) => task.boardId === board)
-                  .map((task) => (
-                    <ProfileTask task={task} key={task._id} />
-                  ))}
-              </Sheet>
+          ? data.map((task) => (
+              <ResultCard
+                key={task._id}
+                task={task}
+                boardTitle={boards ? boards[task.boardId] : ''}
+                columnTitle={columns ? columns[task.columnId] : ''}
+              />
             ))
           : t('yourHaventtGotTasks')}
       </Box>
