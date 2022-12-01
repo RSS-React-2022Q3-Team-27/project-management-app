@@ -49,7 +49,9 @@ export const AddTaskModal = () => {
         ...dataForAddTask,
       };
 
-      await createTask(task).unwrap();
+      await createTask(task)
+        .unwrap()
+        .catch(() => toast.error(t('serverError')));
     }
   };
 
