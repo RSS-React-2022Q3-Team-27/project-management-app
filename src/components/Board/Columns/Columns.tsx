@@ -74,11 +74,15 @@ export const Columns = () => {
   const [pointsToRender, setPointsToRender] = useState<IPointsResponse[]>(points || []);
 
   useEffect(() => {
-    if (points) setPointsToRender(points);
-  }, [points]);
+    if (isPointsError) {
+      toast.error(t('serverError'));
+    } else if (points) {
+      setPointsToRender(points);
+    }
+  }, [isPointsError, points, t]);
 
   useEffect(() => {
-    if (isColumnsError || isTasksError || isFilesError || isCoversError || isPointsError) {
+    if (isColumnsError || isTasksError || isFilesError || isCoversError) {
       toast.error(t('serverError'));
     } else if (columns) {
       const sortedColumns = [...columns].sort((a, b) => a.order - b.order);
@@ -123,19 +127,7 @@ export const Columns = () => {
       setFilesToRender(sortedFiles);
       setColumnsToRender(dataToRender);
     }
-  }, [
-    columns,
-    covers,
-    dispatch,
-    files,
-    isColumnsError,
-    isCoversError,
-    isFilesError,
-    isTasksError,
-    isPointsError,
-    tasks,
-    t,
-  ]);
+  }, [columns, covers, dispatch, files, isColumnsError, isCoversError, isFilesError, isTasksError, tasks, t]);
 
   const handleClick = () => {
     dispatch(openAddColumnModal());
