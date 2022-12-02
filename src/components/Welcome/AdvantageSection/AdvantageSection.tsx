@@ -8,43 +8,79 @@ import { APP_ADVANTAGES } from '../../../constants/APP_ADVANTAGES';
 export const AdvantageSection = () => {
   const { t } = useTranslation();
 
-  const cards = APP_ADVANTAGES.map(({ content, image, id }) => (
+  const cards = APP_ADVANTAGES.map(({ content, image, id }, i) => (
     <Sheet
+      variant="soft"
       sx={{
         display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        borderRadius: 40,
+        flexDirection: i % 2 === 0 ? 'row' : 'row-reverse',
+        justifyContent: i % 2 === 0 ? 'flex-start' : 'flex-end',
+        alignItems: 'center',
+        borderRadius: 100,
         width: '100%',
-        p: 2,
+        maxWidth: 400,
+        p: 1,
       }}
       key={id}
     >
-      <Typography level="h5" component="h3" sx={{ textAlign: 'center', fontWeight: 'sm' }}>
+      <Typography
+        level="h5"
+        component="h3"
+        sx={{
+          textAlign: i % 2 === 0 ? 'right' : 'left',
+          fontWeight: 'sm',
+          fontSize: { xs: '18px', sm: '18px', md: '20px' },
+          mx: { xs: 1, sm: 1, md: 2 },
+        }}
+      >
         {t(content)}
       </Typography>
-      <Box
-        component="img"
-        src={image}
-        alt="Promo advantage"
+      <Sheet
         sx={{
-          width: '100%',
-          maxHeight: '180px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          borderRadius: 100,
+          outline: '2px dashed var(--joy-palette-grey-200)',
         }}
-      />
+      >
+        <Box
+          component="img"
+          src={image}
+          alt="Promo advantage"
+          sx={{
+            width: '100px',
+            maxHeight: '100px',
+            m: { xs: 0, sm: '5px' },
+          }}
+        />
+      </Sheet>
     </Sheet>
   ));
 
   return (
-    <Box
-      sx={{
-        display: 'grid',
-        gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr 1fr' },
-        justifyContent: 'space-between',
-        gap: 2,
-      }}
-    >
-      {cards}
+    <Box>
+      <Box sx={{ height: 40 }}></Box>
+      <Typography
+        level="h5"
+        component="h2"
+        sx={{ position: 'relative', left: -16, bgcolor: 'background.surface', py: 2 }}
+      >
+        {t('features')}
+      </Typography>
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' },
+          justifyContent: 'center',
+          gap: 2,
+          py: 4,
+          pl: { xs: 2, sm: 2, md: 6 },
+          mx: 'auto',
+        }}
+      >
+        {cards}
+      </Box>
     </Box>
   );
 };

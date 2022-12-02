@@ -20,7 +20,7 @@ export const PromoButton = () => {
   }, [isUserLogIn]);
 
   return (
-    <Button component={Link} to={route} size="lg" sx={{ width: 180 }}>
+    <Button component={Link} to={route} size="lg" sx={{ width: 200 }}>
       {t('getStarted')}
     </Button>
   );

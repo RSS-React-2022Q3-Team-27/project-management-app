@@ -11,13 +11,14 @@ export const PromoSection = () => {
 
   return (
     <Sheet
+      variant="soft"
       sx={{
         display: 'flex',
         flexDirection: { xs: 'column-reverse', sm: 'column-reverse', md: 'row' },
+        gap: { xs: 4, md: 1, lg: 10 },
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 40,
-        py: 4,
+        py: 10,
         px: 2,
       }}
     >
@@ -35,7 +36,7 @@ export const PromoSection = () => {
           sx={{
             textAlign: { xs: 'center', sm: 'center', md: 'left' },
             mb: 2,
-            fontSize: { sm: 56, xs: 32 },
+            fontSize: { xs: 32, sm: 48, lg: 56 },
           }}
         >
           {t('promoTitle1')}{' '}
@@ -46,6 +47,7 @@ export const PromoSection = () => {
         </Typography>
         <Typography
           component="h2"
+          textColor="text.secondary"
           sx={{
             fontWeight: 'sm',
             maxWidth: '500px',
@@ -62,10 +64,10 @@ export const PromoSection = () => {
         <Box
           component="img"
           src={promo}
-          alt="Astronaut promo image"
+          alt="Kanban promo image"
           sx={{
             width: '100%',
-            maxHeight: '360px',
+            maxHeight: '500px',
           }}
         />
       </Box>

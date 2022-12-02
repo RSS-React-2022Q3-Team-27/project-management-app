@@ -1,4 +1,5 @@
 import Box from '@mui/joy/Box';
+import Sheet from '@mui/joy/Sheet';
 
 import { AdvantageSection } from '../../components/Welcome/AdvantageSection';
 import { CourseSection } from '../../components/Welcome/CourseSection';
@@ -8,11 +9,24 @@ import { PromoSection } from '../../components/Welcome/PromoSection';
 
 export const Welcome = () => {
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mx: 'auto', my: 4, maxWidth: 1080, px: 2 }}>
+    <Sheet variant="plain">
       <PromoSection />
-      <AdvantageSection />
-      <CourseSection />
-      <DevSection />
-    </Box>
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 2,
+          mx: 'auto',
+          maxWidth: 960,
+          px: 2,
+        }}
+      >
+        <Box sx={{ borderLeft: '3px solid var(--joy-palette-neutral-softBg)' }}>
+          <AdvantageSection />
+          <CourseSection />
+          <DevSection />
+        </Box>
+      </Box>
+    </Sheet>
   );
 };
