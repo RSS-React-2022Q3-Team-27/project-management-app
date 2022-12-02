@@ -102,5 +102,6 @@
   "columnUpdated": "Колонка изменена",
   "columnDeleted": "Колонка удалена",
   "inputPswd": "Введите пароль",
-  "column": "Колонка"
+  "column": "Колонка",
+  "noBoards": "У вас нет досок"
 }
