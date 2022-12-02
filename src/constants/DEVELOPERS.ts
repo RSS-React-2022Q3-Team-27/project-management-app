@@ -8,18 +8,21 @@ export const DEVELOPERS = [
     link: 'https://github.com/Bumble-sakh',
     name: 'firstDev',
     image: devOne,
+    contribution: ['mainPage', 'search', 'tasks'],
   },
   {
     nickname: 'LilithPrimary',
     link: 'https://github.com/LilithPrimary',
     name: 'secondDev',
     image: devTwo,
+    contribution: ['authorization', 'profile', 'checklist'],
   },
   {
     nickname: 'oxanacode',
     link: 'https://github.com/oxanacode',
     name: 'thirdDev',
     image: devThree,
+    contribution: ['columns', 'dnd', 'taskFiles'],
   },
 ];
 

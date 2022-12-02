@@ -42,7 +42,7 @@ export const AdvantageSection = () => {
           alignItems: 'center',
           justifyContent: 'center',
           borderRadius: 100,
-          outline: '2px dashed var(--joy-palette-grey-200)',
+          outline: '2px dashed var(--joy-palette-divider)',
         }}
       >
         <Box

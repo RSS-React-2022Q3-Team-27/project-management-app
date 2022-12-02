@@ -36,7 +36,7 @@ export const CourseSection = () => {
         component="h2"
         sx={{ position: 'relative', left: -16, bgcolor: 'background.surface', py: 2 }}
       >
-        {t('features')}
+        {t('development')}
       </Typography>
       <Typography
         level="h5"
@@ -46,7 +46,7 @@ export const CourseSection = () => {
           fontWeight: 'sm',
           textAlign: 'center',
           px: 2,
-          py: 6,
+          pt: 6,
         }}
       >
         {t('aboutCourse')}
@@ -57,13 +57,6 @@ export const CourseSection = () => {
         <Link href={SCHOOL_TASK} target="_blank" rel="noreferrer" underline="none">
           {t('termsOfReference')}
         </Link>
-      </Typography>
-      <Typography
-        level="h5"
-        component="h2"
-        sx={{ position: 'relative', left: -16, bgcolor: 'background.surface', py: 2 }}
-      >
-        {t('technologies')}
       </Typography>
       <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', justifyContent: 'center', px: 2, py: 6 }}>{techs}</Box>
     </Sheet>
