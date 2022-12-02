@@ -6,6 +6,8 @@ import { useTranslation } from 'react-i18next';
 
 import { Link } from 'react-router-dom';
 
+import styles from './SignUp.module.css';
+
 import { SignUpForm } from '../../components/SignUpForm/SignUpForm';
 
 import { ROUTES } from '../../constants/routes';
@@ -41,6 +43,7 @@ export const SignUp = () => {
           <Typography level="body2">{t('signUp')}</Typography>
         </div>
         <Avatar
+          className={styles.avatar}
           alt="+"
           src={avatar}
           size="lg"

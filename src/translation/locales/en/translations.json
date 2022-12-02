@@ -103,5 +103,6 @@
   "columnUpdated": "Column updated",
   "columnDeleted": "Column deleted",
   "inputPswd": "Input password",
-  "column": "Column"
+  "column": "Column",
+  "noBoards": "You don't have any boards"
 }
