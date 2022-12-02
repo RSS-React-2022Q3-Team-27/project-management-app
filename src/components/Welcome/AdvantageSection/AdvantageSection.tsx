@@ -26,6 +26,7 @@ export const AdvantageSection = () => {
       <Typography
         level="h5"
         component="h3"
+        textColor="text.secondary"
         sx={{
           textAlign: i % 2 === 0 ? 'right' : 'left',
           fontWeight: 'sm',
@@ -71,11 +72,11 @@ export const AdvantageSection = () => {
       <Box
         sx={{
           display: 'grid',
-          gridTemplateColumns: { xs: '1fr', sm: '1fr 1fr' },
+          gridTemplateColumns: { xs: 'auto', sm: 'auto auto' },
           justifyContent: 'center',
           gap: 2,
           py: 4,
-          pl: { xs: 2, sm: 2, md: 6 },
+          pl: 2,
           mx: 'auto',
         }}
       >

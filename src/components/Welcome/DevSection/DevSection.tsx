@@ -39,12 +39,9 @@ export const DevSection = () => {
   return (
     <>
       <Typography
-        level="h2"
-        component="h3"
-        sx={{
-          fontWeight: 'sm',
-          textAlign: 'center',
-        }}
+        level="h5"
+        component="h2"
+        sx={{ position: 'relative', left: -16, bgcolor: 'background.surface', py: 2 }}
       >
         {t('developers')}
       </Typography>

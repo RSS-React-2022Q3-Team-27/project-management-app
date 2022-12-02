@@ -1,21 +1,21 @@
-import tech1 from '../assets/images/tech-1.svg';
-import tech2 from '../assets/images/tech-2.svg';
-import tech3 from '../assets/images/tech-3.svg';
-import tech4 from '../assets/images/tech-4.svg';
-import tech5 from '../assets/images/tech-5.svg';
-import tech6 from '../assets/images/tech-6.svg';
-import tech7 from '../assets/images/tech-7.svg';
-import tech8 from '../assets/images/tech-8.svg';
-import tech9 from '../assets/images/tech-9.svg';
+import imgDnd from '../assets/images/tech-dnd.svg';
+import imgForm from '../assets/images/tech-form.svg';
+import imgI18next from '../assets/images/tech-i18next.svg';
+import imgJwt from '../assets/images/tech-jwt.svg';
+import imgMui from '../assets/images/tech-mui.svg';
+import imgReact from '../assets/images/tech-react.svg';
+import imgRedux from '../assets/images/tech-redux.svg';
+import imgToastify from '../assets/images/tech-toastify.svg';
+import imgTs from '../assets/images/tech-ts.svg';
 
 export const TECHNOLOGIES = [
-  { name: 'React', image: tech1 },
-  { name: 'Typescript', image: tech2 },
-  { name: 'RTK | RTK Query', image: tech3 },
-  { name: 'JWT-decode', image: tech4 },
-  { name: 'React-hook-form', image: tech5 },
-  { name: 'React-i18next', image: tech6 },
-  { name: 'React-Toastify', image: tech7 },
-  { name: 'React-beautiful-dnd', image: tech8 },
-  { name: 'Material UI', image: tech9 },
+  { name: 'Typescript', image: imgTs },
+  { name: 'React', image: imgReact },
+  { name: 'RTK | RTK Query', image: imgRedux },
+  { name: 'Material UI', image: imgMui },
+  { name: 'JWT-decode', image: imgJwt },
+  { name: 'React-hook-form', image: imgForm },
+  { name: 'React-i18next', image: imgI18next },
+  { name: 'React-Toastify', image: imgToastify },
+  { name: 'React-beautiful-dnd', image: imgDnd },
 ];
