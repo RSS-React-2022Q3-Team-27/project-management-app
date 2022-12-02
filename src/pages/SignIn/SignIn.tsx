@@ -22,19 +22,24 @@ export const SignIn = () => {
         flexDirection: 'column',
         gap: 2,
         borderRadius: 'sm',
-        boxShadow: 'md',
+        boxShadow: 'sm',
       }}
-      variant="outlined"
     >
       <div>
-        <Typography level="h4" component="h1">
+        <Typography level="h4" component="h1" sx={{ textAlign: 'center' }}>
           <b>{t('welcome')}</b>
         </Typography>
-        <Typography level="body2">{t('signInToContinue.')}</Typography>
+        <Typography level="body2" sx={{ textAlign: 'center' }}>
+          {t('signInToContinue.')}
+        </Typography>
       </div>
       <SignInForm />
       <Typography
-        endDecorator={<Link to={`${ROUTES.SIGN_UP.path}`}>{t('signUp')}</Link>}
+        endDecorator={
+          <Link to={`${ROUTES.SIGN_UP.path}`} style={{ textDecoration: 'none' }}>
+            {t('signUp')}
+          </Link>
+        }
         fontSize="sm"
         sx={{ alignSelf: 'center' }}
       >

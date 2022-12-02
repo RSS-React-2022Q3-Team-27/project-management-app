@@ -1,6 +1,3 @@
-import AccessibilityNewRoundedIcon from '@mui/icons-material/AccessibilityNewRounded';
-import KeyRoundedIcon from '@mui/icons-material/KeyRounded';
-import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import Button from '@mui/joy/Button';
 
 import TextField from '@mui/joy/TextField';
@@ -139,7 +136,6 @@ export const SignUpForm = () => {
             placeholder={t('name')}
             autoComplete="off"
             title={t('twoToTenLetters')}
-            startDecorator={<AccessibilityNewRoundedIcon />}
           />
         )}
       />
@@ -172,7 +168,7 @@ export const SignUpForm = () => {
             autoComplete="off"
             title={t('twoToTenLettersLogin')}
             placeholder={t('login')}
-            startDecorator={<PersonRoundedIcon />}
+            sx={{ mt: 2 }}
           />
         )}
       />
@@ -199,7 +195,7 @@ export const SignUpForm = () => {
             autoComplete="off"
             placeholder={t('password')}
             label={t('password')}
-            startDecorator={<KeyRoundedIcon />}
+            sx={{ mt: 2 }}
           />
         )}
       />
@@ -226,7 +222,7 @@ export const SignUpForm = () => {
             autoComplete="off"
             placeholder={t('verifyPassword')}
             label={t('verifyPassword')}
-            startDecorator={<KeyRoundedIcon />}
+            sx={{ mt: 2 }}
           />
         )}
       />
@@ -239,7 +235,7 @@ export const SignUpForm = () => {
       <Button
         type="submit"
         loading={createUserLoading || ligInUserLoading || avatarLoading}
-        sx={{ mt: 1, width: '100%' }}
+        sx={{ mt: 3, width: '100%' }}
       >
         {t('signUp')}
       </Button>

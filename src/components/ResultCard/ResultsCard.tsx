@@ -29,13 +29,12 @@ export const ResultCard: FC<ResultCardPropsType> = ({ task, boardTitle, columnTi
   };
 
   return (
-    <Link to={`${ROUTES.BOARD.path}/${task.boardId}`} style={{ textDecoration: 'none' }} onClick={onClick}>
-      <Card
-        variant="outlined"
-        sx={{
-          width: '100%',
-        }}
-      >
+    <Link
+      to={`${ROUTES.BOARD.path}/${task.boardId}`}
+      style={{ textDecoration: 'none', width: '100%' }}
+      onClick={onClick}
+    >
+      <Card>
         <CardContent>
           <Typography level="h2" fontSize="lg">
             {task.title}

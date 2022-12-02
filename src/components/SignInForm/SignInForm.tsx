@@ -90,7 +90,7 @@ export const SignInForm = () => {
             type="text"
             label={t('login')}
             placeholder={t('login')}
-            startDecorator={<PersonRoundedIcon />}
+            startDecorator={<PersonRoundedIcon color="primary" />}
           />
         )}
       />
@@ -116,7 +116,8 @@ export const SignInForm = () => {
             type="password"
             placeholder={t('password')}
             label={t('password')}
-            startDecorator={<KeyRoundedIcon />}
+            startDecorator={<KeyRoundedIcon color="primary" />}
+            sx={{ mt: 2 }}
           />
         )}
       />
@@ -126,7 +127,7 @@ export const SignInForm = () => {
         </Typography>
       )}
 
-      <Button type="submit" sx={{ mt: 1, width: '100%' }} loading={logInUserLoading || getUsersLoading}>
+      <Button type="submit" sx={{ mt: 4, width: '100%' }} loading={logInUserLoading || getUsersLoading}>
         {t('signIn')}
       </Button>
     </form>

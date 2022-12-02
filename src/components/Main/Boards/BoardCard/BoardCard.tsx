@@ -51,7 +51,7 @@ export const BoardCard: FC<BoardCardPropsType> = ({ board }) => {
 
   return (
     <Link to={`${ROUTES.BOARD.path}/${board._id}`} style={{ textDecoration: 'none' }}>
-      <Card variant="outlined" sx={{ width: 280, minHeight: 280, height: '100%' }}>
+      <Card sx={{ width: 280, minHeight: 120, height: '100%' }}>
         <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
           <Typography level="h2" fontSize="md" sx={{ mb: 0.5 }}>
             {title}
@@ -60,20 +60,29 @@ export const BoardCard: FC<BoardCardPropsType> = ({ board }) => {
             {description}
           </Typography>
 
-          <Box>
-            <Typography level="body2" textAlign="right">
-              {t('taskCount', taskCount)}
-            </Typography>
-          </Box>
+          <Box
+            sx={{
+              justifySelf: 'space-between',
+              alignSelf: 'flex-end',
+              display: 'flex',
+              gap: 1,
+              alignItems: 'center',
+              width: '100%',
+            }}
+          >
+            <Box>
+              <Typography level="body2" textAlign="right">
+                {t('taskCount', taskCount)}
+              </Typography>
+            </Box>
 
-          <Box sx={{ justifySelf: 'flex-end', alignSelf: 'flex-end', display: 'flex', gap: 1 }}>
-            <Tooltip title={t('edit')} arrow placement="bottom" variant="solid">
-              <IconButton color="neutral" variant="soft" size="sm" onClick={onClickEdit}>
+            <Tooltip title={t('edit')} arrow placement="bottom" size="sm">
+              <IconButton color="neutral" variant="soft" size="sm" onClick={onClickEdit} sx={{ ml: 'auto' }}>
                 <EditIcon />
               </IconButton>
             </Tooltip>
 
-            <Tooltip title={t('delete')} arrow placement="bottom" variant="solid">
+            <Tooltip title={t('delete')} arrow placement="bottom" size="sm">
               <IconButton color="neutral" variant="soft" size="sm" onClick={onClickDelete}>
                 <DeleteIcon />
               </IconButton>

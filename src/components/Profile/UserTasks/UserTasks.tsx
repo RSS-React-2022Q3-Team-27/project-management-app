@@ -38,23 +38,35 @@ export const UserTasks = () => {
         alignItems: 'center',
         gap: 2,
         my: 4,
-        mx: 2,
+        mx: 'auto',
+        maxWidth: 600,
       }}
     >
       <Typography level="h2" sx={{ my: 2 }}>
         {t('yourTasks')}
       </Typography>
-      <Box sx={{ display: 'flex', flexDirection: 'column', flexWrap: 'wrap', justifyContent: 'center', gap: 2 }}>
-        {data?.length
-          ? data.map((task) => (
-              <ResultCard
-                key={task._id}
-                task={task}
-                boardTitle={boards ? boards[task.boardId] : ''}
-                columnTitle={columns ? columns[task.columnId] : ''}
-              />
-            ))
-          : t('yourHaventtGotTasks')}
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          flexWrap: 'wrap',
+          justifyContent: 'center',
+          gap: 2,
+          width: '100%',
+        }}
+      >
+        {data?.length ? (
+          data.map((task) => (
+            <ResultCard
+              key={task._id}
+              task={task}
+              boardTitle={boards ? boards[task.boardId] : ''}
+              columnTitle={columns ? columns[task.columnId] : ''}
+            />
+          ))
+        ) : (
+          <Typography sx={{ textAlign: 'center' }}>{t('yourHaventtGotTasks')}</Typography>
+        )}
       </Box>
     </Box>
   );

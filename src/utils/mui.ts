@@ -117,6 +117,7 @@ const githubTheme = extendJoyTheme({
         },
         neutral: {
           softBg: '#20232a',
+          outlinedBorder: '#42454D',
         },
         background: {
           surface: '#282c34',

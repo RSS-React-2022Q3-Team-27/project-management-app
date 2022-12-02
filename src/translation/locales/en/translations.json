@@ -31,7 +31,7 @@
   "boardAdded": "Board added",
   "wrongFormat": "Wrong format",
   "youveSuccessfullySignedIn": "You've successfully signed in",
-  "fieldIsRequire": "Field is require",
+  "fieldIsRequire": "Field is required",
   "wrongLoginOrPassword": "Wrong Login or Password",
   "wrongPassword": "Wrong password",
   "loginAlreadyExist": "Login already exist",

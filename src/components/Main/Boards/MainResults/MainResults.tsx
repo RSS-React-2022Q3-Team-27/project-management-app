@@ -29,14 +29,14 @@ export const MainResults = () => {
     boards && boards.length > 0 ? (
       boards.map((board) => <BoardCard key={board._id} board={board} />)
     ) : (
-      <Typography level="h2" fontSize="lg">
+      <Typography level="h2" fontSize="lg" sx={{ mt: 6, mx: 'auto' }}>
         {t('noBoards')}
       </Typography>
     );
 
   return (
     <>
-      <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'center', gap: 2 }}>
+      <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'flex-start', gap: 2 }}>
         {isLoading ? <CircularProgress color="primary" size="lg" value={25} variant="soft" /> : cards}
       </Box>
 

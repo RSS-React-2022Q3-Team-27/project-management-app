@@ -82,9 +82,8 @@ export const UserInfo = () => {
         flexDirection: 'column',
         gap: 2,
         borderRadius: 'sm',
-        boxShadow: 'md',
+        boxShadow: 'sm',
       }}
-      variant="outlined"
     >
       <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, justifyContent: 'center' }}>
         <Typography level="h2">{t('profile')}</Typography>
@@ -108,7 +107,7 @@ export const UserInfo = () => {
             alignItems: 'center',
             width: '100%',
             flex: 1,
-            position: 'relativ',
+            position: 'relative',
           }}
         >
           <Box
@@ -121,8 +120,8 @@ export const UserInfo = () => {
               alt={login}
               src={avatar}
               sx={{
-                height: '200px',
-                width: '200px',
+                height: '160px',
+                width: '160px',
                 cursor: 'pointer',
                 pointerEvents: isLoading ? 'none' : 'inherit',
               }}

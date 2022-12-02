@@ -1,7 +1,6 @@
 import { Avatar, Box } from '@mui/joy';
 import Sheet from '@mui/joy/Sheet';
 import Typography from '@mui/joy/Typography';
-import React from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { Link } from 'react-router-dom';
@@ -31,9 +30,8 @@ export const SignUp = () => {
         flexDirection: 'column',
         gap: 2,
         borderRadius: 'sm',
-        boxShadow: 'md',
+        boxShadow: 'sm',
       }}
-      variant="outlined"
     >
       <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
         <div>
@@ -53,7 +51,11 @@ export const SignUp = () => {
       </Box>
       <SignUpForm />
       <Typography
-        endDecorator={<Link to={`${ROUTES.SIGN_IN.path}`}>{t('signIn')}</Link>}
+        endDecorator={
+          <Link to={`${ROUTES.SIGN_IN.path}`} style={{ textDecoration: 'none' }}>
+            {t('signIn')}
+          </Link>
+        }
         fontSize="sm"
         sx={{ alignSelf: 'center' }}
       >

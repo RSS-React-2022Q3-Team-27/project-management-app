@@ -10,6 +10,7 @@ export const Main = () => {
     <Sheet
       sx={{
         height: '100%',
+        maxWidth: 1200,
         mx: 'auto',
         py: 3,
         px: 2,
