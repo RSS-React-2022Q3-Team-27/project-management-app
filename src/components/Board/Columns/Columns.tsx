@@ -8,6 +8,8 @@ import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
+import styles from './columns.module.css';
+
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import {
   ColumnType,
@@ -229,6 +231,7 @@ export const Columns = () => {
       ) : (
         <Box sx={{ flexGrow: 1, position: 'relative' }}>
           <Box
+            className={styles.list}
             sx={{
               display: 'flex',
               alignItems: 'flex-start',

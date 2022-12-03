@@ -34,7 +34,7 @@ export const AddPointModal = ({ toggleModal, isOpen, setPointText }: IProps) => 
       open={isOpen}
       onClose={() => toggleModal(false)}
     >
-      <ModalDialog variant="outlined" role="add-point-modal">
+      <ModalDialog variant="outlined" role="add-point-modal" sx={{ border: 'none' }}>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Stack spacing={2}>
             <Controller

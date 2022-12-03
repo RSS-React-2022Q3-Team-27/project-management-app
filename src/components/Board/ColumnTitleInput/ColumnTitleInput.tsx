@@ -61,10 +61,10 @@ export const ColumnTitleInput: FC<ColumnTitleProps> = ({ column }) => {
               sx={{ width: 264 }}
               endDecorator={
                 <Box sx={{ display: 'flex', gap: 2 }}>
-                  <IconButton variant="soft" color="success" type="submit">
+                  <IconButton variant="solid" color="success" type="submit">
                     {isLoading ? <CircularProgress size="sm" /> : <CheckRoundedIcon />}
                   </IconButton>
-                  <IconButton variant="soft" color="danger" onClick={() => dispatch(setTitleEditId(null))}>
+                  <IconButton variant="solid" color="danger" onClick={() => dispatch(setTitleEditId(null))}>
                     <CloseRoundedIcon />
                   </IconButton>
                 </Box>
