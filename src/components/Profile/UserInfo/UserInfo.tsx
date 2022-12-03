@@ -1,8 +1,7 @@
 import { Box, Button, CircularProgress, Divider, Sheet, Typography } from '@mui/joy';
 import Avatar from '@mui/joy/Avatar';
-import React, { useState, useContext, useEffect, useCallback, useRef } from 'react';
+import { useState, useContext, useEffect, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
@@ -71,112 +70,104 @@ export const UserInfo = () => {
   }, [changeAvatar, file]);
 
   return (
-    <Sheet
-      sx={{
-        maxWidth: 600,
-        mx: 'auto',
-        my: 4,
-        py: 3,
-        px: 2,
-        display: 'flex',
-        flexDirection: 'column',
-        gap: 2,
-        borderRadius: 'sm',
-        boxShadow: 'sm',
-      }}
-    >
-      <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, justifyContent: 'center' }}>
-        <Typography level="h2">{t('profile')}</Typography>
-      </Box>
-      <Divider />
-      <Box
+    <>
+      <Typography level="h2" sx={{ textAlign: 'center' }}>
+        {t('profile')}
+      </Typography>
+      <Sheet
         sx={{
+          maxWidth: 600,
+          mx: 'auto',
+          my: 3,
+          py: 3,
+          px: 2,
           display: 'flex',
-          flexDirection: { xs: 'column', sm: 'row' },
-          gap: 4,
-          justifyContent: 'space-between',
-          alignItems: { xs: 'center', sm: '' },
+          flexDirection: 'column',
+          gap: 2,
+          borderRadius: 'sm',
+          boxShadow: 'sm',
         }}
       >
         <Box
           sx={{
             display: 'flex',
-            flexDirection: 'row',
-            gap: 2,
-            justifyContent: { xs: 'center', sm: 'flex-start' },
-            alignItems: 'center',
-            width: '100%',
-            flex: 1,
-            position: 'relative',
+            flexDirection: { xs: 'column', sm: 'row' },
+            gap: 4,
+            justifyContent: 'space-between',
+            alignItems: { xs: 'center', sm: '' },
+            mb: 2,
           }}
         >
+          <Avatar
+            className={styles.avatar}
+            alt={login}
+            src={avatar}
+            sx={{
+              height: '160px',
+              width: '160px',
+              cursor: 'pointer',
+              pointerEvents: isLoading ? 'none' : 'inherit',
+            }}
+            onClick={() => dispatch(toggleAvatarModal(true))}
+          />
+          {isLoading && (
+            <CircularProgress
+              sx={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)' }}
+            />
+          )}
           <Box
             sx={{
-              position: 'relative',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 3,
+              justifyContent: 'space-between',
+              alignItems: 'flex-start',
+              width: '100%',
+              flex: 2,
+              maxWidth: { xs: 280, sm: '100%' },
             }}
           >
-            <Avatar
-              className={styles.avatar}
-              alt={login}
-              src={avatar}
-              sx={{
-                height: '160px',
-                width: '160px',
-                cursor: 'pointer',
-                pointerEvents: isLoading ? 'none' : 'inherit',
-              }}
-              onClick={() => dispatch(toggleAvatarModal(true))}
-            />
-            {isLoading && (
-              <CircularProgress
-                sx={{ position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)' }}
-              />
-            )}
+            <UserInfoFields />
           </Box>
         </Box>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: { xs: 'column', sm: 'row-reverse' },
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            gap: 2,
+          }}
+        >
+          <Button variant="soft" sx={{ width: 180 }} onClick={() => setIsEditOpen(true)}>
+            {t('editProfile')}
+          </Button>
+          <Button
+            variant="soft"
+            color="danger"
+            sx={{ width: 180 }}
+            onClick={() => contextDispatch({ type: ReducerTypes.onConfirmAction, payload: delUser })}
+          >
+            {t('deleteUser')}
+          </Button>
+        </Box>
+        <Divider sx={{ my: 1 }} />
         <Box
           sx={{
             display: 'flex',
             flexDirection: 'column',
-            gap: 3,
-            justifyContent: 'space-between',
-            alignItems: 'flex-start',
-            width: '100%',
-            flex: 2,
-            maxWidth: { xs: 280, sm: '100%' },
+            gap: 2,
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: '50%',
           }}
         >
-          <UserInfoFields />
-
-          <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, justifyContent: 'space-between', width: '100%' }}>
-            <Button
-              variant="solid"
-              color="danger"
-              sx={{ width: 130 }}
-              onClick={() => contextDispatch({ type: ReducerTypes.onConfirmAction, payload: delUser })}
-            >
-              {t('deleteUser')}
-            </Button>
-            <Button variant="solid" sx={{ width: 130 }} onClick={() => setIsEditOpen(true)}>
-              {t('editProfile')}
-            </Button>
-          </Box>
+          <Counter />
         </Box>
-      </Box>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 2,
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: '50%',
-        }}
-      >
-        <Counter />
-      </Box>
-      <DialogEditProfile openDialog={setIsEditOpen} isDialogOpen={isEditOpen} />
-      <AvatarModal setFile={setFile} />
-    </Sheet>
+
+        <DialogEditProfile openDialog={setIsEditOpen} isDialogOpen={isEditOpen} />
+        <AvatarModal setFile={setFile} />
+      </Sheet>
+    </>
   );
 };

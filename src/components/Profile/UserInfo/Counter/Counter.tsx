@@ -28,7 +28,7 @@ export const Counter = () => {
   }, [counter]);
   return (
     <Box sx={{ display: 'flex', flexDirection: 'row', gap: 1 }}>
-      <Chip variant="soft" size="lg" startDecorator={<AccessTimeFilledIcon />}>
+      <Chip variant="outlined" size="lg" startDecorator={<AccessTimeFilledIcon />}>
         <Typography level="body2">{t('youWillLogOutAfter')}:</Typography>
         <Typography level="body2" color={counter < 1800 ? 'danger' : 'primary'} sx={{ paddingLeft: 1 }}>
           {msToTime(counter)}

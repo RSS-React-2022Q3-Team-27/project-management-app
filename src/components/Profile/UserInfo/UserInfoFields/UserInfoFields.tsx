@@ -1,7 +1,5 @@
-import AccessibilityNewRoundedIcon from '@mui/icons-material/AccessibilityNewRounded';
-import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
-import { Box, Chip, Typography } from '@mui/joy';
-import React from 'react';
+import Box from '@mui/joy/Box';
+import Typography from '@mui/joy/Typography';
 import { useTranslation } from 'react-i18next';
 
 import { useAppSelector } from '../../../../store/hooks';
@@ -17,34 +15,44 @@ export const UserInfoFields = () => {
           flexDirection: 'column',
           gap: 2,
           justifyContent: 'space-between',
-          paddingTop: '30px',
           width: '100%',
           justifySelf: 'center',
           height: '100%',
         }}
       >
-        <Chip variant="outlined" color="neutral" size="lg" startDecorator={<PersonRoundedIcon />}>
-          <Typography
-            level="h6"
-            sx={{
-              width: '70px',
-            }}
-          >
-            {t('login')}:
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            width: '100%',
+            px: 2,
+            py: 1,
+            borderRadius: 'sm',
+            bgcolor: 'neutral.softBg',
+          }}
+        >
+          <Typography level="h6" sx={{ width: '70px', fontSize: 'sm', color: 'text.secondary' }}>
+            {t('login')}
           </Typography>
-          {login}
-        </Chip>
-        <Chip variant="outlined" color="neutral" size="lg" startDecorator={<AccessibilityNewRoundedIcon />}>
-          <Typography
-            level="h6"
-            sx={{
-              width: '70px',
-            }}
-          >
-            {t('name')}:
+          <Typography sx={{ fontSize: 'lg' }}>{login}</Typography>
+        </Box>
+
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            width: '100%',
+            px: 2,
+            py: 1,
+            borderRadius: 'sm',
+            bgcolor: 'neutral.softBg',
+          }}
+        >
+          <Typography level="h6" sx={{ width: '70px', fontSize: 'sm', color: 'text.secondary' }}>
+            {t('name')}
           </Typography>
-          {userName}
-        </Chip>
+          <Typography sx={{ fontSize: 'lg' }}>{userName}</Typography>
+        </Box>
       </Box>
     </>
   );
