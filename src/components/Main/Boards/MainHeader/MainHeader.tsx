@@ -18,7 +18,13 @@ export const MainHeader = () => {
   return (
     <Box sx={{ display: 'flex', flexDirection: 'row', gap: 2, justifyContent: 'space-between' }}>
       <Typography level="h2">{t('boards')}</Typography>
-      <Button color="neutral" variant="outlined" startDecorator={<AddIcon />} onClick={onClick}>
+      <Button
+        color="neutral"
+        variant="outlined"
+        sx={{ width: 150 }}
+        startDecorator={<AddIcon color="primary" />}
+        onClick={onClick}
+      >
         {t('newBoard')}
       </Button>
     </Box>

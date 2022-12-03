@@ -10,7 +10,7 @@ export const ModeToggle = () => {
       id="toggle-mode"
       size="md"
       variant="outlined"
-      color="primary"
+      color="neutral"
       onClick={() => {
         if (mode === 'light') {
           setMode('dark');
@@ -19,7 +19,7 @@ export const ModeToggle = () => {
         }
       }}
     >
-      {mode === 'light' ? <DarkModeRoundedIcon /> : <LightModeRoundedIcon />}
+      {mode === 'light' ? <DarkModeRoundedIcon color="primary" /> : <LightModeRoundedIcon color="primary" />}
     </IconButton>
   );
 };

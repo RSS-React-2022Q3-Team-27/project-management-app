@@ -41,7 +41,7 @@ export const Nav = ({ placedInHeader }: { placedInHeader: boolean }) => {
         <>
           <CreateNewBoard />
           <NavButton route={ROUTES.PROFILE.path} variant={'solid'} text={t('profile')} isHeader={placedInHeader}>
-            <PersonOutlineRoundedIcon />
+            <PersonOutlineRoundedIcon color="primary" />
           </NavButton>
           <SignOutButton isHeader={placedInHeader} />
         </>
@@ -52,7 +52,7 @@ export const Nav = ({ placedInHeader }: { placedInHeader: boolean }) => {
         <>
           <CreateNewBoard />
           <NavButton route={ROUTES.MAIN.path} variant={'solid'} text={t('toMainPage')} isHeader={placedInHeader}>
-            <HomeRoundedIcon />
+            <HomeRoundedIcon color="primary" />
           </NavButton>
           <SignOutButton isHeader={placedInHeader} />
         </>
@@ -64,7 +64,13 @@ export const Nav = ({ placedInHeader }: { placedInHeader: boolean }) => {
     default:
       nav = (
         <>
-          <NavButton route={ROUTES.SIGN_IN.path} variant={'outlined'} text={t('signIn')} isHeader={placedInHeader} />
+          <NavButton
+            route={ROUTES.SIGN_IN.path}
+            variant={'outlined'}
+            color={'neutral'}
+            text={t('signIn')}
+            isHeader={placedInHeader}
+          />
           <NavButton route={ROUTES.SIGN_UP.path} variant={'solid'} text={t('signUp')} isHeader={placedInHeader} />
         </>
       );

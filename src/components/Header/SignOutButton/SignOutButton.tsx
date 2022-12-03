@@ -25,8 +25,8 @@ export const SignOutButton = ({ isHeader }: { isHeader: boolean }) => {
 
   return isHeader ? (
     <Tooltip title={t('signOut')} color="primary" size="sm" variant="plain" arrow>
-      <IconButton component={Link} to={ROUTES.WELCOME.path} onClick={handleClick} variant="outlined">
-        <ExitToAppRoundedIcon />
+      <IconButton component={Link} to={ROUTES.WELCOME.path} onClick={handleClick} color="neutral" variant="outlined">
+        <ExitToAppRoundedIcon color="primary" />
       </IconButton>
     </Tooltip>
   ) : (

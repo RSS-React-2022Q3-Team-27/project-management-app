@@ -11,10 +11,11 @@ type NavButtonType = {
   text?: string;
   variant: 'plain' | 'outlined' | 'soft' | 'solid';
   isHeader: boolean;
+  color?: 'primary' | 'neutral' | 'danger' | 'info' | 'success' | 'warning';
   children?: React.ReactNode;
 };
 
-export const NavButton = ({ route, text, variant, isHeader, children }: NavButtonType) => {
+export const NavButton = ({ route, text, variant, isHeader, color, children }: NavButtonType) => {
   const dispatch = useAppDispatch();
 
   const handleClick = () => {
@@ -30,12 +31,13 @@ export const NavButton = ({ route, text, variant, isHeader, children }: NavButto
       variant={variant}
       sx={{ width: isHeader ? '120px' : '100%', textAlign: 'center' }}
       onClick={handleClick}
+      color={color ? color : 'primary'}
     >
       {text}
     </Button>
   ) : (
     <Tooltip title={text} color="primary" size="sm" variant="plain" arrow>
-      <IconButton component={Link} to={route} onClick={handleClick} variant="outlined">
+      <IconButton component={Link} to={route} onClick={handleClick} color="neutral" variant="outlined">
         {children}
       </IconButton>
     </Tooltip>

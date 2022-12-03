@@ -54,7 +54,7 @@ export const SearchResults = () => {
         setResults(result);
       } else {
         const noResults = (
-          <Typography level="h2" fontSize="lg">
+          <Typography level="h2" fontSize="lg" sx={{ mt: 6 }}>
             {t('noResults')}
           </Typography>
         );
@@ -77,7 +77,7 @@ export const SearchResults = () => {
         },
       }}
     >
-      {isFetching ? <CircularProgress color="primary" size="lg" value={25} variant="soft" /> : results}
+      {isFetching ? <CircularProgress color="primary" value={25} sx={{ mt: 6 }} /> : results}
     </Box>
   );
 };

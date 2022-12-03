@@ -45,7 +45,7 @@ export const MainResults = () => {
           gap: 2,
         }}
       >
-        {isLoading ? <CircularProgress color="primary" value={25} variant="soft" sx={{ mx: 'auto', mt: 6 }} /> : cards}
+        {isLoading ? <CircularProgress color="primary" value={25} sx={{ mx: 'auto', mt: 6 }} /> : cards}
       </Box>
 
       {isOpenedDialogEditBoard ? <DialogEditBoard /> : null}

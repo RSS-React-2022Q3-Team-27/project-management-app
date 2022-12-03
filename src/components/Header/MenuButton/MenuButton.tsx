@@ -12,8 +12,8 @@ export const MenuButton = () => {
   };
 
   return (
-    <IconButton variant="outlined" size="md" onClick={handleClick} sx={{ display: { sm: 'none' } }}>
-      <MenuIcon />
+    <IconButton variant="outlined" color="neutral" size="md" onClick={handleClick} sx={{ display: { sm: 'none' } }}>
+      <MenuIcon color="primary" />
     </IconButton>
   );
 };

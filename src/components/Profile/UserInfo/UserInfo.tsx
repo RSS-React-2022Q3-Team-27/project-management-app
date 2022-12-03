@@ -139,11 +139,11 @@ export const UserInfo = () => {
             gap: 2,
           }}
         >
-          <Button variant="soft" sx={{ width: 180 }} onClick={() => setIsEditOpen(true)}>
+          <Button variant="solid" sx={{ width: 180 }} onClick={() => setIsEditOpen(true)}>
             {t('editProfile')}
           </Button>
           <Button
-            variant="soft"
+            variant="solid"
             color="danger"
             sx={{ width: 180 }}
             onClick={() => contextDispatch({ type: ReducerTypes.onConfirmAction, payload: delUser })}

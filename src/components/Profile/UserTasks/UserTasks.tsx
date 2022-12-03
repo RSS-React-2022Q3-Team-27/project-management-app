@@ -46,7 +46,7 @@ export const UserTasks = () => {
         {t('yourTasks')}
       </Typography>
       {isFetching ? (
-        <CircularProgress color="primary" size="lg" value={25} variant="soft" />
+        <CircularProgress color="primary" value={25} />
       ) : (
         <Box
           sx={{

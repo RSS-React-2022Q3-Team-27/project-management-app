@@ -225,7 +225,7 @@ export const Columns = () => {
   return (
     <>
       {isColumnsLoading || isTasksLoading || isFilesLoading || isCoversLoading || isPointsLoading ? (
-        <CircularProgress sx={{ mx: 'auto', mt: 10 }} />
+        <CircularProgress sx={{ mx: 'auto', mt: 6 }} />
       ) : (
         <Box sx={{ flexGrow: 1, position: 'relative' }}>
           <Box

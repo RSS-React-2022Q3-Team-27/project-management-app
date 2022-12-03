@@ -63,6 +63,7 @@ export default function DialogAddBoard() {
         sx={{
           maxWidth: 500,
           borderRadius: 'md',
+          border: 'none',
           p: 3,
           boxShadow: 'lg',
         }}
