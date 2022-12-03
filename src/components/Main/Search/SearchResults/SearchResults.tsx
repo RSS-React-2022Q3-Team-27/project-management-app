@@ -6,9 +6,8 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { useAppSelector } from '../../../../store/hooks';
-
+import { useGetColumnsByUserIdQuery } from '../../../../store/slices/board/boardApi';
 import { useGetBoardsByUserIdQuery } from '../../../../store/slices/boards/boardsApi';
-import { useGetColumnsByUserIdQuery } from '../../../../store/slices/columns/columnsApi';
 import { useGetTasksByQueryQuery } from '../../../../store/slices/tasks/tasksApi';
 import { ResultCard } from '../../../ResultCard';
 

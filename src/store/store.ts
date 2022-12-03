@@ -6,8 +6,6 @@ import boardSlice from './slices/board/boardSlice';
 import { boardsApi } from './slices/boards/boardsApi';
 
 import boardsSlice from './slices/boards/boardsSlice';
-import { columnsApi } from './slices/columns/columnsApi';
-import columnsSlice from './slices/columns/columnsSlice';
 import { filesApi } from './slices/files/filesApi';
 import filesSlice from './slices/files/filesSlice';
 import headerSlice from './slices/header/headerSlice';
@@ -32,7 +30,6 @@ export const store = configureStore({
     tasks: tasksSlice,
     points: pointsSlice,
     files: filesSlice,
-    columns: columnsSlice,
     [boardApi.reducerPath]: boardApi.reducer,
     [tasksApi.reducerPath]: tasksApi.reducer,
     [authApi.reducerPath]: authApi.reducer,
@@ -40,7 +37,6 @@ export const store = configureStore({
     [boardsApi.reducerPath]: boardsApi.reducer,
     [pointsApi.reducerPath]: pointsApi.reducer,
     [filesApi.reducerPath]: filesApi.reducer,
-    [columnsApi.reducerPath]: columnsApi.reducer,
   },
   middleware: (gDM) =>
     gDM().concat([
@@ -51,7 +47,6 @@ export const store = configureStore({
       boardsApi.middleware,
       pointsApi.middleware,
       filesApi.middleware,
-      columnsApi.middleware,
     ]),
 });
 

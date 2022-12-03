@@ -109,6 +109,15 @@ export const boardApi = createApi({
       }),
       invalidatesTags: ['Columns'],
     }),
+    getColumnsByUserId: build.query<ColumnType[], string>({
+      query: (userId) => ({
+        url: API_PATH.columnsSet,
+        params: {
+          userId,
+        },
+      }),
+      providesTags: ['Columns'],
+    }),
   }),
 });
 
@@ -119,4 +128,5 @@ export const {
   useUpdateColumnMutation,
   useDeleteColumnMutation,
   useUpdateSetOfColumnsMutation,
+  useGetColumnsByUserIdQuery,
 } = boardApi;
