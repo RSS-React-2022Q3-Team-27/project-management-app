@@ -42,7 +42,7 @@ export const AddColumnModal = () => {
     if (isSuccess) {
       handleClose();
     }
-  }, [isSuccess, handleClose, t]);
+  }, [isSuccess, handleClose]);
 
   const onSubmit: SubmitHandler<AddColumnFormType> = async (formData: AddColumnFormType) => {
     const body = {

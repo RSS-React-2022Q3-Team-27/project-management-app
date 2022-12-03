@@ -30,7 +30,7 @@ export const ColumnTitleInput: FC<ColumnTitleProps> = ({ column }) => {
     if (isSuccess) {
       dispatch(setTitleEditId(null));
     }
-  }, [isSuccess, dispatch, t]);
+  }, [isSuccess, dispatch]);
 
   const onSubmit: SubmitHandler<AddColumnFormType> = async (formData: AddColumnFormType) => {
     if (formData.title === column.title) return;
