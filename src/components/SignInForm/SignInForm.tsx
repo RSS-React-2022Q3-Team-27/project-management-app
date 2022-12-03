@@ -57,14 +57,18 @@ export const SignInForm = () => {
   useEffect(() => {
     if (usersData && isUserLogIn) {
       dispatch(setUserInfo(getUserDataByLogin(usersData, login)));
-      toast.success(t('youveSuccessfullySignedIn'));
+      toast.success(t('youveSuccessfullySignedIn'), {
+        toastId: 'youveSuccessfullySignedIn',
+      });
       navigate(ROUTES.MAIN.path);
     }
   }, [dispatch, isUserLogIn, login, navigate, t, usersData]);
 
   useEffect(() => {
     if (isError && token) {
-      toast.error(t('serverError'));
+      toast.error(t('serverError'), {
+        toastId: 'serverError',
+      });
     }
   }, [isError, logInError, t, token]);
 

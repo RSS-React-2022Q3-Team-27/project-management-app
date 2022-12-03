@@ -75,7 +75,9 @@ export const Columns = () => {
 
   useEffect(() => {
     if (isPointsError) {
-      toast.error(t('serverError'));
+      toast.error(t('serverError'), {
+        toastId: 'serverError-point',
+      });
     } else if (points) {
       setPointsToRender(points);
     }
@@ -83,7 +85,9 @@ export const Columns = () => {
 
   useEffect(() => {
     if (isColumnsError || isTasksError || isFilesError || isCoversError) {
-      toast.error(t('serverError'));
+      toast.error(t('serverError'), {
+        toastId: 'serverError',
+      });
     } else if (columns) {
       const sortedColumns = [...columns].sort((a, b) => a.order - b.order);
       const dataToRender: columnToRenderType = {};
