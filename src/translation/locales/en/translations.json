@@ -103,5 +103,6 @@
   "columnDeleted": "Column deleted",
   "inputPswd": "Input password",
   "column": "Column",
-  "noBoards": "You don't have any boards"
+  "noBoards": "You don't have any boards",
+  "authRequired": "Authorization required!"
 }
