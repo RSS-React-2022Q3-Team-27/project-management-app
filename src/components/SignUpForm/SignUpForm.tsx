@@ -156,7 +156,7 @@ export const SignUpForm = () => {
           },
           pattern: {
             value: /[a-zA-Z0-9]{2,10}$/,
-            message: `${t('wrongFormat')} (${t('twoToTenLettersLogin')})`,
+            message: `${t('twoToTenLettersLogin')}`,
           },
         }}
         render={({ field }) => (
