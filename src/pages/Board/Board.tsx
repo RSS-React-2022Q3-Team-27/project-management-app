@@ -24,9 +24,11 @@ export const Board = () => {
 
   useEffect(() => {
     if (isError) {
-      toast.error('Error');
+      toast.error(t('serverError'), {
+        toastId: 'serverError',
+      });
     }
-  }, [isError]);
+  }, [isError, t]);
 
   return (
     <Box
