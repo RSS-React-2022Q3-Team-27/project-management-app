@@ -7,7 +7,7 @@ import Stack from '@mui/joy/Stack';
 import Textarea from '@mui/joy/Textarea';
 import TextField from '@mui/joy/TextField';
 import Typography from '@mui/joy/Typography';
-import { useEffect, useCallback } from 'react';
+import { useCallback } from 'react';
 
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -33,27 +33,26 @@ export default function DialogAddBoard() {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const { control, handleSubmit, reset } = useForm<FormType>();
-  const [createBoard, { isSuccess, isLoading }] = useCreateBoardMutation();
+  const [createBoard, { isLoading }] = useCreateBoardMutation();
 
   const onClose = useCallback(() => {
     reset(clearForm);
     dispatch(setIsOpenedDialogAddBoard(false));
   }, [dispatch, reset]);
 
-  useEffect(() => {
-    if (isSuccess) {
-      toast.success(t('boardAdded'));
-      onClose();
-    }
-  }, [isSuccess, t, onClose]);
-
-  const onSubmit: SubmitHandler<FormType> = (data) => {
+  const onSubmit: SubmitHandler<FormType> = async (data) => {
     const body: CreateBoardType = {
       ...data,
       users: [],
       owner: userId,
     };
-    createBoard(body);
+    await createBoard(body)
+      .unwrap()
+      .then(() => {
+        toast.success(t('boardAdded'));
+        onClose();
+      })
+      .catch(() => toast.error(t('serverError')));
   };
 
   return (
