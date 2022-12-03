@@ -1,4 +1,4 @@
-import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
+import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 import IconButton from '@mui/joy/IconButton';
 
 import { useAppDispatch } from '../../../store/hooks';
@@ -12,8 +12,8 @@ export const CloseDrawerButton = () => {
   };
 
   return (
-    <IconButton size="sm" sx={{ width: '32px' }} onClick={handleClick}>
-      <CloseRoundedIcon />
+    <IconButton color="neutral" size="sm" sx={{ width: '32px' }} onClick={handleClick}>
+      <ArrowBackRoundedIcon />
     </IconButton>
   );
 };

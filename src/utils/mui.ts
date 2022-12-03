@@ -13,7 +13,7 @@ const muiTheme = extendMuiTheme({
         },
         grey: colors.grey,
         error: {
-          main: colors.red[500],
+          main: '#A10E25',
         },
         info: {
           main: colors.purple[500],
@@ -42,7 +42,7 @@ const muiTheme = extendMuiTheme({
         },
         grey: colors.grey,
         error: {
-          main: colors.red[600],
+          main: '#FF9192',
         },
         info: {
           main: colors.purple[600],
@@ -80,22 +80,9 @@ const githubTheme = extendJoyTheme({
           plainHoverBg: '#F0F7FF',
           solidHoverBg: '#0072E5',
           solidActiveBg: '#0059B2',
-          // 50: '#F0F7FF',
-          // 100: '#C2E0FF',
-          // 200: '#99CCF3',
-          // 300: '#66B2FF',
-          // 400: '#3399FF',
-          // 500: '#007FFF',
-          // 600: '#0072E5',
-          // 700: '#0059B2',
-          // 800: '#004C99',
-          // 900: '#003A75',
         },
         neutral: {
           outlinedHoverBg: '#F2F4F5',
-        },
-        background: {
-          // level2: '#F2F4F5',
         },
         text: {
           primary: '#1A2027',
@@ -114,20 +101,15 @@ const githubTheme = extendJoyTheme({
           plainActiveBg: '#161B21',
           solidHoverBg: '#0072E5',
           solidActiveBg: '#004C99',
-          // 50: '#F0F7FF',
-          // 100: '#C2E0FF',
-          // 200: '#99CCF3',
-          // 300: '#66B2FF',
-          // 400: '#3399FF',
-          // 500: '#007FFF',
-          // 600: '#0072E5',
-          // 700: '#0059B2',
-          // 800: '#004C99',
-          // 900: '#003A75',
         },
         neutral: {
           softBg: '#20232a',
           outlinedBorder: '#42454D',
+          softHoverBg: '#363B47',
+          softActiveBg: '#404654',
+        },
+        danger: {
+          plainHoverBg: '#2B2226',
         },
         background: {
           surface: '#282c34',
