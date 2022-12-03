@@ -1,4 +1,4 @@
-import { Box, Typography } from '@mui/joy';
+import { Box, CircularProgress, Typography } from '@mui/joy';
 import React, { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -13,9 +13,9 @@ type Names = Record<string, string>;
 export const UserTasks = () => {
   const { t } = useTranslation();
   const { id } = useAppSelector((state) => state.user);
-  const { data } = useGetTasksByUserIdQuery(id);
-  const { data: userBoards } = useGetBoardsByUserIdQuery(id);
-  const { data: userColumns } = useGetColumnsByUserIdQuery(id);
+  const { data, isFetching } = useGetTasksByUserIdQuery(id, { refetchOnMountOrArgChange: true });
+  const { data: userBoards } = useGetBoardsByUserIdQuery(id, { refetchOnMountOrArgChange: true });
+  const { data: userColumns } = useGetColumnsByUserIdQuery(id, { refetchOnMountOrArgChange: true });
 
   const [boards, setBoards] = useState<Names | null>(null);
   const [columns, setColumns] = useState<Names | null>(null);
@@ -45,29 +45,33 @@ export const UserTasks = () => {
       <Typography level="h2" sx={{ my: 2 }}>
         {t('yourTasks')}
       </Typography>
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          flexWrap: 'wrap',
-          justifyContent: 'center',
-          gap: 2,
-          width: '100%',
-        }}
-      >
-        {data?.length ? (
-          data.map((task) => (
-            <ResultCard
-              key={task._id}
-              task={task}
-              boardTitle={boards ? boards[task.boardId] : ''}
-              columnTitle={columns ? columns[task.columnId] : ''}
-            />
-          ))
-        ) : (
-          <Typography sx={{ textAlign: 'center' }}>{t('yourHaventtGotTasks')}</Typography>
-        )}
-      </Box>
+      {isFetching ? (
+        <CircularProgress color="primary" size="lg" value={25} variant="soft" />
+      ) : (
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+            gap: 2,
+            width: '100%',
+          }}
+        >
+          {data?.length ? (
+            data.map((task) => (
+              <ResultCard
+                key={task._id}
+                task={task}
+                boardTitle={boards ? boards[task.boardId] : ''}
+                columnTitle={columns ? columns[task.columnId] : ''}
+              />
+            ))
+          ) : (
+            <Typography sx={{ textAlign: 'center' }}>{t('yourHaventtGotTasks')}</Typography>
+          )}
+        </Box>
+      )}
     </Box>
   );
 };
