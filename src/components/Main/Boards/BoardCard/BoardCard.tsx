@@ -1,7 +1,7 @@
 import DeleteIcon from '@mui/icons-material/DeleteOutline';
 import EditIcon from '@mui/icons-material/EditOutlined';
 import { Box, Card, IconButton, Typography, Tooltip, CardContent } from '@mui/joy';
-import { useContext, useEffect, FC } from 'react';
+import { useContext, FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -24,13 +24,7 @@ export const BoardCard: FC<BoardCardPropsType> = ({ board }) => {
   const dispatch = useAppDispatch();
   const { contextDispatch } = useContext(Context);
   const { data: tasksByBoard } = useGetTasksByBoardIdQuery(board['_id']);
-  const [deleteBoard, { isSuccess }] = useDeleteBoardMutation();
-
-  useEffect(() => {
-    if (isSuccess) {
-      toast.success(t('boardDeleted'));
-    }
-  }, [isSuccess, t]);
+  const [deleteBoard] = useDeleteBoardMutation();
 
   const taskCount = {
     count: tasksByBoard?.length || 0,
@@ -40,7 +34,14 @@ export const BoardCard: FC<BoardCardPropsType> = ({ board }) => {
 
   const onClickDelete = (e: React.MouseEvent<HTMLAnchorElement>) => {
     e.preventDefault();
-    contextDispatch({ type: ReducerTypes.onConfirmAction, payload: () => deleteBoard(board._id) });
+    contextDispatch({
+      type: ReducerTypes.onConfirmAction,
+      payload: () =>
+        deleteBoard(board._id)
+          .unwrap()
+          .then(() => toast.success(t('boardDeleted')))
+          .catch(() => toast.error(t('serverError'))),
+    });
   };
 
   const onClickEdit = (e: React.MouseEvent<HTMLAnchorElement>) => {
