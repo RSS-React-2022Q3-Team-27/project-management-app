@@ -80,6 +80,8 @@ const githubTheme = extendJoyTheme({
           plainHoverBg: '#F0F7FF',
           solidHoverBg: '#0072E5',
           solidActiveBg: '#0059B2',
+          softColor: '#096BDE',
+          softBg: '#DDDEE0',
         },
         neutral: {
           outlinedHoverBg: '#F2F4F5',
@@ -101,6 +103,8 @@ const githubTheme = extendJoyTheme({
           plainActiveBg: '#161B21',
           solidHoverBg: '#0072E5',
           solidActiveBg: '#004C99',
+          softColor: '#5090D3',
+          softBg: '#282C34',
         },
         neutral: {
           softBg: '#20232a',

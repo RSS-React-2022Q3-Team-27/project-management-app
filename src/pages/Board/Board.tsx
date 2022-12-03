@@ -20,7 +20,7 @@ import { useGetBoardByIdQuery } from '../../store/slices/board/boardApi';
 export const Board = () => {
   const { t } = useTranslation();
   const { id } = useParams<{ id?: string }>();
-  const { data, isError, isFetching } = useGetBoardByIdQuery(id || '');
+  const { data, isError } = useGetBoardByIdQuery(id || '');
 
   useEffect(() => {
     if (isError) {
@@ -48,13 +48,15 @@ export const Board = () => {
         startDecorator={<ArrowBackIosNewRoundedIcon />}
         color="neutral"
         variant="plain"
-        sx={{ mr: 'auto', ml: 1, mb: isFetching ? '48px' : 0 }}
+        sx={{ mr: 'auto', ml: 1 }}
       >
         {t('toMainPage')}
       </Button>
-      <Typography component="h2" sx={{ fontSize: 24, ml: 1 }}>
-        {data?.title}
-      </Typography>
+      <Box sx={{ height: 36 }}>
+        <Typography component="h2" sx={{ fontSize: 24, ml: 1 }}>
+          {data?.title}
+        </Typography>
+      </Box>
       <Columns />
       <AddColumnModal />
       <AddTaskModal />
