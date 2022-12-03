@@ -57,19 +57,26 @@ export const UpdateTaskModal = () => {
   return (
     <Modal open={isModalOpened} onClose={onClose}>
       <ModalDialog
-        aria-labelledby="add-column-modal-dialog-title"
+        aria-labelledby="update-task-modal-dialog-title"
         sx={{
           maxWidth: 500,
           borderRadius: 'md',
           p: 3,
           boxShadow: 'lg',
+          border: 'none',
         }}
       >
-        <Typography id="add-column-modal-dialog-title" component="h2" level="inherit" fontSize="1.25em" mb="0.25em">
-          {t('updateTask')}
+        <Typography
+          id="update-task-modal-dialog-title"
+          component="h2"
+          level="inherit"
+          fontSize="1.25em"
+          sx={{ mb: 1, textAlign: 'center' }}
+        >
+          {t('task')}
         </Typography>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Stack spacing={1}>
+          <Stack spacing={2}>
             <Controller
               name="title"
               control={control}

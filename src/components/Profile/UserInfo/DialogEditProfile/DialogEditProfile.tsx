@@ -86,7 +86,7 @@ export const DialogEditProfile = ({ openDialog, isDialogOpen }: IProps) => {
         open={isDialogOpen}
         onClose={onClose}
       >
-        <ModalDialog variant="outlined" role="alertdialog">
+        <ModalDialog variant="outlined" role="alertdialog" sx={{ border: 'none' }}>
           <form onSubmit={handleSubmit(confirmHandler)} autoComplete="false">
             <Controller
               name="name"
@@ -144,6 +144,7 @@ export const DialogEditProfile = ({ openDialog, isDialogOpen }: IProps) => {
                   autoComplete="off"
                   title={t('twoToTenLettersLogin')}
                   placeholder={t('login')}
+                  sx={{ mt: 2 }}
                   startDecorator={<PersonRoundedIcon />}
                 />
               )}
@@ -159,7 +160,7 @@ export const DialogEditProfile = ({ openDialog, isDialogOpen }: IProps) => {
               </Typography>
             )}
 
-            <Divider sx={{ margin: 2 }} />
+            <Divider sx={{ my: 3 }} />
 
             <Controller
               name="password"
@@ -194,12 +195,12 @@ export const DialogEditProfile = ({ openDialog, isDialogOpen }: IProps) => {
               </Typography>
             )}
 
-            <Box sx={{ display: 'flex', gap: 1, justifyContent: 'space-between' }}>
-              <Button type="submit" sx={{ mt: 1 }} color="danger" loading={logInUserLoading || updateUserLoading}>
-                {t('change')}
-              </Button>
+            <Box sx={{ display: 'flex', gap: 1, justifyContent: 'space-between', mt: 1 }}>
               <Button type="button" variant="plain" sx={{ mt: 1 }} color="neutral" onClick={onClose}>
                 {t('cancel')}
+              </Button>
+              <Button type="submit" sx={{ mt: 1 }} color="danger" loading={logInUserLoading || updateUserLoading}>
+                {t('change')}
               </Button>
             </Box>
           </form>

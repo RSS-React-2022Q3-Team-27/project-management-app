@@ -105,6 +105,8 @@ const githubTheme = extendJoyTheme({
           solidActiveBg: '#004C99',
           softColor: '#5090D3',
           softBg: '#282C34',
+          solidDisabledBg: '#404654',
+          solidDisabledColor: '#919eab',
         },
         neutral: {
           softBg: '#20232a',

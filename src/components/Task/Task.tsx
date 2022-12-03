@@ -277,7 +277,7 @@ export const Task: FC<TaskPropsType> = ({ task, index, column, files, points }) 
                         sx={{ pr: 1, m: 0, height: 24, color: 'text.secondary' }}
                         startDecorator={<FormatListBulletedRoundedIcon sx={{ fontSize: 16 }} />}
                       >
-                        {t('addCheckList')}
+                        {t('checklist')}
                       </Typography>
                     )}
                     {Boolean(files.length) && (

@@ -76,7 +76,7 @@ export const Points = ({ taskId, boardId, isShow, setIsShow, setExpanded, data }
                 mr: 'auto',
               }}
             >
-              {t('addCheckList')}
+              {t('checklist')}
             </Typography>
 
             <IconButton

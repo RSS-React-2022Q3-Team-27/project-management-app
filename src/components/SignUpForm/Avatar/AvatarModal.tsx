@@ -43,12 +43,6 @@ export const AvatarModal = ({ setFile }: IProps) => {
     }
   };
 
-  const handleChooseFile = () => {
-    if (fileInput?.current) {
-      fileInput.current.click();
-    }
-  };
-
   return (
     <Modal open={isAvatarModal} onClose={handleClose}>
       <ModalDialog
@@ -58,9 +52,10 @@ export const AvatarModal = ({ setFile }: IProps) => {
           borderRadius: 'md',
           p: 3,
           boxShadow: 'lg',
+          border: 'none',
         }}
       >
-        <IconButton variant="soft" onClick={handleClose} sx={{ position: 'absolute', top: -16, right: -16 }}>
+        <IconButton variant="solid" size="sm" onClick={handleClose} sx={{ position: 'absolute', top: -8, right: -8 }}>
           <CloseRoundedIcon />
         </IconButton>
         <Box
@@ -70,7 +65,7 @@ export const AvatarModal = ({ setFile }: IProps) => {
             justifyContent: 'center',
             alignItems: 'center',
             gap: 1,
-            border: '3px dashed var(--joy-palette-primary-200)',
+            border: '2px dashed var(--joy-palette-background-level3)',
             borderRadius: 8,
             position: 'relative',
             p: 1,
@@ -83,11 +78,12 @@ export const AvatarModal = ({ setFile }: IProps) => {
             type="file"
             accept=".jpg,.jpeg,.png"
             onChange={handleChange}
+            style={{ zIndex: 2000 }}
           />
-          <BackupRoundedIcon sx={{ fontSize: 40, color: 'var(--joy-palette-primary-200)' }} />
+          <BackupRoundedIcon sx={{ fontSize: 40, color: 'var(--joy-palette-primary-300)' }} />
           <Typography sx={{ textAlign: 'center' }}>{t('dragDrop')}</Typography>
           <Typography>{t('or')}</Typography>
-          <Button variant="soft" onClick={handleChooseFile}>
+          <Button color="neutral" variant="outlined">
             {t('chooseFile')}
           </Button>
         </Box>

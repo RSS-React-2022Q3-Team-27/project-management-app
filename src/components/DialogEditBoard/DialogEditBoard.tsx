@@ -65,10 +65,17 @@ export const DialogEditBoard = () => {
           borderRadius: 'md',
           p: 3,
           boxShadow: 'lg',
+          border: 'none',
         }}
       >
-        <Typography id="basic-modal-dialog-title" component="h2" level="inherit" fontSize="1.25em" mb="0.25em">
-          {t('editBoard')}
+        <Typography
+          id="basic-modal-dialog-title"
+          component="h2"
+          level="inherit"
+          fontSize="1.25em"
+          sx={{ mb: 1, textAlign: 'center' }}
+        >
+          {t('board')}
         </Typography>
 
         <form onSubmit={handleSubmit(onSubmit)}>

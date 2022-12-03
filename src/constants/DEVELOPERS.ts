@@ -15,7 +15,7 @@ export const DEVELOPERS = [
     link: 'https://github.com/LilithPrimary',
     name: 'secondDev',
     image: devTwo,
-    contribution: ['authorization', 'profile', 'checklist'],
+    contribution: ['authorization', 'profile', 'checklistTask'],
   },
   {
     nickname: 'oxanacode',
