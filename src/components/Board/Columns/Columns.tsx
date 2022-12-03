@@ -234,10 +234,10 @@ export const Columns = () => {
               alignItems: 'flex-start',
               overflowX: 'auto',
               position: 'absolute',
-              gap: 2,
+              gap: 1,
               inset: 0,
               pr: 2,
-              py: 2,
+              pb: 2,
             }}
           >
             <DragDropContext onDragEnd={onDragEnd}>
@@ -251,9 +251,9 @@ export const Columns = () => {
               </Droppable>
             </DragDropContext>
             <Button
-              variant="plain"
+              variant="outlined"
               color="neutral"
-              startDecorator={<AddRoundedIcon />}
+              startDecorator={<AddRoundedIcon color="primary" />}
               sx={{ width: 260, flexShrink: 0 }}
               onClick={handleClick}
             >

@@ -1,12 +1,11 @@
 import { Droppable, Draggable } from '@hello-pangea/dnd';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
-import DeleteIcon from '@mui/icons-material/DeleteOutline';
+import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
 import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
 import IconButton from '@mui/joy/IconButton';
 import Typography from '@mui/joy/Typography';
 import React, { FC, useContext, useState, useEffect } from 'react';
-
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
@@ -119,7 +118,18 @@ export const Column: FC<ColumnPropsType> = ({ column, columns, boardIndex, tasks
         <Box
           {...provided.draggableProps}
           ref={provided.innerRef}
-          sx={{ display: 'flex', flexDirection: 'column', gap: 1, width: 280, flexShrink: 0, height: '100%', mx: 1 }}
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 1,
+            width: 280,
+            flexShrink: 0,
+            height: '100%',
+            mx: 1,
+            p: 1,
+            borderRadius: 'sm',
+            bgcolor: 'background.level2',
+          }}
           onMouseDown={() => dispatch(setTitleEditId(null))}
         >
           <Box
@@ -133,7 +143,7 @@ export const Column: FC<ColumnPropsType> = ({ column, columns, boardIndex, tasks
                 <Typography
                   component="h3"
                   level="h6"
-                  sx={{ width: '100%' }}
+                  sx={{ width: '100%', pl: 2 }}
                   onClick={(e: React.SyntheticEvent) => {
                     e.stopPropagation();
                     dispatch(setTitleEditId(columnId));
@@ -141,8 +151,8 @@ export const Column: FC<ColumnPropsType> = ({ column, columns, boardIndex, tasks
                 >
                   {title}
                 </Typography>
-                <IconButton variant="outlined" color="neutral" onClick={onClickDelete}>
-                  <DeleteIcon />
+                <IconButton variant="outlined" color="neutral" size="sm" onClick={onClickDelete}>
+                  <ClearRoundedIcon />
                 </IconButton>
               </>
             )}
@@ -162,10 +172,10 @@ export const Column: FC<ColumnPropsType> = ({ column, columns, boardIndex, tasks
             </Droppable>
           </Box>
           <Button
-            startDecorator={<AddRoundedIcon />}
-            sx={{ width: 280 }}
+            startDecorator={<AddRoundedIcon color="primary" />}
+            sx={{ width: '100%' }}
             variant="outlined"
-            color="primary"
+            color="neutral"
             onClick={onClickAddTask}
           >
             {t('addTask')}

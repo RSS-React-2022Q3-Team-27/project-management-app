@@ -1,6 +1,6 @@
 import ArrowBackIosNewRoundedIcon from '@mui/icons-material/ArrowBackIosNewRounded';
 import Box from '@mui/joy/Box';
-import Link from '@mui/joy/Link';
+import Button from '@mui/joy/Button';
 import Typography from '@mui/joy/Typography';
 import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -36,23 +36,23 @@ export const Board = () => {
         display: 'flex',
         flexDirection: 'column',
         height: '100%',
-        gap: { xs: 1, sm: 2 },
+        gap: 2,
         pl: 2,
-        pt: { xs: 2, sm: 4 },
+        pt: 4,
         pb: 2,
       }}
     >
-      <Link
+      <Button
         component={RouterLink}
         to={ROUTES.MAIN.path}
         startDecorator={<ArrowBackIosNewRoundedIcon />}
-        underline="none"
         color="neutral"
-        sx={{ mr: 'auto' }}
+        variant="plain"
+        sx={{ mr: 'auto', ml: 1 }}
       >
         {t('toMainPage')}
-      </Link>
-      <Typography component="h2" sx={{ fontSize: { xs: 24, sm: 36 } }}>
+      </Button>
+      <Typography component="h2" sx={{ fontSize: 24, ml: 1 }}>
         {data?.title}
       </Typography>
       <Columns />

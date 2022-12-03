@@ -89,7 +89,7 @@ const githubTheme = extendJoyTheme({
           900: '#003A75',
         },
         neutral: {
-          softBg: '#F6F6F6',
+          // softBg: '#F6F6F6',
         },
         text: {
           primary: '#1A2027',
@@ -121,6 +121,7 @@ const githubTheme = extendJoyTheme({
         },
         background: {
           surface: '#282c34',
+          level1: '#20232a',
         },
         text: {
           secondary: '#919eab',

@@ -21,7 +21,7 @@ export const Welcome = () => {
           px: 2,
         }}
       >
-        <Box sx={{ borderLeft: '3px solid var(--joy-palette-neutral-softBg)' }}>
+        <Box sx={{ borderLeft: '3px solid var(--joy-palette-background-level1)' }}>
           <AdvantageSection />
           <CourseSection />
           <DevSection />

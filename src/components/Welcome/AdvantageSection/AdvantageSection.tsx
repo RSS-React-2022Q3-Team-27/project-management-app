@@ -10,7 +10,6 @@ export const AdvantageSection = () => {
 
   const cards = APP_ADVANTAGES.map(({ content, image, id }, i) => (
     <Sheet
-      variant="soft"
       sx={{
         display: 'flex',
         flexDirection: i % 2 === 0 ? 'row' : 'row-reverse',
@@ -20,6 +19,7 @@ export const AdvantageSection = () => {
         width: '100%',
         maxWidth: 400,
         p: 1,
+        bgcolor: 'background.level1',
       }}
       key={id}
     >

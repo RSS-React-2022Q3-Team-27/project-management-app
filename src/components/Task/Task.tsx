@@ -265,28 +265,28 @@ export const Task: FC<TaskPropsType> = ({ task, index, column, files, points }) 
                 </Menu>
               </Box>
               <Box>
-                <Typography>{task.description}</Typography>
+                <Typography textColor="text.secondary">{task.description}</Typography>
               </Box>
 
               {(Boolean(files.length) || Boolean(points?.length) || isPoints) && (
                 <>
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 1 }}>
-                    {Boolean(files.length) && (
-                      <Typography
-                        variant="soft"
-                        sx={{ pr: 1, m: 0, height: 24 }}
-                        startDecorator={<AttachFileRoundedIcon sx={{ fontSize: 16 }} />}
-                      >
-                        {files.length}
-                      </Typography>
-                    )}
                     {(Boolean(points.length) || isPoints) && (
                       <Typography
                         variant="soft"
-                        sx={{ pr: 1, m: 0, height: 24 }}
+                        sx={{ pr: 1, m: 0, height: 24, color: 'text.secondary' }}
                         startDecorator={<FormatListBulletedRoundedIcon sx={{ fontSize: 16 }} />}
                       >
                         {t('addCheckList')}
+                      </Typography>
+                    )}
+                    {Boolean(files.length) && (
+                      <Typography
+                        variant="soft"
+                        sx={{ pr: 1, m: 0, height: 24, color: 'text.secondary' }}
+                        startDecorator={<AttachFileRoundedIcon sx={{ fontSize: 16 }} />}
+                      >
+                        {files.length}
                       </Typography>
                     )}
                     <IconButton
@@ -310,7 +310,7 @@ export const Task: FC<TaskPropsType> = ({ task, index, column, files, points }) 
 
                     {Boolean(files.length) && (
                       <>
-                        <Divider sx={{ mb: 1 }} />
+                        <Divider sx={{ my: 1 }} />
                         <List sx={{ p: 0 }}>
                           {files.map((file) => (
                             <ListItem key={file._id} sx={{ px: 0 }}>

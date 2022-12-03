@@ -16,8 +16,8 @@ export const Layout = () => {
         display: 'grid',
         gridTemplateRows: 'min-content 1fr min-content',
         minHeight: '100vh',
+        bgcolor: 'background.level1',
       }}
-      variant="soft"
     >
       <SideDrawer />
       <DialogConfirm />

@@ -11,7 +11,6 @@ export const PromoSection = () => {
 
   return (
     <Sheet
-      variant="soft"
       sx={{
         display: 'flex',
         flexDirection: { xs: 'column-reverse', sm: 'column-reverse', md: 'row' },
@@ -20,6 +19,7 @@ export const PromoSection = () => {
         alignItems: 'center',
         py: 10,
         px: 2,
+        bgcolor: 'background.level1',
       }}
     >
       <Box

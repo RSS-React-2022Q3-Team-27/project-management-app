@@ -21,7 +21,7 @@ export const DevSection = () => {
           justifyContent: 'space-between',
           p: 2,
           width: '100%',
-          bgcolor: 'neutral.softBg',
+          bgcolor: 'background.level1',
         }}
       >
         <Box sx={{ display: 'flex', mx: 'auto', mb: 2 }}>

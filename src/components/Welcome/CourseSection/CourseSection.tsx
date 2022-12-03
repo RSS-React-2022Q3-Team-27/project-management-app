@@ -13,7 +13,15 @@ export const CourseSection = () => {
   const techs = TECHNOLOGIES.map((tech) => (
     <Box
       key={tech.name}
-      sx={{ display: 'flex', alignItems: 'center', gap: 1, borderRadius: 50, py: 1, px: 2, bgcolor: 'neutral.softBg' }}
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: 1,
+        borderRadius: 50,
+        py: 1,
+        px: 2,
+        bgcolor: 'background.level1',
+      }}
     >
       <Box component="img" src={tech.image} sx={{ width: 40 }} />
       <Typography level="body1" component="h4" textColor="text.secondary">

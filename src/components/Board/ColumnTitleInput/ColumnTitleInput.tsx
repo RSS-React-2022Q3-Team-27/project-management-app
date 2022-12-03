@@ -58,7 +58,7 @@ export const ColumnTitleInput: FC<ColumnTitleProps> = ({ column }) => {
             <TextField
               {...field}
               autoFocus
-              sx={{ width: 260 }}
+              sx={{ width: 264 }}
               endDecorator={
                 <Box sx={{ display: 'flex', gap: 2 }}>
                   <IconButton variant="soft" color="success" type="submit">
