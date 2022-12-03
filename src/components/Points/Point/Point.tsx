@@ -57,7 +57,7 @@ export const Point = ({ point }: IProps) => {
         variant="plain"
         color="danger"
         type="submit"
-        title={t('addPoint')}
+        title={t('deletePoint')}
         size="sm"
         onClick={delTask}
       >

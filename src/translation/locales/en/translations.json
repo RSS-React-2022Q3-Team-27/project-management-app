@@ -88,7 +88,7 @@
   "updateTask": "Update task",
   "taskUpdated": "Task updated",
   "yourTasks": "Your tasks",
-  "yourHaventtGotTasks": "You haven't got any tasks yet",
+  "yourHaventtGotTasks": "You don't have any tasks yet",
   "taskDeleted": "Task deleted",
   "taskCount": "Tasks: {{count}}",
   "noResults": "No results",
@@ -96,6 +96,8 @@
   "taskAdded": "Task added",
   "addPoint": "Add new point",
   "addCheckList": "Add check list",
+  "deleteChecklist": "Delete checklist",
+  "deletePoint": "Delete point",
   "checklist": "Check list",
   "addItem": "Add item",
   "searchResults": "Search results",
@@ -114,6 +116,6 @@
   "columnDeleted": "Column deleted",
   "inputPswd": "Input password",
   "column": "Column",
-  "noBoards": "You don't have any boards",
+  "noBoards": "You don't have any boards yet",
   "authRequired": "Authorization required!"
 }

@@ -3,10 +3,10 @@ import DeleteOutlineRoundedIcon from '@mui/icons-material/DeleteOutlineRounded';
 import { Divider, IconButton } from '@mui/joy';
 import Box from '@mui/joy/Box';
 import List from '@mui/joy/List';
+import Tooltip from '@mui/joy/Tooltip';
 import Typography from '@mui/joy/Typography';
 import { useState, useEffect, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-
 import { toast } from 'react-toastify';
 
 import { AddPointModal } from './AddPointModal/AddPointModal';
@@ -79,27 +79,29 @@ export const Points = ({ taskId, boardId, isShow, setIsShow, setExpanded, data }
               {t('checklist')}
             </Typography>
 
-            <IconButton
-              variant="outlined"
-              color="neutral"
-              type="submit"
-              title={t('delete')}
-              size="sm"
-              onClick={() => contextDispatch({ type: ReducerTypes.onConfirmAction, payload: delPoints })}
-            >
-              <DeleteOutlineRoundedIcon color="error" />
-            </IconButton>
+            <Tooltip title={t('deleteChecklist')} color="neutral" size="sm" variant="plain">
+              <IconButton
+                variant="outlined"
+                color="neutral"
+                type="submit"
+                size="sm"
+                onClick={() => contextDispatch({ type: ReducerTypes.onConfirmAction, payload: delPoints })}
+              >
+                <DeleteOutlineRoundedIcon color="error" />
+              </IconButton>
+            </Tooltip>
 
-            <IconButton
-              variant="outlined"
-              color="neutral"
-              type="submit"
-              title={t('addPoint')}
-              size="sm"
-              onClick={() => setIsModalOpen(true)}
-            >
-              <AddRoundedIcon color="primary" />
-            </IconButton>
+            <Tooltip title={t('addPoint')} color="neutral" size="sm" variant="plain">
+              <IconButton
+                variant="outlined"
+                color="neutral"
+                type="submit"
+                size="sm"
+                onClick={() => setIsModalOpen(true)}
+              >
+                <AddRoundedIcon color="primary" />
+              </IconButton>
+            </Tooltip>
           </Box>
           <Box role="group" aria-labelledby="filter-status">
             <List>

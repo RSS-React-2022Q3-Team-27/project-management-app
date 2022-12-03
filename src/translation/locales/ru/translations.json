@@ -96,6 +96,8 @@
   "taskAdded": "Задача добавлена",
   "addPoint": "Добавить пункт",
   "addCheckList": "Добавить список",
+  "deleteChecklist": "Удалить список",
+  "deletePoint": "Удалить пункт",
   "checklist": "Список",
   "addItem": "Добавить пункт",
   "searchResults": "Результаты поиска",
