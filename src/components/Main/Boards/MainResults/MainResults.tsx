@@ -36,8 +36,16 @@ export const MainResults = () => {
 
   return (
     <>
-      <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'flex-start', gap: 2 }}>
-        {isLoading ? <CircularProgress color="primary" size="lg" value={25} variant="soft" /> : cards}
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          flexWrap: 'wrap',
+          justifyContent: { xs: 'center', sm: 'center', md: 'center', lg: 'flex-start' },
+          gap: 2,
+        }}
+      >
+        {isLoading ? <CircularProgress color="primary" value={25} variant="soft" sx={{ mx: 'auto', mt: 6 }} /> : cards}
       </Box>
 
       {isOpenedDialogEditBoard ? <DialogEditBoard /> : null}

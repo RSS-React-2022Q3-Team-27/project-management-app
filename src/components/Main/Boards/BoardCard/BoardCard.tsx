@@ -1,6 +1,6 @@
 import DeleteIcon from '@mui/icons-material/DeleteOutline';
 import EditIcon from '@mui/icons-material/EditOutlined';
-import { Box, Card, IconButton, Typography, Tooltip, CardContent } from '@mui/joy';
+import { Box, Card, IconButton, Typography, Tooltip, CardContent, Chip } from '@mui/joy';
 import { useContext, useEffect, FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
@@ -56,7 +56,7 @@ export const BoardCard: FC<BoardCardPropsType> = ({ board }) => {
           <Typography level="h2" fontSize="md" sx={{ mb: 0.5 }}>
             {title}
           </Typography>
-          <Typography level="body1" sx={{ height: '100%', flexGrow: 1 }}>
+          <Typography level="body1" textColor="text.secondary" sx={{ height: '100%', flexGrow: 1 }}>
             {description}
           </Typography>
 
@@ -66,15 +66,14 @@ export const BoardCard: FC<BoardCardPropsType> = ({ board }) => {
               alignSelf: 'flex-end',
               display: 'flex',
               gap: 1,
+              mt: 1,
               alignItems: 'center',
               width: '100%',
             }}
           >
-            <Box>
-              <Typography level="body2" textAlign="right">
-                {t('taskCount', taskCount)}
-              </Typography>
-            </Box>
+            <Chip size="md" variant="outlined" color="neutral" sx={{ borderRadius: 'sm' }}>
+              {t('taskCount', taskCount)}
+            </Chip>
 
             <Tooltip title={t('edit')} arrow placement="bottom" size="sm">
               <IconButton color="neutral" variant="soft" size="sm" onClick={onClickEdit} sx={{ ml: 'auto' }}>
