@@ -20,7 +20,7 @@ import { useGetBoardByIdQuery } from '../../store/slices/board/boardApi';
 export const Board = () => {
   const { t } = useTranslation();
   const { id } = useParams<{ id?: string }>();
-  const { data, isError } = useGetBoardByIdQuery(id || '');
+  const { data, isError } = useGetBoardByIdQuery(id || '', { refetchOnMountOrArgChange: true });
 
   useEffect(() => {
     if (isError) {
