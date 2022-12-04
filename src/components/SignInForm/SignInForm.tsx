@@ -95,12 +95,13 @@ export const SignInForm = () => {
             label={t('login')}
             placeholder={t('login')}
             startDecorator={<PersonRoundedIcon color="primary" />}
+            sx={{ mb: errors.login ? 0 : 2.75 }}
           />
         )}
       />
       {errors.login && (
-        <Typography level="body2" color="danger">
-          {errors.login.message}
+        <Typography level="body2" color="danger" sx={{ height: 22 }}>
+          {t('twoToTenLettersLogin')}
         </Typography>
       )}
 
@@ -121,17 +122,17 @@ export const SignInForm = () => {
             placeholder={t('password')}
             label={t('password')}
             startDecorator={<KeyRoundedIcon color="primary" />}
-            sx={{ mt: 2 }}
+            sx={{ mb: errors.password ? 0 : 2.75 }}
           />
         )}
       />
       {errors.password && (
-        <Typography level="body2" color="danger">
-          {errors.password.message}
+        <Typography level="body2" color="danger" sx={{ height: 22 }}>
+          {t('fieldIsRequire')}
         </Typography>
       )}
 
-      <Button type="submit" sx={{ mt: 4, width: '100%' }} loading={logInUserLoading || getUsersLoading}>
+      <Button type="submit" sx={{ mt: 1, width: '100%' }} loading={logInUserLoading || getUsersLoading}>
         {t('signIn')}
       </Button>
     </form>

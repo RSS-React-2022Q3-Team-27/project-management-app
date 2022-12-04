@@ -1,4 +1,3 @@
-import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
 import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
 import Divider from '@mui/joy/Divider';
@@ -43,14 +42,14 @@ export const DialogConfirm = () => {
         open={typeof contextState.onConfirmAction === 'function'}
         onClose={onClose}
       >
-        <ModalDialog variant="outlined" role="alertdialog">
+        <ModalDialog variant="outlined" role="alertdialog" sx={{ border: 'none' }}>
           <Typography
             id="alert-dialog-modal-title"
             component="h2"
             level="inherit"
             fontSize="1.25em"
             mb="0.25em"
-            startDecorator={<WarningRoundedIcon />}
+            textAlign="center"
           >
             {t('confirmation')}
           </Typography>
@@ -58,11 +57,11 @@ export const DialogConfirm = () => {
           <Typography id="alert-dialog-modal-description" textColor="text.tertiary" mb={3}>
             {t('confirmationText')}
           </Typography>
-          <Box sx={{ display: 'flex', gap: 1, justifyContent: 'flex-end' }}>
-            <Button variant="plain" color="neutral" onClick={onClose}>
+          <Box sx={{ display: 'flex', gap: 1, justifyContent: 'space-between' }}>
+            <Button variant="outlined" color="neutral" sx={{ width: 100 }} onClick={onClose}>
               {t('confirmCancel')}
             </Button>
-            <Button variant="solid" color="danger" onClick={onClick} loading={isLoading}>
+            <Button variant="solid" color="danger" sx={{ width: 100 }} onClick={onClick} loading={isLoading}>
               {t('confirmSure')}
             </Button>
           </Box>

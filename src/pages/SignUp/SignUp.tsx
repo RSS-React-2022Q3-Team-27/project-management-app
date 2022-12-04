@@ -33,13 +33,11 @@ export const SignUp = () => {
         boxShadow: 'sm',
       }}
     >
-      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-        <div>
-          <Typography level="h4" component="h1">
-            <b>{t('welcome')}</b>
-          </Typography>
-          <Typography level="body2">{t('signUp')}</Typography>
-        </div>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Typography level="h4" component="h1" lineHeight="31px">
+          <b>{t('welcome')}</b>
+        </Typography>
+
         <Avatar
           className={styles.avatar}
           alt="+"

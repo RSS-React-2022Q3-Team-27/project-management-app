@@ -75,8 +75,13 @@ export const FileAttachment = ({ name, path, fileId }: FileAttachmentProps) => {
         onClose={() => setOpenImage(false)}
         sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
       >
-        <ModalDialog sx={{ maxWidth: '50%' }}>
-          <IconButton sx={{ position: 'absolute', right: -16, top: -16 }} onClick={() => setOpenImage(false)}>
+        <ModalDialog sx={{ maxWidth: '50%', border: 'none' }}>
+          <IconButton
+            color="neutral"
+            size="sm"
+            sx={{ position: 'absolute', right: -14, top: -14 }}
+            onClick={() => setOpenImage(false)}
+          >
             <CloseRoundedIcon />
           </IconButton>
           <Box component="img" sx={{ width: '100%' }} src={`${URL}${path}`} />

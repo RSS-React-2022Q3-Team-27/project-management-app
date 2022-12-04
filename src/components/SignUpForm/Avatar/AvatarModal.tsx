@@ -1,10 +1,9 @@
 import BackupRoundedIcon from '@mui/icons-material/BackupRounded';
-import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import ReportGmailerrorredRoundedIcon from '@mui/icons-material/ReportGmailerrorredRounded';
 import Box from '@mui/joy/Box';
 import Button from '@mui/joy/Button';
-import IconButton from '@mui/joy/IconButton';
 import Modal from '@mui/joy/Modal';
+import ModalClose from '@mui/joy/ModalClose';
 import ModalDialog from '@mui/joy/ModalDialog';
 import Typography from '@mui/joy/Typography';
 import { ChangeEvent, useRef, useState } from 'react';
@@ -55,9 +54,7 @@ export const AvatarModal = ({ setFile }: IProps) => {
           border: 'none',
         }}
       >
-        <IconButton variant="solid" size="sm" onClick={handleClose} sx={{ position: 'absolute', top: -8, right: -8 }}>
-          <CloseRoundedIcon />
-        </IconButton>
+        <ModalClose />
         <Box
           sx={{
             display: 'flex',
@@ -70,6 +67,7 @@ export const AvatarModal = ({ setFile }: IProps) => {
             position: 'relative',
             p: 1,
             mb: 2,
+            mt: 4,
           }}
         >
           <input
@@ -83,7 +81,7 @@ export const AvatarModal = ({ setFile }: IProps) => {
           <BackupRoundedIcon sx={{ fontSize: 40, color: 'var(--joy-palette-primary-300)' }} />
           <Typography sx={{ textAlign: 'center' }}>{t('dragDrop')}</Typography>
           <Typography>{t('or')}</Typography>
-          <Button color="neutral" variant="outlined">
+          <Button color="neutral" variant="soft">
             {t('chooseFile')}
           </Button>
         </Box>

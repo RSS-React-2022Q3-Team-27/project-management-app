@@ -124,7 +124,7 @@ export const SignUpForm = () => {
           },
           pattern: {
             value: /[a-zA-Zа-яА-Я]{2,10}$/,
-            message: `${t('wrongFormat')} (${t('twoToTenLetters')})`,
+            message: t('twoToTenLetters'),
           },
         }}
         render={({ field }) => (
@@ -136,12 +136,13 @@ export const SignUpForm = () => {
             placeholder={t('name')}
             autoComplete="off"
             title={t('twoToTenLetters')}
+            sx={{ mb: errors.name ? 0 : 2.75 }}
           />
         )}
       />
       {errors.name && (
-        <Typography level="body2" color="danger">
-          {errors.name.message}
+        <Typography level="body2" color="danger" sx={{ height: 22 }}>
+          {t('twoToTenLetters')}
         </Typography>
       )}
 
@@ -156,7 +157,7 @@ export const SignUpForm = () => {
           },
           pattern: {
             value: /[a-zA-Z0-9]{2,10}$/,
-            message: `${t('twoToTenLettersLogin')}`,
+            message: t('twoToTenLettersLogin'),
           },
         }}
         render={({ field }) => (
@@ -168,13 +169,13 @@ export const SignUpForm = () => {
             autoComplete="off"
             title={t('twoToTenLettersLogin')}
             placeholder={t('login')}
-            sx={{ mt: 2 }}
+            sx={{ mb: errors.login ? 0 : 2.75 }}
           />
         )}
       />
       {errors.login && (
-        <Typography level="body2" color="danger">
-          {errors.login.message}
+        <Typography level="body2" color="danger" sx={{ height: 22 }}>
+          {t('twoToTenLettersLogin')}
         </Typography>
       )}
       <Controller
@@ -195,13 +196,13 @@ export const SignUpForm = () => {
             autoComplete="off"
             placeholder={t('password')}
             label={t('password')}
-            sx={{ mt: 2 }}
+            sx={{ mb: errors.password ? 0 : 2.75 }}
           />
         )}
       />
       {errors.password && (
-        <Typography level="body2" color="danger">
-          {errors.password.message}
+        <Typography level="body2" color="danger" sx={{ height: 22 }}>
+          {t('fieldIsRequire')}
         </Typography>
       )}
       <Controller
@@ -222,20 +223,20 @@ export const SignUpForm = () => {
             autoComplete="off"
             placeholder={t('verifyPassword')}
             label={t('verifyPassword')}
-            sx={{ mt: 2 }}
+            sx={{ mb: errors.passwordConfirm ? 0 : 2.75 }}
           />
         )}
       />
       {errors.passwordConfirm && (
-        <Typography level="body2" color="danger">
-          {errors.passwordConfirm.message}
+        <Typography level="body2" color="danger" sx={{ height: 22 }}>
+          {t('fieldIsRequire')}
         </Typography>
       )}
       <AvatarModal setFile={setFile} />
       <Button
         type="submit"
         loading={createUserLoading || ligInUserLoading || avatarLoading}
-        sx={{ mt: 3, width: '100%' }}
+        sx={{ width: '100%', mt: 1 }}
       >
         {t('signUp')}
       </Button>
