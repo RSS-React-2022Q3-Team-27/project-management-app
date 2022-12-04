@@ -3,7 +3,7 @@ import Box from '@mui/joy/Box';
 import Link from '@mui/joy/Link';
 import Typography from '@mui/joy/Typography';
 
-import logoLight from '../../assets/images/rss-logo-light.svg';
+import logoLight from '../../assets/images/rss-logo.svg';
 import { DEVELOPERS, SCHOOL_LINK } from '../../constants/DEVELOPERS';
 
 export const Footer = () => {
