@@ -13,7 +13,7 @@ import { AvatarModal } from './Avatar/AvatarModal';
 
 import { ROUTES } from '../../constants/routes';
 import { URL as serverURL } from '../../constants/URL';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { useAppDispatch } from '../../store/hooks';
 import { useUploadFileMutation } from '../../store/slices/files/filesApi';
 import { useCreateUserMutation, useLogInUserMutation } from '../../store/slices/user/authApi';
 import { setAvatar, setAvatarInfo, setIsUserLogIn, setToken, setUserInfo } from '../../store/slices/user/userSlice';
@@ -38,7 +38,6 @@ export interface IRegError {
 export const SignUpForm = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { isUserLogIn } = useAppSelector((state) => state.user);
 
   const { t } = useTranslation();
   const [createUser, { isLoading: createUserLoading }] = useCreateUserMutation();
@@ -98,12 +97,6 @@ export const SignUpForm = () => {
       toast.error(t('pswdNotMach'));
     }
   };
-
-  useEffect(() => {
-    if (isUserLogIn) {
-      navigate(ROUTES.MAIN.path);
-    }
-  }, [isUserLogIn, navigate]);
 
   useEffect(() => {
     if (file) {

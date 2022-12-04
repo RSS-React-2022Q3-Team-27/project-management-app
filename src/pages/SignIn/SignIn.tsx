@@ -1,15 +1,25 @@
 import Sheet from '@mui/joy/Sheet';
 import Typography from '@mui/joy/Typography';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { SignInForm } from '../../components/SignInForm/SignInForm';
 
 import { ROUTES } from '../../constants/routes';
+import { useAppSelector } from '../../store/hooks';
 
 export const SignIn = () => {
+  const navigate = useNavigate();
+
   const { t } = useTranslation();
+  const { isUserLogIn } = useAppSelector((state) => state.user);
+
+  useEffect(() => {
+    if (isUserLogIn) {
+      navigate(ROUTES.MAIN.path);
+    }
+  }, [isUserLogIn, navigate]);
   return (
     <Sheet
       sx={{
