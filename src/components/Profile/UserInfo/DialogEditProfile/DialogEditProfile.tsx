@@ -70,8 +70,8 @@ export const DialogEditProfile = ({ openDialog, isDialogOpen }: IProps) => {
         dispatch(setUserInfo(newUserData));
         openDialog(false);
         reset({
-          name: userName,
-          login,
+          name: data.name,
+          login: data.login,
           password: '',
         });
       })
@@ -98,7 +98,7 @@ export const DialogEditProfile = ({ openDialog, isDialogOpen }: IProps) => {
                   message: t('fieldIsRequire'),
                 },
                 pattern: {
-                  value: /[a-zA-Zа-яА-Я]{2,10}$/,
+                  value: /^[a-zA-Zа-яА-Я]{2,10}$/,
                   message: `${t('wrongFormat')} (${t('twoToTenLetters')})`,
                 },
               }}
@@ -131,7 +131,7 @@ export const DialogEditProfile = ({ openDialog, isDialogOpen }: IProps) => {
                   message: t('fieldIsRequire'),
                 },
                 pattern: {
-                  value: /[a-zA-Z0-9]{2,10}$/,
+                  value: /^[a-zA-Z0-9]{2,10}$/,
                   message: `${t('wrongFormat')} (${t('twoToTenLettersLogin')})`,
                 },
               }}
