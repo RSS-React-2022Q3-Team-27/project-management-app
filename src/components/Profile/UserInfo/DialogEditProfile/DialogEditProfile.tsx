@@ -70,8 +70,8 @@ export const DialogEditProfile = ({ openDialog, isDialogOpen }: IProps) => {
         dispatch(setUserInfo(newUserData));
         openDialog(false);
         reset({
-          name: userName,
-          login,
+          name: data.name,
+          login: data.login,
           password: '',
         });
       })
