@@ -5,6 +5,8 @@ import ListItem from '@mui/joy/ListItem';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
+import { toast } from 'react-toastify';
+
 import styles from './Point.module.css';
 
 import {
@@ -25,13 +27,13 @@ export const Point = ({ point }: IProps) => {
   const [isChecked, setIsChecked] = useState(done);
 
   const delTask = () => {
-    deletePoint(id);
+    deletePoint(id).catch(() => toast.error(t('serverError')));
   };
 
   const togglePoint = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsChecked(!isChecked);
     const body = { title, done: e.target.checked };
-    updatePoint({ id, body });
+    updatePoint({ id, body }).catch(() => toast.error(t('serverError')));
   };
 
   return (
