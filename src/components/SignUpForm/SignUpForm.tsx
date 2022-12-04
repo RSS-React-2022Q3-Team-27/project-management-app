@@ -123,7 +123,7 @@ export const SignUpForm = () => {
             message: t('fieldIsRequire'),
           },
           pattern: {
-            value: /[a-zA-Zа-яА-Я]{2,10}$/,
+            value: /^[a-zA-Zа-яА-Я]{2,10}$/,
             message: t('twoToTenLetters'),
           },
         }}
@@ -156,7 +156,7 @@ export const SignUpForm = () => {
             message: t('fieldIsRequire'),
           },
           pattern: {
-            value: /[a-zA-Z0-9]{2,10}$/,
+            value: /^[a-zA-Z0-9]{2,10}$/,
             message: t('twoToTenLettersLogin'),
           },
         }}

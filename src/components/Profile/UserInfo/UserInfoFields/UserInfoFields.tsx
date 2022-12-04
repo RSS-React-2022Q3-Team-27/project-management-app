@@ -48,7 +48,7 @@ export const UserInfoFields = () => {
             {t('login')}
           </Typography>
           <Divider orientation="vertical" sx={{ mr: 'auto' }} />
-          <Typography sx={{ fontSize: 'lg' }}>{login}</Typography>
+          <Typography sx={{ fontSize: 'lg', mr: 'auto' }}>{login}</Typography>
         </Box>
 
         <Box
@@ -78,7 +78,7 @@ export const UserInfoFields = () => {
             {t('name')}
           </Typography>
           <Divider orientation="vertical" sx={{ mr: 'auto' }} />
-          <Typography sx={{ fontSize: 'lg' }}>{userName}</Typography>
+          <Typography sx={{ fontSize: 'lg', mr: 'auto' }}>{userName}</Typography>
         </Box>
       </Box>
     </>

@@ -70,10 +70,11 @@ export const SearchResults = () => {
         flexDirection: 'column',
         justifyContent: 'center',
         alignItems: 'center',
+        gap: 1,
         m: '0 auto',
         width: {
           md: '80%',
-          xs: '95%',
+          xs: '100%',
         },
       }}
     >

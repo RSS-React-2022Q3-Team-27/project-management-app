@@ -99,7 +99,7 @@ export const DialogEditProfile = ({ openDialog, isDialogOpen }: IProps) => {
                 },
                 pattern: {
                   value: /^[a-zA-Zа-яА-Я]{2,10}$/,
-                  message: `${t('wrongFormat')} (${t('twoToTenLetters')})`,
+                  message: t('twoToTenLetters'),
                 },
               }}
               render={({ field }) => (
@@ -112,12 +112,13 @@ export const DialogEditProfile = ({ openDialog, isDialogOpen }: IProps) => {
                   autoComplete="off"
                   title={t('twoToTenLetters')}
                   startDecorator={<AccessibilityNewRoundedIcon />}
+                  sx={{ mb: errors.name ? 0 : 2.75 }}
                 />
               )}
             />
             {errors.name && (
-              <Typography level="body2" color="danger">
-                {errors.name.message}
+              <Typography level="body2" color="danger" sx={{ height: 22 }}>
+                {t('twoToTenLetters')}
               </Typography>
             )}
 
@@ -132,7 +133,11 @@ export const DialogEditProfile = ({ openDialog, isDialogOpen }: IProps) => {
                 },
                 pattern: {
                   value: /^[a-zA-Z0-9]{2,10}$/,
+<<<<<<< HEAD
                   message: `${t('wrongFormat')} (${t('twoToTenLettersLogin')})`,
+=======
+                  message: t('twoToTenLettersLogin'),
+>>>>>>> c2f41dd24d6ca4c79d66163b7bcc44149775c396
                 },
               }}
               render={({ field }) => (
@@ -144,23 +149,23 @@ export const DialogEditProfile = ({ openDialog, isDialogOpen }: IProps) => {
                   autoComplete="off"
                   title={t('twoToTenLettersLogin')}
                   placeholder={t('login')}
-                  sx={{ mt: 2 }}
+                  sx={{ mb: errors.login || updateError ? 0.25 : 3 }}
                   startDecorator={<PersonRoundedIcon />}
                 />
               )}
             />
             {errors.login && (
-              <Typography level="body2" color="danger">
-                {errors.login.message}
+              <Typography level="body2" color="danger" sx={{ height: 22 }}>
+                {t('twoToTenLettersLogin')}
               </Typography>
             )}
             {updateError && (
-              <Typography level="body2" color="danger">
+              <Typography level="body2" color="danger" sx={{ height: 22 }}>
                 {t('loginAlreadyExist')}
               </Typography>
             )}
 
-            <Divider sx={{ my: 3 }} />
+            <Divider sx={{ mb: 3 }} />
 
             <Controller
               name="password"
@@ -180,23 +185,24 @@ export const DialogEditProfile = ({ openDialog, isDialogOpen }: IProps) => {
                   autoComplete="off"
                   placeholder={t('password')}
                   label={t('confirmByPassword')}
+                  sx={{ mb: errors.password || logInError ? 0 : 2.75 }}
                   startDecorator={<KeyRoundedIcon />}
                 />
               )}
             />
             {errors.password && (
-              <Typography level="body2" color="danger">
-                {errors.password.message}
+              <Typography level="body2" color="danger" sx={{ height: 22 }}>
+                {t('fieldIsRequire')}
               </Typography>
             )}
             {logInError && (
-              <Typography level="body2" color="danger">
+              <Typography level="body2" color="danger" sx={{ height: 22 }}>
                 {t('wrongPassword')}
               </Typography>
             )}
 
             <Box sx={{ display: 'flex', gap: 1, justifyContent: 'space-between', mt: 1 }}>
-              <Button type="button" variant="plain" sx={{ mt: 1 }} color="neutral" onClick={onClose}>
+              <Button type="button" variant="outlined" sx={{ mt: 1 }} color="neutral" onClick={onClose}>
                 {t('cancel')}
               </Button>
               <Button type="submit" sx={{ mt: 1 }} color="danger" loading={logInUserLoading || updateUserLoading}>

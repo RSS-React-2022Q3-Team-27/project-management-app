@@ -37,7 +37,7 @@ export const UserTasks = () => {
         justifyContent: 'center',
         alignItems: 'center',
         gap: 2,
-        my: 4,
+        my: 3,
         mx: 'auto',
         maxWidth: 600,
       }}
@@ -54,7 +54,7 @@ export const UserTasks = () => {
             flexDirection: 'column',
             flexWrap: 'wrap',
             justifyContent: 'center',
-            gap: 2,
+            gap: 1,
             width: '100%',
           }}
         >

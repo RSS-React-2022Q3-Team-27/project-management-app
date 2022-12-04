@@ -4,7 +4,7 @@ import Button from '@mui/joy/Button';
 
 import TextField from '@mui/joy/TextField';
 import Typography from '@mui/joy/Typography';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm, Controller, SubmitHandler } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 
@@ -84,7 +84,7 @@ export const SignInForm = () => {
             message: t('fieldIsRequire'),
           },
           pattern: {
-            value: /[a-zA-Z0-9]{2,10}$/,
+            value: /^[a-zA-Z0-9]{2,10}$/,
             message: t('wrongFormat'),
           },
         }}
