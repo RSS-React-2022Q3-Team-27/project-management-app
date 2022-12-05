@@ -10,6 +10,7 @@ import { ROUTES } from '../../../constants/routes';
 import { useAppDispatch } from '../../../store/hooks';
 import { closeSideDrawer } from '../../../store/slices/header/headerSlice';
 import { userLogOut } from '../../../store/slices/user/userSlice';
+import { usersApi } from '../../../store/slices/users/usersApi';
 
 export const SignOutButton = ({ isHeader }: { isHeader: boolean }) => {
   const { t } = useTranslation();
@@ -17,7 +18,7 @@ export const SignOutButton = ({ isHeader }: { isHeader: boolean }) => {
 
   const handleClick = () => {
     dispatch(userLogOut());
-
+    dispatch(usersApi.util.resetApiState());
     if (!isHeader) {
       dispatch(closeSideDrawer());
     }
