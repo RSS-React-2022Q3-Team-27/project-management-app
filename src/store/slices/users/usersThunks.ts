@@ -3,6 +3,7 @@ import axios from 'axios';
 
 import { toast } from 'react-toastify';
 
+import { usersApi } from './usersApi';
 import { IUserInfo } from './usersSlice';
 
 import { API_PATH } from '../../../constants/API_PATH';
@@ -51,6 +52,7 @@ export const getUsers = createAsyncThunk<IUserInfo[], undefined, { rejectValue: 
         toast.error(i18n.t('serverError'));
 
         dispatch(userLogOut());
+        dispatch(usersApi.util.resetApiState());
         return rejectWithValue(error.response?.data);
       }
       throw error;

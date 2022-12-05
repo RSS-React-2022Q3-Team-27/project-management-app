@@ -18,7 +18,7 @@ import { ReducerTypes } from '../../../Context/contextReducer/ReducerTypes';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { useDeleteFileMutation, useUploadFileMutation } from '../../../store/slices/files/filesApi';
 import { setAvatar, setAvatarInfo, toggleAvatarModal, userLogOut } from '../../../store/slices/user/userSlice';
-import { useDeleteUserMutation } from '../../../store/slices/users/usersApi';
+import { useDeleteUserMutation, usersApi } from '../../../store/slices/users/usersApi';
 import { getFormData } from '../../../utils/getFormData';
 import { AvatarModal } from '../../SignUpForm/Avatar/AvatarModal';
 
@@ -40,7 +40,10 @@ export const UserInfo = () => {
       .unwrap()
       .then(async () => {
         navigate(ROUTES.WELCOME.path);
-        setTimeout(() => dispatch(userLogOut()), 0);
+        setTimeout(() => {
+          dispatch(usersApi.util.resetApiState());
+          dispatch(userLogOut());
+        }, 0);
       })
       .catch(() => toast.error(t('serverError')));
     if (avatarInfo) {
