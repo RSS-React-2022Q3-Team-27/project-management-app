@@ -45,6 +45,11 @@ export const DialogEditProfile = ({ openDialog, isDialogOpen }: IProps) => {
   });
 
   const onClose = () => {
+    reset({
+      name: userName,
+      login,
+      password: '',
+    });
     openDialog(false);
   };
 

@@ -1,9 +1,10 @@
 import { Avatar, Box } from '@mui/joy';
 import Sheet from '@mui/joy/Sheet';
 import Typography from '@mui/joy/Typography';
+import { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import styles from './SignUp.module.css';
 
@@ -14,9 +15,17 @@ import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { toggleAvatarModal } from '../../store/slices/user/userSlice';
 
 export const SignUp = () => {
+  const navigate = useNavigate();
+
   const { t } = useTranslation();
   const dispatch = useAppDispatch();
-  const { avatar } = useAppSelector((state) => state.user);
+  const { avatar, isUserLogIn } = useAppSelector((state) => state.user);
+
+  useEffect(() => {
+    if (isUserLogIn) {
+      navigate(ROUTES.MAIN.path);
+    }
+  }, [isUserLogIn, navigate]);
 
   return (
     <Sheet
