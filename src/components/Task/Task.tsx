@@ -260,7 +260,7 @@ export const Task: FC<TaskPropsType> = ({ task, index, column, files, points }) 
                     <ListItemDecorator sx={{ color: 'inherit' }}>
                       <DeleteIcon />
                     </ListItemDecorator>
-                    {t('delete')}
+                    {t('deleteTask')}
                   </MenuItem>
                 </Menu>
               </Box>
