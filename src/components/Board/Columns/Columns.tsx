@@ -257,7 +257,7 @@ export const Columns = () => {
               variant="outlined"
               color="neutral"
               startDecorator={<AddRoundedIcon color="primary" />}
-              sx={{ width: 260, flexShrink: 0, mt: 1 }}
+              sx={{ width: 260, flexShrink: 0, mt: 0.5 }}
               onClick={handleClick}
             >
               {t('newColumn')}
