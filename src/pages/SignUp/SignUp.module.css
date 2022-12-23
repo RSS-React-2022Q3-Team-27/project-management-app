@@ -1,0 +1,39 @@
+.avatar {
+  position: relative;
+}
+
+.avatar::before {
+  content: "";
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  display: block;
+
+  width: 70px;
+  height: 70px;
+
+  opacity: 0;
+  background-color: black;
+  border-radius: 50%;
+
+  transition: 0.3s;
+}
+
+.avatar:hover::before {
+  opacity: 0.35;
+}
+
+.avatar:hover::after {
+  content: "+";
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  font-size: 30px;
+  color: white;
+}
