@@ -1,1 +1,1 @@
-export const URL = 'https://team27.space';
+export const URL = 'https://team27.space/';
